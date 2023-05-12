@@ -1,0 +1,5 @@
+Compilación:
+>kotlinc FunBasicas.kt -include-runtime -d FunBasicas.jar
+
+Ejecución:
+>java -jar FunBasicas.jar

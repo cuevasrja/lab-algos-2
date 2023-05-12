@@ -1,0 +1,5 @@
+Compilación:
+>kotlinc Hola.kt -include-runtime -d Hola.jar
+
+Ejecución:
+>java -jar Hola.jar
