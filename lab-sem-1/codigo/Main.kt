@@ -88,6 +88,159 @@ fun secuenciaMedia(n: Int): Array<Int> {
     return secuencia
 }
 
+// tipoSecuencia: String, Int -> Array<Int>
+// Uso: tipoSecuencia(tipo, n)
+// Precondición: tipo es uno de los siguientes valores: "random", "sorted", "inv", "zu", "media"
+// Poscondición: Devuelve una secuencia de n elementos con valores aleatorios, ordenados, invertidos, con ceros y unos o con valores en forma de media luna
+fun tipoSecuencia(tipo : String, n : Int ): Array<Int> {
+    if(tipo == "random"){
+        return secuenciaRandom(n)
+    }
+    else if(tipo == "sorted"){
+        return secuenciaOrdenada(n)
+    }
+    else if(tipo == "inv"){
+        return secuenciaInvertida(n)
+    }
+    else if(tipo == "zu"){
+        return secuenciaCerosYUnos(n)
+    }
+    else if(tipo == "media"){
+        return secuenciaMedia(n)
+    }
+    else{
+        // Si el tipo de secuencia no es ninguno de los anteriores, devuelve una secuencia ordenada
+        println("Error: Tipo de secuencia incorrecto. Se utilizará una secuencia ordenada")
+        return secuenciaOrdenada(n)
+    }
+}
+
+fun calcularMedia(tiempo: Array<Long>): Double {
+    var suma = 0.0
+    for (i in 0 until tiempo.size) {
+        suma += tiempo[i]
+    }
+    return suma/tiempo.size
+}
+
+fun calcularDesviacionEstandar(tiempo: Array<Long>, media: Double): Double {
+    var suma = 0.0
+    for (i in 0 until tiempo.size) {
+        suma += Math.pow((tiempo[i] - media), 2.0)
+    }
+    return Math.sqrt(suma/(tiempo.size - 1))
+}
+
+fun mensaje(tipo: String, tiempo: Array<Long>) {
+    val media = calcularMedia(tiempo)
+    val desviacionEstandar = calcularDesviacionEstandar(tiempo, media)
+    println("Ordenamiento exitoso con $tipo en ${tiempo.size} intentos")
+    println("Tiempo promedio de ejecución de $tipo: $media")
+    println("Desviación estándar de $tipo: $desviacionEstandar")
+}
+
 fun main(args: Array<String>) {
-    // ! Realizar
+    if(args.size != 6){
+        // Si la cantidad de argumentos es distinta de 6, imprime un mensaje de error y termina la ejecución
+        println("Error: Cantidad de argumentos incorrecta")
+        println("Uso: ./main -n <tamaño> -t <intentos> -s <tipo>")
+        return
+    }
+    // Crea un diccionario con los argumentos pasados por línea de comandos
+    // Ejemplo: ./main -n 100 -t 10 -s random
+    val consts = mapOf(args[0] to args[1], args[2] to args[3], args[4] to args[5])
+    // Obtiene los valores de los argumentos
+    val n : Int = consts["-n"]!!.toInt()
+    val intentos : Int = consts["-t"]!!.toInt()
+    val tipo = consts["-s"]!!
+
+    // Crea una secuencia según el tipo y el tamaño pasados por línea de comandos
+    val secuencia = tipoSecuencia(tipo, n)
+    println("Secuencia de tamaño $n generada de tipo $tipo")
+
+    // TODO: Calcular tiempo promedio de ejecución y desviación estándar para cada algoritmo de ordenamiento
+
+    // Se realizan intentos de ordenamiento con Bubble Sort
+    val tiempoBubbleSort = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        bubbleSort(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            println("Error: La secuencia no está ordenada")
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoBubbleSort[i] = tiempoFinal - tiempoInicial
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensaje("Bubble Sort", tiempoBubbleSort)
+
+    // Se realizan intentos de ordenamiento con Insertion Sort y se mide el tiempo de ejecución
+    val tiempoInsertionSort = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        insertionSort(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            println("Error: La secuencia no está ordenada")
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoInsertionSort[i] = tiempoFinal - tiempoInicial
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensaje("Insertion Sort", tiempoInsertionSort)
+
+    // Se realizan intentos de ordenamiento con Selection Sort y se mide el tiempo de ejecución
+    val tiempoSelectionSort = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        selectionSort(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            println("Error: La secuencia no está ordenada")
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoSelectionSort[i] = tiempoFinal - tiempoInicial
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensaje("Selection Sort", tiempoSelectionSort)
+
+    // Se realizan intentos de ordenamiento con Shell Sort y se mide el tiempo de ejecución
+    val tiempoShellSort = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        shellSort(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            println("Error: La secuencia no está ordenada")
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoShellSort[i] = tiempoFinal - tiempoInicial
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensaje("Shell Sort", tiempoShellSort)
 }
