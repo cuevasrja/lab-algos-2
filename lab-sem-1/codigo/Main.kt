@@ -132,11 +132,13 @@ fun calcularDesviacionEstandar(tiempo: Array<Long>, media: Double): Double {
 }
 
 fun mensaje(tipo: String, tiempo: Array<Long>) {
-    val media = calcularMedia(tiempo)
-    val desviacionEstandar = calcularDesviacionEstandar(tiempo, media)
+    val media : Double = calcularMedia(tiempo)
+    val desviacionEstandar : Double = calcularDesviacionEstandar(tiempo, media)
     println("Ordenamiento exitoso con $tipo en ${tiempo.size} intentos")
-    println("Tiempo promedio de ejecución de $tipo: $media")
-    println("Desviación estándar de $tipo: $desviacionEstandar")
+    // Imprime el tiempo promedio de ejecución y la desviación estándar en segundos
+    // Se divide por 1000000000.0 para convertir de nanosegundos a segundos
+    println("Tiempo promedio de ejecución de $tipo: ${(media/1000000000.0).toDouble()} segundos")
+    println("Desviación estándar de $tipo: ${(desviacionEstandar/1000000000.0).toDouble()} segundos")
 }
 
 fun main(args: Array<String>) {
@@ -158,8 +160,6 @@ fun main(args: Array<String>) {
     val secuencia = tipoSecuencia(tipo, n)
     println("Secuencia de tamaño $n generada de tipo $tipo")
 
-    // TODO: Calcular tiempo promedio de ejecución y desviación estándar para cada algoritmo de ordenamiento
-
     // Se realizan intentos de ordenamiento con Bubble Sort
     val tiempoBubbleSort = Array<Long>(intentos, {0})
     for (i in 0 until intentos) {
@@ -176,7 +176,7 @@ fun main(args: Array<String>) {
             return
         }
         // Se guarda el tiempo de ejecución
-        tiempoBubbleSort[i] = tiempoFinal - tiempoInicial
+        tiempoBubbleSort[i] = (tiempoFinal - tiempoInicial)
     }
     // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
     mensaje("Bubble Sort", tiempoBubbleSort)
@@ -197,7 +197,7 @@ fun main(args: Array<String>) {
             return
         }
         // Se guarda el tiempo de ejecución
-        tiempoInsertionSort[i] = tiempoFinal - tiempoInicial
+        tiempoInsertionSort[i] = (tiempoFinal - tiempoInicial)
     }
     // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
     mensaje("Insertion Sort", tiempoInsertionSort)
@@ -218,7 +218,7 @@ fun main(args: Array<String>) {
             return
         }
         // Se guarda el tiempo de ejecución
-        tiempoSelectionSort[i] = tiempoFinal - tiempoInicial
+        tiempoSelectionSort[i] = (tiempoFinal - tiempoInicial)
     }
     // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
     mensaje("Selection Sort", tiempoSelectionSort)
@@ -239,7 +239,7 @@ fun main(args: Array<String>) {
             return
         }
         // Se guarda el tiempo de ejecución
-        tiempoShellSort[i] = tiempoFinal - tiempoInicial
+        tiempoShellSort[i] = (tiempoFinal - tiempoInicial)
     }
     // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
     mensaje("Shell Sort", tiempoShellSort)
