@@ -132,13 +132,18 @@ fun calcularDesviacionEstandar(tiempo: Array<Long>, media: Double): Double {
 }
 
 fun mensaje(tipo: String, tiempo: Array<Long>) {
-    val media : Double = calcularMedia(tiempo)
-    val desviacionEstandar : Double = calcularDesviacionEstandar(tiempo, media)
-    println("Ordenamiento exitoso con $tipo en ${tiempo.size} intentos")
     // Imprime el tiempo promedio de ejecución y la desviación estándar en segundos
     // Se divide por 1000000000.0 para convertir de nanosegundos a segundos
-    println("Tiempo promedio de ejecución de $tipo: ${(media/1000000000.0).toDouble()} segundos")
-    println("Desviación estándar de $tipo: ${(desviacionEstandar/1000000000.0).toDouble()} segundos")
+    if(tiempo.size > 1){
+        val media : Double = calcularMedia(tiempo)
+        val desviacionEstandar : Double = calcularDesviacionEstandar(tiempo, media)
+        println("Ordenamiento exitoso con $tipo en ${tiempo.size} intentos")
+        println("Tiempo promedio de ejecución de $tipo: ${(media/1000000000.0).toDouble()} segundos")
+        println("Desviación estándar de $tipo: ${(desviacionEstandar/1000000000.0).toDouble()} segundos")
+    }
+    else{
+        println("Ordenamiento exitoso con $tipo")
+    }
     println("----------------------------------------------------------------------------------------")
 }
 
