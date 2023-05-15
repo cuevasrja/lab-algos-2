@@ -137,12 +137,13 @@ fun mensaje(tipo: String, tiempo: Array<Long>) {
     if(tiempo.size > 1){
         val media : Double = calcularMedia(tiempo)
         val desviacionEstandar : Double = calcularDesviacionEstandar(tiempo, media)
-        println("Ordenamiento exitoso con $tipo en ${tiempo.size} intentos")
-        println("Tiempo promedio de ejecución de $tipo: ${(media/1000000000.0).toDouble()} segundos")
-        println("Desviación estándar de $tipo: ${(desviacionEstandar/1000000000.0).toDouble()} segundos")
+        println("\u001b[32mOrdenamiento exitoso con $tipo en ${tiempo.size} intentos \u001b[0m")
+        println("Tiempo promedio de ejecución de $tipo: \u001b[33m${(media/1000000000.0).toDouble()} segundos \u001b[0m")
+        println("Desviación estándar de $tipo: \u001b[33m${(desviacionEstandar/1000000000.0).toDouble()} segundos \u001b[0m")
     }
     else{
-        println("Ordenamiento exitoso con $tipo")
+        println("\u001b[32mOrdenamiento exitoso con $tipo \u001b[0m")
+        println("Tiempo de ejecución de $tipo: \u001b[33m${(tiempo[0]/1000000000.0).toDouble()} segundos \u001b[0m")
     }
     println("----------------------------------------------------------------------------------------")
 }
@@ -164,7 +165,7 @@ fun main(args: Array<String>) {
 
     // Crea una secuencia según el tipo y el tamaño pasados por línea de comandos
     val secuencia = tipoSecuencia(tipo, n)
-    println("Secuencia de tamaño $n generada de tipo $tipo")
+    println("\u001b[100mSecuencia de tamaño $n generada de tipo $tipo\u001b[0m")
     println("----------------------------------------------------------------------------------------")
 
     // Se realizan intentos de ordenamiento con Bubble Sort
