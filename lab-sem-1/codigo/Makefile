@@ -6,7 +6,7 @@ PROG=	Sortlib.jar
 
 SRC=	Sortlib.kt Main.kt
 
-all:	
+all:
 	$(KC) $(SRC) $(KFLAGS) -d $(PROG)
 
 .PHONY : clean

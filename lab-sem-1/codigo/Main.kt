@@ -1,7 +1,7 @@
 // estaEnOrdenAscendente: Array<Int> -> Boolean
 // Uso: estaEnOrdenAscendente(A)
 // Precondición: A.size > 0
-// Poscondición: Devuelve true si A está ordenado en forma ascendente 
+// Poscondición: Devuelve true si A está ordenado en forma ascendente
 fun estaEnOrdenAscendente(secuencia: Array<Int>): Boolean {
     val n = secuencia.size
     for (i in 0 until n-1) {
@@ -9,7 +9,7 @@ fun estaEnOrdenAscendente(secuencia: Array<Int>): Boolean {
 	    if (secuencia [i] > secuencia [i+1]) {
             // Si encuentra un par de elementos consecutivos que no están ordenados en forma ascendente
 	        return false
-	    } 
+	    }
     }
     // Si no encontró ningún par de elementos consecutivos que no estén ordenados en forma ascendente
     return true
@@ -188,26 +188,26 @@ fun main(args: Array<String>) {
     // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
     mensaje("Bubble Sort", tiempoBubbleSort)
 
-    // // Se realizan intentos de ordenamiento con Insertion Sort y se mide el tiempo de ejecución
-    // val tiempoInsertionSort = Array<Long>(intentos, {0})
-    // for (i in 0 until intentos) {
-    //     // Se copia la secuencia original para no modificarla
-    //     val secuenciaCopia = secuencia.copyOf()
-    //     // Se ordena la secuencia copia y se mide el tiempo de ejecución
-    //     val tiempoInicial = System.nanoTime()
-    //     insertionSort(secuenciaCopia)
-    //     val tiempoFinal = System.nanoTime()
-    //     // Se verifica si la secuencia copia está ordenada
-    //     if(!estaEnOrdenAscendente(secuenciaCopia)){
-    //         // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
-    //         println("Error: La secuencia no está ordenada")
-    //         return
-    //     }
-    //     // Se guarda el tiempo de ejecución
-    //     tiempoInsertionSort[i] = (tiempoFinal - tiempoInicial)
-    // }
-    // // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
-    // mensaje("Insertion Sort", tiempoInsertionSort)
+    // Se realizan intentos de ordenamiento con Insertion Sort y se mide el tiempo de ejecución
+    val tiempoInsertionSort = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        insertionSort(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            println("Error: La secuencia no está ordenada")
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoInsertionSort[i] = (tiempoFinal - tiempoInicial)
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensaje("Insertion Sort", tiempoInsertionSort)
 
     // Se realizan intentos de ordenamiento con Selection Sort y se mide el tiempo de ejecución
     val tiempoSelectionSort = Array<Long>(intentos, {0})
@@ -230,24 +230,24 @@ fun main(args: Array<String>) {
     // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
     mensaje("Selection Sort", tiempoSelectionSort)
 
-    // // Se realizan intentos de ordenamiento con Shell Sort y se mide el tiempo de ejecución
-    // val tiempoShellSort = Array<Long>(intentos, {0})
-    // for (i in 0 until intentos) {
-    //     // Se copia la secuencia original para no modificarla
-    //     val secuenciaCopia = secuencia.copyOf()
-    //     // Se ordena la secuencia copia y se mide el tiempo de ejecución
-    //     val tiempoInicial = System.nanoTime()
-    //     shellSort(secuenciaCopia)
-    //     val tiempoFinal = System.nanoTime()
-    //     // Se verifica si la secuencia copia está ordenada
-    //     if(!estaEnOrdenAscendente(secuenciaCopia)){
-    //         // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
-    //         println("Error: La secuencia no está ordenada")
-    //         return
-    //     }
-    //     // Se guarda el tiempo de ejecución
-    //     tiempoShellSort[i] = (tiempoFinal - tiempoInicial)
-    // }
-    // // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
-    // mensaje("Shell Sort", tiempoShellSort)
+    // Se realizan intentos de ordenamiento con Shell Sort y se mide el tiempo de ejecución
+    val tiempoShellSort = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        shellSort(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            println("Error: La secuencia no está ordenada")
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoShellSort[i] = (tiempoFinal - tiempoInicial)
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensaje("Shell Sort", tiempoShellSort)
 }
