@@ -39,17 +39,17 @@ fun selectionSort(A: Array<Int>): Unit {
 fun shellSort(A: Array<Int>): Unit {
     var incr: Int = A.size / 2
     while (incr > 0) {
-        for (i in incr + 1 until A.size) {
+        for (i in incr until A.size) {
             var j: Int = i - incr
-            while (j > 0) {
+            while (j > -1) {
                 if (A[j] > A[j + incr]) {
                     swap(A, j, j + incr)
                     j -= incr
                 } else {
-                    j = 0
+                    j = -1
                 }
             }
         }
-        incr = incr / 2
+        incr /= 2
     }
 }
