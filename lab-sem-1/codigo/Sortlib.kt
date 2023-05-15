@@ -1,10 +1,14 @@
+fun swap(A: Array<Int>, i: Int, j: Int) {
+    val aux = A[i]
+    A[i] = A[j]
+    A[j] = aux
+}
+
 fun bubbleSort(A: Array<Int>) {
     for (i in 0 until A.size - 1) {
         for (j in (A.size - 1) downTo (i + 1)) {
             if (A[j] < A[j - 1]) {
-                val aux = A[j]
-                A[j] = A[j - 1]
-                A[j - 1] = aux
+                swap(A, j, j - 1)
             }
         }
     }
@@ -22,9 +26,7 @@ fun selectionSort(A: Array<Int>) {
                 min = j
             }
         }
-        val aux = A[i]
-        A[i] = A[min]
-        A[min] = aux
+        swap(A, i, min)
     }
 }
 
