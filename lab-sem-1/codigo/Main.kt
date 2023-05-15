@@ -148,6 +148,11 @@ fun mensaje(tipo: String, tiempo: Array<Long>) {
     println("----------------------------------------------------------------------------------------")
 }
 
+fun error(tipo: String) {
+    println("\u001b[31mError: La secuencia no está ordenada con $tipo \u001b[0m")
+    println("----------------------------------------------------------------------------------------")
+}
+
 fun main(args: Array<String>) {
     if(args.size != 6){
         // Si la cantidad de argumentos es distinta de 6, imprime un mensaje de error y termina la ejecución
@@ -180,7 +185,7 @@ fun main(args: Array<String>) {
         // Se verifica si la secuencia copia está ordenada
         if(!estaEnOrdenAscendente(secuenciaCopia)){
             // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
-            println("Error: La secuencia no está ordenada con Bubble Sort")
+            error("Bubble Sort")
             return
         }
         // Se guarda el tiempo de ejecución
@@ -201,7 +206,7 @@ fun main(args: Array<String>) {
         // Se verifica si la secuencia copia está ordenada
         if(!estaEnOrdenAscendente(secuenciaCopia)){
             // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
-            println("Error: La secuencia no está ordenada con Insertion Sort")
+            error("Insertion Sort")
             return
         }
         // Se guarda el tiempo de ejecución
@@ -222,7 +227,7 @@ fun main(args: Array<String>) {
         // Se verifica si la secuencia copia está ordenada
         if(!estaEnOrdenAscendente(secuenciaCopia)){
             // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
-            println("Error: La secuencia no está ordenada con Selection Sort")
+            error("Selection Sort")
             return
         }
         // Se guarda el tiempo de ejecución
@@ -243,7 +248,7 @@ fun main(args: Array<String>) {
         // Se verifica si la secuencia copia está ordenada
         if(!estaEnOrdenAscendente(secuenciaCopia)){
             // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
-            println("Error: La secuencia no está ordenada con Shell Sort")
+            error("Shell Sort")
             return
         }
         // Se guarda el tiempo de ejecución
