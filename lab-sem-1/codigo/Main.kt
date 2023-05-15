@@ -179,7 +179,7 @@ fun main(args: Array<String>) {
         // Se verifica si la secuencia copia está ordenada
         if(!estaEnOrdenAscendente(secuenciaCopia)){
             // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
-            println("Error: La secuencia no está ordenada")
+            println("Error: La secuencia no está ordenada con Bubble Sort")
             return
         }
         // Se guarda el tiempo de ejecución
@@ -200,7 +200,7 @@ fun main(args: Array<String>) {
         // Se verifica si la secuencia copia está ordenada
         if(!estaEnOrdenAscendente(secuenciaCopia)){
             // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
-            println("Error: La secuencia no está ordenada")
+            println("Error: La secuencia no está ordenada con Insertion Sort")
             return
         }
         // Se guarda el tiempo de ejecución
@@ -221,7 +221,7 @@ fun main(args: Array<String>) {
         // Se verifica si la secuencia copia está ordenada
         if(!estaEnOrdenAscendente(secuenciaCopia)){
             // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
-            println("Error: La secuencia no está ordenada")
+            println("Error: La secuencia no está ordenada con Selection Sort")
             return
         }
         // Se guarda el tiempo de ejecución
@@ -242,7 +242,7 @@ fun main(args: Array<String>) {
         // Se verifica si la secuencia copia está ordenada
         if(!estaEnOrdenAscendente(secuenciaCopia)){
             // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
-            println("Error: La secuencia no está ordenada")
+            println("Error: La secuencia no está ordenada con Shell Sort")
             return
         }
         // Se guarda el tiempo de ejecución
