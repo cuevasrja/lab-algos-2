@@ -1,0 +1,39 @@
+Laboratorio de la semana 1 de Algoritmos y Estructuras de Datos II (CI-2692).
+Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+
+Compilación:
+> make
+
+Ejecución:
+> ./runSorlib.sh -n <tamañoSecuencia> -t <numIntentos> -s <tipoSecuencia>"
+
+Tipos de secuencia:
+> "random": secuencia de n elementos de tipo entero, generados aleatoriamente en el intervalo [0,..., n].
+> "sorted": secuencia de n elementos ordenados en forma ascendente.
+> "inv": secuencia de n elementos ordenados en forma descendente.
+> "zu": secuencia de n elementos con valores 0 o 1.
+> "media": secuencia de n elementos de tipo entero, en donde los elementos de la secuencia
+tiene la forma [1, 2,..., n / 2, n / 2,..., 2, 1].
+
+Ejemplo de Ejecución:
+> ./runSortlib.sh -n 10000 -t 100 -s random
+
+Salida del ejemplo:
+> Secuencia de tamaño 10000 generada de tipo random
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con Bubble Sort en 100 intentos
+> Tiempo promedio de ejecución de Bubble Sort: 0.98775646228 segundos
+> Desviación estándar de Bubble Sort: 0.13303025975012744 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con Insertion Sort en 100 intentos
+> Tiempo promedio de ejecución de Insertion Sort: 0.41611390766 segundos
+> Desviación estándar de Insertion Sort: 0.07258695730340259 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con Selection Sort en 100 intentos
+> Tiempo promedio de ejecución de Selection Sort: 0.15738417135 segundos
+> Desviación estándar de Selection Sort: 0.07528418037837514 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con Shell Sort en 100 intentos
+> Tiempo promedio de ejecución de Shell Sort: 0.005074335690000001 segundos
+> Desviación estándar de Shell Sort: 0.002400032302061874 segundos
+> ----------------------------------------------------------------------------------------

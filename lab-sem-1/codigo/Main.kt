@@ -1,6 +1,6 @@
 /*
-Laboratorio de la semana 1 de Algoritmos y Estructuras de Datos II (CI-2692)
-Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175)
+Laboratorio de la semana 1 de Algoritmos y Estructuras de Datos II (CI-2692).
+Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 */
 
 /**
@@ -43,7 +43,7 @@ fun secuenciaRandom(n: Int): Array<Int> {
 * secuenciaOrdenada: Int -> Array<Int>
 * Uso: secuenciaOrdenada(n)
 * Precondición: n > 0
-* Poscondición: Devuelve una secuencia de n elementos ordenados en forma ascendente
+* Poscondición: Devuelve una secuencia de n elementos ordenados en forma ascendente.
 */
 fun secuenciaOrdenada(n: Int): Array<Int> {
     // Crea una secuencia de n elementos cuyos valores iniciales son todos 0
@@ -59,7 +59,7 @@ fun secuenciaOrdenada(n: Int): Array<Int> {
 * secuenciaInvertida: Int -> Array<Int>
 * Uso: secuenciaInvertida(n)
 * Precondición: n > 0
-* Poscondición: Devuelve una secuencia de n elementos ordenados en forma descendente
+* Poscondición: Devuelve una secuencia de n elementos ordenados en forma descendente.
 */
 fun secuenciaInvertida(n: Int): Array<Int> {
     // Crea una secuencia de n elementos cuyos valores iniciales son todos 0
@@ -75,7 +75,7 @@ fun secuenciaInvertida(n: Int): Array<Int> {
 * secuenciaCerosYUnos: Int -> Array<Int>
 * Uso: secuenciaCerosYUnos(n)
 * Precondición: n > 0
-* Poscondición: Devuelve una secuencia de n elementos con valores 0 o 1
+* Poscondición: Devuelve una secuencia de n elementos con valores 0 o 1.
 */
 fun secuenciaCerosYUnos(n: Int): Array<Int> {
     // Crea una secuencia de n elementos cuyos valores iniciales son todos 0
@@ -93,7 +93,7 @@ fun secuenciaCerosYUnos(n: Int): Array<Int> {
 * Precondición: n > 0
 * Poscondición: Devuelve una secuencia de n elementos de tipo entero, en donde
 * los elementos de la secuencia están ordenados en forma ascendente hasta el
-* elemento n/2 y luego en forma descendente hasta el último elemento. Por
+* elemento n / 2 y luego en forma descendente hasta el último elemento. Por
 * ejemplo, si n = 10, la secuencia tiene la forma [1, 2,..., n / 2, n / 2,..., 2, 1].
 */
 fun secuenciaMedia(n: Int): Array<Int> {
@@ -198,7 +198,7 @@ fun main(args: Array<String>): Unit {
     if(args.size != 6){
         // Si la cantidad de argumentos es distinta de 6, imprime un mensaje de error y termina la ejecución
         println("Error: Cantidad de argumentos incorrecta")
-        println("Uso: ./main -n <tamaño> -t <intentos> -s <tipoSecuencia>")
+        println("Uso: ./runSorlib.sh -n <tamañoSecuencia> -t <numIntentos> -s <tipoSecuencia>")
         return
     }
     // Crea un diccionario con los argumentos pasados por línea de comandos
