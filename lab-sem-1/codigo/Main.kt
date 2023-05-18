@@ -130,7 +130,7 @@ fun crearSecuencia(tipoSecuencia: String, n: Int ): Array<Int> {
         return secuenciaMedia(n)
     } else {
         // Si el tipo de secuencia no es ninguno de los anteriores, devuelve una secuencia ordenada
-        println("Error: Tipo de secuencia incorrecto. Se utilizará una secuencia ordenada")
+        println("\u001b[31mError:\u001b[0m Tipo de secuencia incorrecto. Se utilizará una secuencia ordenada")
         return secuenciaOrdenada(n)
     }
 }
@@ -160,7 +160,7 @@ fun calcularDesviacionEstandar(tiempo: Array<Long>, media: Double): Double {
     for (i in 0 until tiempo.size) {
         suma += Math.pow((tiempo[i] - media), 2.0)
     }
-    return Math.sqrt(suma / (tiempo.size - 1))
+    return Math.sqrt(suma / (tiempo.size))
 }
 
 /**
@@ -189,16 +189,39 @@ fun mensajeOrdenamientoExitoso(tipoDeOrdenamiento: String, tiempo: Array<Long>):
 * ordenamiento especificado
 */
 fun mensajeErrorEnElOrdenamiento(tipoDeOrdenamiento: String): Unit {
-    println("\u001b[31mError: La secuencia no está ordenada con $tipoDeOrdenamiento \u001b[0m")
+    println("\u001b[31mError:\u001b[0m La secuencia no está ordenada con $tipoDeOrdenamiento \u001b[0m")
     println("----------------------------------------------------------------------------------------")
+}
+
+fun chekearInputValido(args: Array<String>): Boolean {
+    if (args.size != 6){
+        // Si la cantidad de argumentos es distinta de 6, imprime un mensaje de error y termina la ejecución
+        println("\u001b[31mError:\u001b[0m Cantidad de argumentos incorrecta")
+        println("Uso: ./runSorlib.sh -n <tamañoSecuencia> -t <numIntentos> -s <tipoSecuencia>")
+        return false
+    }
+    if (args[0] != "-n" && args[2] != "-n" && args[4] != "-n") {
+        // Si -n no está en la posición 0, 2 o 4, imprime un mensaje de error y termina la ejecución
+        println("\u001b[31mError:\u001b[0m Argumentos incorrectos")
+        println("Uso: ./runSorlib.sh -n <tamañoSecuencia> -t <numIntentos> -s <tipoSecuencia>")
+        return false
+    } else if (args[0] != "-t" && args[2] != "-t" && args[4] != "-t") {
+        // Si -t no está en la posición 0, 2 o 4, imprime un mensaje de error y termina la ejecución
+        println("\u001b[31mError:\u001b[0m Argumentos incorrectos")
+        println("Uso: ./runSorlib.sh -n <tamañoSecuencia> -t <numIntentos> -s <tipoSecuencia>")
+        return false
+    } else if (args[0] != "-s" && args[2] != "-s" && args[4] != "-s") {
+        // Si -s no está en la posición 0, 2 o 4, imprime un mensaje de error y termina la ejecución
+        println("\u001b[31mError:\u001b[0m Argumentos incorrectos")
+        println("Uso: ./runSorlib.sh -n <tamañoSecuencia> -t <numIntentos> -s <tipoSecuencia>")
+        return false
+    }
+    return true
 }
 
 // Declaración del método principal
 fun main(args: Array<String>): Unit {
-    if(args.size != 6){
-        // Si la cantidad de argumentos es distinta de 6, imprime un mensaje de error y termina la ejecución
-        println("Error: Cantidad de argumentos incorrecta")
-        println("Uso: ./runSorlib.sh -n <tamañoSecuencia> -t <numIntentos> -s <tipoSecuencia>")
+    if (!chekearInputValido(args)) {
         return
     }
     // Crea un diccionario con los argumentos pasados por línea de comandos
