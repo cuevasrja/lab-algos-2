@@ -1,15 +1,6 @@
-<<<<<<< HEAD
 /*
 Laboratorio de la semana 2 de Algoritmos y Estructuras de Datos II (CI-2692).
 Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
-*/
-
-fun multiplicacionSimpleDeMatrices(A: Array<IntArray>, matrizB: Array<IntArray>): Array<IntArray> {
-    val matrizC = Array(A.size) { IntArray(matrizB[0].size) }
-=======
-/* 
-* Laboratorio de la semana 2 de Algoritmos y Estructuras de Datos II (CI-2692).
-* Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 */
 
 /**
@@ -26,7 +17,6 @@ fun multiplicacionSimpleDeMatrices(A: Array<IntArray>, B: Array<IntArray>): Arra
     // Crear una matriz de ceros del mismo tamaño que A y B
     val C = Array(A.size) { IntArray(B[0].size) }
     // Multiplicar las matrices
->>>>>>> 2fbbc9b168db9a8d54cc765a03f2d87c065099d1
     for (i in A.indices) {
         // Recorrer las filas de A
         for (j in B[0].indices) {

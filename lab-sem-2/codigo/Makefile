@@ -5,9 +5,9 @@ KC=	kotlinc
 
 KFLAGS=	-include-runtime
 
-PROG=	Sortlib.jar
+PROG=	PruebaMergesort.jar
 
-SRC=	Sortlib.kt PruebaMergesort.kt
+SRC=	Sortlib.kt PruebaMergesort.kt Main.kt
 
 PROGMATRIX=	MultiplicacionMatrices.jar
 
@@ -15,9 +15,9 @@ SRCMATRIX=	MultiplicacionMatrices.kt PruebaMatrices.kt
 
 all:
 	$(KC) $(SRCMATRIX) $(KFLAGS) -d $(PROGMATRIX)
-	# $(KC) $(SRC) $(KFLAGS) -d $(PROG)
+	$(KC) $(SRC) $(KFLAGS) -d $(PROG)
 
 .PHONY : clean
 
 clean :
-	rm -rf $(PROG)
+	rm -rf $(PROG) $(PROGMATRIX)
