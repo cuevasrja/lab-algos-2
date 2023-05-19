@@ -1,5 +1,5 @@
 /*
-Laboratorio de la semana 1 de Algoritmos y Estructuras de Datos II (CI-2692).
+Laboratorio de la semana 2 de Algoritmos y Estructuras de Datos II (CI-2692).
 Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 */
 
@@ -92,18 +92,55 @@ fun shellSort(A: Array<Int>): Unit {
     }
 }
 
-fun merge(A: Array<Int>, B: Array<Int>): Array<Int> {
-    val C: Array<Int> = Array(A.size + B.size, {0})
-    var i, j = 0
-    A[A.size] = Int.MAX_VALUE
-    B[B.size] = Int.MAX_VALUE
+/**
+* uso: merge(A, B, C)
+* Precondición: A y B son arreglos de enteros ordenados de menor a mayor, C es un
+* arreglo de enteros de tamaño A.size + B.size
+* Postcondición: C es un arreglo de enteros ordenados de menor a mayor que
+* contiene todos los elementos de A y B
+* Descripción: combina los elementos de A y B en C de manera ordenada
+*/
+fun merge(A: Array<Int>, B: Array<Int>, C: Array<Int>): Unit {
+    var i: Int = 0
+    var j: Int = 0
     for (k in 0 until C.size) {
-        if (A[i] < B[j]) {
+        if (i == A.size) {
+            C[k] = B[j]
+            j += 1
+        } else if (j == B.size) {
+            C[k] = A[i]
+            i += 1
+        } else if (A[i] < B[j]) {
             C[k] = A[i]
             i += 1
         } else {
             C[k] = B[j]
             j += 1
         }
+    }
+}
+
+/**
+* uso: mergesort(A)
+* Precondición: A es un arreglo de enteros
+* Postcondición: ordena los elementos de A de menor a mayor
+* Descripción: divide el arreglo en dos mitades, ordena cada mitad recursivamente
+* y luego combina las dos mitades ordenadas
+*/
+fun mergesortInsertion(A: Array<Int>): Unit {
+    if (A.size <= 30) {
+        insertionSort(A)
+    } else {
+        val B: Array<Int> = Array(A.size / 2, {0})
+        val C: Array<Int> = Array(A.size - B.size, {0})
+        for (i in 0 until B.size) {
+            B[i] = A[i]
+        }
+        for (i in 0 until C.size) {
+            C[i] = A[i + B.size]
+        }
+        mergesortInsertion(B)
+        mergesortInsertion(C)
+        merge(B, C, A)
     }
 }
