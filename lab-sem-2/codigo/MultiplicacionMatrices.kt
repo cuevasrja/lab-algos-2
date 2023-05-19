@@ -1,3 +1,8 @@
+/* 
+* Laboratorio de la semana 2 de Algoritmos y Estructuras de Datos II (CI-2692).
+* Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+*/
+
 fun multiplicacionSimpleDeMatrices(A: Array<IntArray>, matrizB: Array<IntArray>): Array<IntArray> {
     val matrizC = Array(A.size) { IntArray(matrizB[0].size) }
     for (i in A.indices) {
@@ -105,57 +110,4 @@ fun multiplicacionStrassen(A: Array<IntArray>, B: Array<IntArray>): Array<IntArr
         }
     }
     return C
-}
-
-fun compararMatrices(A: Array<IntArray>, B: Array<IntArray>): Boolean {
-    if (A.size != B.size || A[0].size != B[0].size) {
-        return false
-    }
-    for (i in A.indices) {
-        for (j in A[0].indices) {
-            if (A[i][j] != B[i][j]) {
-                return false
-            }
-        }
-    }
-    return true
-}
-
-fun main(args: Array<String>) {
-    val A = arrayOf(
-        intArrayOf(1, 2, 3, 4, 9),
-        intArrayOf(5, 6, 7, 8, 2),
-        intArrayOf(9, 10, 11, 12, 0),
-        intArrayOf(13, 14, 15, 16, 1),
-        intArrayOf(13, 14, 15, 16, 1)
-    )
-    val B = arrayOf(
-        intArrayOf(1, 2, 3, 4, 9),
-        intArrayOf(5, 6, 7, 8, 2),
-        intArrayOf(9, 10, 11, 12, 0),
-        intArrayOf(13, 14, 15, 16, 1),
-        intArrayOf(13, 14, 15, 16, 1)
-    )
-    val C = multiplicacionSimpleDeMatrices(A, B)
-    for (i in C.indices) {
-        for (j in C[0].indices) {
-            print("${C[i][j]} ")
-        }
-        println()
-    }
-    println()
-    val D = multiplicacionStrassen(A, B)
-    for (i in D.indices) {
-        for (j in D[0].indices) {
-            print("${D[i][j]} ")
-        }
-        println()
-    }
-    println()
-    if(compararMatrices(C, D)) {
-        println("Las matrices son iguales")
-    }
-    else {
-        println("Las matrices son diferentes")
-    }
 }
