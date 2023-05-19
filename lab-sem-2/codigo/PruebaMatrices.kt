@@ -72,6 +72,32 @@ fun chekearInputValido(args: Array<String>): Boolean {
     return true
 }
 
+/**
+* uso: media(tiempo)
+* Precondición: tiempo es un arreglo de reales
+* Postcondición: devuelve el promedio de los elementos de tiempo
+*/
+fun media(tiempo: Array<Long>): Double {
+    var suma = 0L
+    for (i in tiempo.indices) {
+        suma += tiempo[i]
+    }
+    return (suma/tiempo.size)/1000.0
+}
+
+/**
+* uso: compararTiempos(tiempo1, tiempo2)
+* Precondición: tiempo1 y tiempo2 son reales
+* Postcondición: imprime un mensaje indicando cual de los dos tiempos es menor
+*/
+fun compararTiempos(tiempo1: Double, tiempo2: Double): Unit {
+    if (tiempo1 < tiempo2) {
+        println("La multiplicacion simple es mas rapida")
+    } else {
+        println("La multiplicacion de Strassen es mas rapida")
+    }
+}
+
 fun main(args: Array<String>) {
     // Crear un mapa con los argumentos
     val argumentos = mapOf(args[0] to args[1], args[2] to args[3])
@@ -114,13 +140,19 @@ fun main(args: Array<String>) {
 
     // Imprimir los tiempos de ejecución
     if(intentos == 1) {
+        val segundosMultiplicacionSimple = tiempoMultiplicacionSimple[0]/1000.0
+        val segundosMultiplicacionStrassen = tiempoMultiplicacionStrassen[0]/1000.0
         println("Matrices de tamaño $n multiplicadas")
-        println("Tiempo multiplicacion simple: ${tiempoMultiplicacionSimple[0]} milisegundos")
-        println("Tiempo multiplicacion strassen: ${tiempoMultiplicacionStrassen[0]} milisegundos")
+        println("Tiempo multiplicacion simple: ${segundosMultiplicacionSimple} segundos")
+        println("Tiempo multiplicacion strassen: ${segundosMultiplicacionStrassen} segundos")
+        compararTiempos(segundosMultiplicacionSimple, segundosMultiplicacionStrassen)
         return
     }
     // Imprimir los tiempos promedio de ejecución en caso de que se haya realizado más de un intento
+    val segundosMultiplicacionSimple = media(tiempoMultiplicacionSimple)
+    val segundosMultiplicacionStrassen = media(tiempoMultiplicacionStrassen)
     println("Multiplicacion de matrices de tamaño $n realizada $intentos veces")
-    println("Tiempo promedio multiplicacion simple: ${tiempoMultiplicacionSimple.average()} milisegundos")
-    println("Tiempo promedio multiplicacion strassen: ${tiempoMultiplicacionStrassen.average()} milisegundos")
+    println("Tiempo promedio multiplicacion simple: ${segundosMultiplicacionSimple} segundos")
+    println("Tiempo promedio multiplicacion strassen: ${segundosMultiplicacionStrassen} segundos")
+    compararTiempos(segundosMultiplicacionSimple, segundosMultiplicacionStrassen)
 }
