@@ -82,7 +82,7 @@ fun media(tiempo: Array<Long>): Double {
     for (i in tiempo.indices) {
         suma += tiempo[i]
     }
-    return (suma/tiempo.size)/1000.0
+    return (suma/tiempo.size)/1000000000.0
 }
 
 /**
@@ -99,12 +99,12 @@ fun compararTiempos(tiempo1: Double, tiempo2: Double): Unit {
 }
 
 fun main(args: Array<String>) {
-    // Crear un mapa con los argumentos
-    val argumentos = mapOf(args[0] to args[1], args[2] to args[3])
     // Chequear que los argumentos sean válidos
     if (!chekearInputValido(args)) {
         return
     }
+    // Crear un mapa con los argumentos
+    val argumentos = mapOf(args[0] to args[1], args[2] to args[3])
     // Obtener el tamaño de las matrices y la cantidad de veces a multiplicar
     val n = argumentos["-n"]!!.toInt()
     val intentos = argumentos["-t"]!!.toInt()
@@ -119,15 +119,15 @@ fun main(args: Array<String>) {
     // Multiplicar las matrices y guardar los tiempos de ejecución para todos los intentos
     for (i in 0 until intentos) {
         // Guardar el tiempo de ejecución de la multiplicación simple
-        val tiempoInicial = System.currentTimeMillis()
+        val tiempoInicial = System.nanoTime()
         val C = multiplicacionSimpleDeMatrices(A, B)
-        val tiempoFinal = System.currentTimeMillis()
+        val tiempoFinal = System.nanoTime()
         tiempoMultiplicacionSimple[i] = tiempoFinal - tiempoInicial
 
         // Guardar el tiempo de ejecución de la multiplicación de Strassen
-        val tiempoInicial2 = System.currentTimeMillis()
+        val tiempoInicial2 = System.nanoTime()
         val D = multiplicacionStrassen(A, B)
-        val tiempoFinal2 = System.currentTimeMillis()
+        val tiempoFinal2 = System.nanoTime()
         tiempoMultiplicacionStrassen[i] = tiempoFinal2 - tiempoInicial2
 
         // Chequear que las matrices sean iguales
@@ -140,8 +140,8 @@ fun main(args: Array<String>) {
 
     // Imprimir los tiempos de ejecución
     if(intentos == 1) {
-        val segundosMultiplicacionSimple = tiempoMultiplicacionSimple[0]/1000.0
-        val segundosMultiplicacionStrassen = tiempoMultiplicacionStrassen[0]/1000.0
+        val segundosMultiplicacionSimple = tiempoMultiplicacionSimple[0]/1000000000.0
+        val segundosMultiplicacionStrassen = tiempoMultiplicacionStrassen[0]/1000000000.0
         println("Matrices de tamaño $n multiplicadas")
         println("Tiempo multiplicacion simple: ${segundosMultiplicacionSimple} segundos")
         println("Tiempo multiplicacion strassen: ${segundosMultiplicacionStrassen} segundos")
