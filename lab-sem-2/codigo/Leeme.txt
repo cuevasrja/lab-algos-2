@@ -1,0 +1,69 @@
+Laboratorio de la semana 2 de Algoritmos y Estructuras de Datos II (CI-2692).
+Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+
+Compilación:
+> make
+Esto compilará tanto la prueba de mergesortInsertion como la prueba de la multiplicacion de matrices.
+
+Ejecución:
+- Para realizar la prueba de mergesortInsertion:
+> ./runPruebaMergesort -t <numIntentos>
+- Para realizar la prueba de la multiplicacion de matrices:
+> ./runMultMatrices.sh -n <tamaño de las matrices> -t <cantidad de veces a multiplicar>
+
+Ejemplo de ejecución de la prueba de mergesortInsertion:
+> ./runPruebaMergesort -t 5
+
+Salida del ejemplo:
+> Secuencia aleatoria de tamaño 1000000 generada
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con mergesortInsertion y n = 10 en 5 intentos
+> Tiempo promedio de ejecución de mergesortInsertion con n = 10: 1.839202901 segundos
+> Desviación estándar de mergesortInsertion con n = 10: 0.6040509422467193 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con mergesortInsertion y n = 20 en 5 intentos
+> Tiempo promedio de ejecución de mergesortInsertion con n = 20: 1.607862305 segundos
+> Desviación estándar de mergesortInsertion con n = 20: 0.12318909219479181 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con mergesortInsertion y n = 30 en 5 intentos
+> Tiempo promedio de ejecución de mergesortInsertion con n = 30: 1.5921191207999998 segundos
+> Desviación estándar de mergesortInsertion con n = 30: 0.06326610121851749 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con mergesortInsertion y n = 40 en 5 intentos
+> Tiempo promedio de ejecución de mergesortInsertion con n = 40: 1.7538010344000001 segundos
+> Desviación estándar de mergesortInsertion con n = 40: 0.20006346221748508 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con mergesortInsertion y n = 50 en 5 intentos
+> Tiempo promedio de ejecución de mergesortInsertion con n = 50: 1.6021645642 segundos
+> Desviación estándar de mergesortInsertion con n = 50: 0.10113755727944855 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con mergesortInsertion y n = 60 en 5 intentos
+> Tiempo promedio de ejecución de mergesortInsertion con n = 60: 1.5991626992 segundos
+> Desviación estándar de mergesortInsertion con n = 60: 0.11511848732804282 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con mergesortInsertion y n = 70 en 5 intentos
+> Tiempo promedio de ejecución de mergesortInsertion con n = 70: 1.730683891 segundos
+> Desviación estándar de mergesortInsertion con n = 70: 0.21905702227413482 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con mergesortInsertion y n = 80 en 5 intentos
+> Tiempo promedio de ejecución de mergesortInsertion con n = 80: 1.6234537362 segundos
+> Desviación estándar de mergesortInsertion con n = 80: 0.1164216013996699 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con mergesortInsertion y n = 90 en 5 intentos
+> Tiempo promedio de ejecución de mergesortInsertion con n = 90: 1.6026113038 segundos
+> Desviación estándar de mergesortInsertion con n = 90: 0.09720833457282599 segundos
+> ----------------------------------------------------------------------------------------
+> Ordenamiento exitoso con mergesortInsertion y n = 100 en 5 intentos
+> Tiempo promedio de ejecución de mergesortInsertion con n = 100: 1.6905264286 segundos
+> Desviación estándar de mergesortInsertion con n = 100: 0.19943970670913616 segundos
+> ----------------------------------------------------------------------------------------
+> El mejor n es: 30, con un tiempo de ejecución de: 1.5921191207999998 segundos
+
+Ejemplo de ejecución de la prueba de la multiplicacion de matrices (se recomienda intentar con valores de n bastante altos):
+> ./runMultMatrices.sh -n 1000 -t 5
+
+Salida del ejemplo:
+> Multiplicacion de matrices de tamaño 100 realizada 5 veces
+> Tiempo promedio multiplicacion simple: 0.008970469 segundos
+> Tiempo promedio multiplicacion strassen: 0.350224219 segundos
+> La multiplicacion simple es mas rapida
