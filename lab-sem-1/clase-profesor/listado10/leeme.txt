@@ -1,6 +1,0 @@
-Compilación:
->kotlinc LimitesReales.kt -include-runtime -d LimitesReales.jar
-
-Ejecución:
->java -jar LimitesReales.jar
-

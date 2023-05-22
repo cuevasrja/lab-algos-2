@@ -1,5 +1,0 @@
-Compilación:
->kotlinc FunComoArgumentos.kt -include-runtime -d FunComoArgumentos.jar
-
-Ejecución:
->java -jar FunComoArgumentos.jar

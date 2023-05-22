@@ -1,6 +1,0 @@
-Compilación:
->kotlinc LimitesEnteros.kt -include-runtime -d LimitesEnteros.jar
-
-Ejecución:
->java -jar LimitesEnteros.jar
-
