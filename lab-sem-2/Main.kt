@@ -106,12 +106,12 @@ fun mensajeMejorN(mejorN: Int, mejorTiempo: Double): Unit {
 
 /**
 * Uso: chekearInputValido(args)
-* Precondición: args.size == 6
+* Precondición: args.size == 2
 * Poscondición: Devuelve true si los argumentos son válidos, false en caso contrario
 */
 fun chekearInputValido(args: Array<String>): Boolean {
     if (args.size != 2){
-        // Si la cantidad de argumentos es distinta de 6, imprime un mensaje de error y termina la ejecución
+        // Si la cantidad de argumentos es distinta de 2, imprime un mensaje de error y termina la ejecución
         println("\u001b[31mError:\u001b[0m Cantidad de argumentos incorrecta")
         println("Uso: ./runPruebaMergesort.sh -t <numIntentos>")
         return false
