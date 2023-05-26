@@ -193,6 +193,11 @@ fun mensajeErrorEnElOrdenamiento(tipoDeOrdenamiento: String): Unit {
     println("----------------------------------------------------------------------------------------")
 }
 
+/**
+* Uso: chekearInputValido(args)
+* Precondición: args.size == 6
+* Poscondición: Devuelve true si los argumentos son válidos, false en caso contrario
+*/
 fun chekearInputValido(args: Array<String>): Boolean {
     if (args.size != 6){
         // Si la cantidad de argumentos es distinta de 6, imprime un mensaje de error y termina la ejecución
@@ -257,4 +262,46 @@ fun main(args: Array<String>): Unit {
     }
     // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
     mensajeOrdenamientoExitoso("Shell Sort", tiempoShellSort)
+
+    // Se realizan intentos de ordenamiento con Merge Sort y se mide el tiempo de ejecución
+    val tiempoMergesortInsertion = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        mergesortInsertion(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            mensajeErrorEnElOrdenamiento("Mergesort Insertion")
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoMergesortInsertion[i] = (tiempoFinal - tiempoInicial)
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensajeOrdenamientoExitoso("Mergesort Insertion", tiempoMergesortInsertion)
+
+    // Se realizan intentos de ordenamiento con Heap Sort y se mide el tiempo de ejecución
+    val tiempoHeapSort = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        heapSort(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            mensajeErrorEnElOrdenamiento("Heap Sort")
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoHeapSort[i] = (tiempoFinal - tiempoInicial)
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensajeOrdenamientoExitoso("Heap Sort", tiempoHeapSort)
 }
