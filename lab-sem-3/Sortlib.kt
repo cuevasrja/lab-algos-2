@@ -233,289 +233,174 @@ fun even(n: Int): Boolean {
     return n % 2 == 0
 }
 
-fun sift(A: Array<Int>, b: Int, r: Int, c: Int){
-    var b1 = b
-    var r1 = r
-    var c1 = c
-    while (b1 >= 3){
-        var r2 = r1 - b1 + c1
-        if (A[r2] <= A[r1 - 1]){
-            r2 = r1 - 1
-            val temp = c1
-            c1 = b1 - c1 - 1
-            b1 = temp
-        }
-        if (A[r1] >= A[r2]){
-            b1 = 1
-        } else {
-            swap(A, r1, r2)
-            r1 = r2
-            val temp = c1
-            c1 = b1 - c1 - 1
-            b1 = temp
-        }
-        println("sift while: ${A.contentToString()}")
-        println("b1: $b1")
-        println("r1: $r1")
-        println("c1: $c1")
-        println("r2: $r2")
-        println("---------")
-    }
-    println("sift: ${A.contentToString()}")
-    println("b1: $b1")
-    println("r1: $r1")
-    println("c1: $c1")
-    println("---------")
+fun down1(vars: Array<Int>){
+    // * vars: [p, b, r, q, c, r1, c1, b1]
+    val temp = vars[6]
+    vars[6] = vars[7] - vars[6] - 1
+    vars[7] = temp
 }
 
-fun trinkle(A: Array<Int>, p: Int, b: Int, r: Int, c: Int){
-    var p1 = p
-    var b1 = b
-    var r1 = r
-    var c1 = c
-    var r2 = r1 - b1
+fun up1(vars: Array<Int>){
+    // * vars: [p, b, r, q, c, r1, c1, b1]
+    val temp = vars[7]
+    vars[7] += vars[6] + 1
+    vars[6] = temp
+}
+
+fun sift(A: Array<Int>, vars: Array<Int>){
+    // * vars: [p, b, r, q, c, r1, c1, b1]
+    while (vars[7] >= 3){
+        var r2 = vars[5] - vars[7] + vars[6]
+        if (A[r2] <= A[vars[5] - 1]){
+            r2 = vars[5] - 1
+            down1(vars)
+        }
+        if (A[vars[5]] >= A[r2]){
+            vars[7] = 1
+        }
+        else {
+            swap(A, vars[5], r2)
+            vars[5] = r2
+            down1(vars)
+        }
+    }
+}
+
+fun trinkle(A: Array<Int>, vars: Array<Int>){
+    // * vars: [p, b, r, q, c, r1, c1, b1]
+    var p1 = vars[0]
+    vars[7] = vars[1]
+    vars[6] = vars[4]
     while (p1 > 0){
         while (even(p1)){
             p1 /= 2
-            val temp = b1
-            b1 += c1 + 1
-            c1 = temp
-            println("trinkle while even: ${A.contentToString()}")
+            up1(vars)
         }
-        var r3 = r1 - b1
-        if (p1 == 1 || A[r3] <= A[r1]){
+        var r3 = vars[5] - vars[7]
+        if (p1 == 1 || A[r3] <= A[vars[5]]){
             p1 = 0
         }
-        else if (p1 > 2 && A[r3] > A[r1]){
-            p1 -= 1
-            if (b1 == 1){
-                swap(A, r1, r3)
-                r1 = r3
+        else if (p1 > 1 && A[r3] > A[vars[5]]){
+            p1--
+            if (vars[7] == 1){
+                swap(A, vars[5], r3)
+                vars[5] = r3
             }
-            else if (b1 >= 3){
-                r2 = r1 - b1 + c1
-                if (A[r2] <= A[r1-1]){
-                    r2 = r1 - 1
-                    val temp = b1
-                    b1 = c1
-                    c1 = temp - c1 - 1
+            else if (vars[7] >= 3){
+                var r2 = vars[5] - vars[7] + vars[6]
+                if (A[r2] <= A[vars[5]-1]){
+                    r2 = vars[5] - 1
+                    down1(vars)
                     p1 *= 2
                 }
                 if (A[r3] >= A[r2]){
-                    swap(A, r1, r3)
-                    r1 = r3
+                    swap(A, vars[5], r3)
+                    vars[5] = r3
                 }
-                if (A[r3] <= A[r2]){
-                    swap(A, r1, r2)
-                    r1 = r2
-                    val temp = b1
-                    b1 = c1
-                    c1 = temp - c1 - 1
+                else{
+                    swap(A, vars[5], r2)
+                    vars[5] = r2
+                    down1(vars)
                     p1 = 0
                 }
             }
         }
-        println("trinkle while: ${A.contentToString()}")
-        println("p1: $p1")
-        println("b1: $b1")
-        println("r1: $r1")
-        println("c1: $c1")
-        println("r2: $r2")
-        println("r3: $r3")
-        println("---------")
     }
-    println("trinkle: ${A.contentToString()}")
 }
 
-fun semitrinkle(A: Array<Int>, p: Int, b: Int, r: Int, c: Int){
-    var p1 = p
-    var b1 = b
-    var r1 = r
-    var c1 = c
-    var r2 = r - c
-    if (p1 > 0 && A[r1] > A[r2]){
-        swap(A, r1, r2)
-        trinkle(A, p1, b1, r2, c1)
+fun semitrinkle(A: Array<Int>, vars: Array<Int>){
+    // * vars: [p, b, r, q, c, r1, c1, b1]
+    vars[5] = vars[2] - vars[4]
+    if (A[vars[5]] > A[vars[2]]){
+        swap(A, vars[5], vars[2])
+        trinkle(A, vars)
     }
-    println("semitrinkle: ${A.contentToString()}")
-    println("p1: $p1")
-    println("b1: $b1")
-    println("r1: $r1")
-    println("c1: $c1")
-    println("r2: $r2")
-    println("---------")
+}
+
+fun up(vars: Array<Int>){
+    // * vars: [p, b, r, q, c, r1, c1, b1]
+    val temp = vars[1]
+    vars[1] += vars[4] + 1
+    vars[4] = temp
+}
+
+fun down(vars: Array<Int>){
+    // * vars: [p, b, r, q, c, r1, c1, b1]
+    val temp = vars[4]
+    vars[4] = vars[1] - vars[4] - 1
+    vars[1] = temp
 }
 
 fun smoothSort(A: Array<Int>){
+    val n = A.size
+
     var p = 1
     var b = 1
     var r = 0
     var q = 1
     var c = 1
-    var r1: Int
-    var c1: Int
-    var b1: Int
-    while (q < A.size){
-        r1 = r
-        if (p%8 == 3){
-            b1 = b
-            c1 = c
-            sift(A, b1, r1, c1)
-            p = (p + 1)/4
-            var temp = b
-            b += c + 1
-            c = temp
-            temp = b
-            b += c + 1
-            c = temp
+    
+    // Creamos nuestro conjunto de variables en el orden
+    // vars: [p, b, r, q, c, r1, c1, b1]
+    val vars = Array<Int>(8, {0})
+    vars[0] = p
+    vars[1] = b
+    vars[2] = r
+    vars[3] = q
+    vars[4] = c
+
+    while (vars[3] != n){
+        vars[5] = vars[2]
+        if (vars[0]%8 == 3){
+            vars[7] = vars[1]
+            vars[6] = vars[4]
+            sift(A, vars)
+            vars[0] = (vars[0] + 1)/4
+            up(vars)
+            up(vars)
         }
-        else if (p%4 == 1){
-            if (q + c < A.size){
-                b1 = b
-                c1 = c
-                sift(A, b1, r1, c1)
+        else if (vars[0]%4 == 1){
+            if (vars[3] + vars[4] < n){
+                vars[7] = vars[1]
+                vars[6] = vars[4]
+                sift(A, vars)
             }
             else {
-                trinkle(A, p, b, r, c)
+                trinkle(A, vars)
             }
-            do {
-                var temp = b
-                b = c
-                c = temp - c - 1
-                p *= 2
-            } while (b != 1)
-            p += 1
+            down(vars)
+            vars[0] *= 2
+            while (vars[1] != 1) {
+                down(vars)
+                vars[0] *= 2
+            }
+            vars[0]++
         }
-        q += 1
-        r += 1
-        println("smoothSort while (q != A.size): ${A.contentToString()}")
-        println("p: $p")
-        println("b: $b")
-        println("r: $r")
-        println("c: $c")
-        println("q: $q")
-        println("---------")
+        vars[3]++
+        vars[2]++
     }
-    while (q > 1){
-        q -= 1
-        if (b == 1){
-            r -= 1
-            p -= 1
-            while (even(p)){
-                p /= 2
-                var temp = b
-                b += c + 1
-                c = temp
+    while (vars[3] != 1){
+        vars[3]--
+        if (vars[1] == 1){
+            vars[2]--
+            vars[0]--
+            while (even(vars[0])){
+                vars[0] /= 2
+                up(vars)
             }
         }
-        else if (b >= 3){
-            p -= 1
-            r += c - b
-            if (p > 0){
-                semitrinkle(A, p, b, r, c)
+        else if (vars[1] >= 3){
+            vars[0] -= 1
+            vars[2] = vars[2] - vars[1] + vars[4]
+            if (vars[0] > 0){
+                semitrinkle(A, vars)
             }
-            var temp = b
-            b = c
-            c = temp - c - 1
-            p = 2*p + 1
-            r += c
-            semitrinkle(A, p, b, r, c)
-            temp = b
-            b = c
-            c = temp - c - 1
-            p = 2*p + 1
+            down(vars)
+            vars[0] = 2*vars[0] + 1
+            vars[2] += vars[4]
+            semitrinkle(A, vars)
+            down(vars)
+            vars[0] = 2*vars[0] + 1
         }
-        println("smoothSort while (q != 1): ${A.contentToString()}")
-        println("p: $p")
-        println("b: $b")
-        println("r: $r")
-        println("c: $c")
-        println("q: $q")
-        println("---------")
     }
 }
-
-// fun fibonacci(n: Int): Int {
-//     if (n <= 1) {
-//         return n
-//     }
-//     else if (n % 2 == 0){
-//         return fibonacci(n/2)
-//     }
-//     else{
-//         return fibonacci((n-1)/2) + fibonacci((n+1)/2)
-//     }
-// }
-
-// fun leonardo(n: Int): Int {
-//     var i = 0
-//     while (fibonacci(i) < n){
-//         i++
-//     }
-//     return i
-// }
-
-// fun heapify(A: Array<Int>, start: Int, end: Int){
-//     var i = start
-//     var j = 0
-//     var k = 0
-
-//     while (k < end - start + 1){
-//         if (k%2 != 0){
-//             j += i
-//             i /= 2
-//         }
-//         else{
-//             i += j
-//             j /= 2
-//         }
-//         k++
-//     }
-//     while (i > 0){
-//         j /= 2
-//         k = i + j
-//         while (k < end){
-//             if (A[k] > A[k-1]){
-//                 break
-//             }
-//             swap(A, k, k-1)
-//             k += i
-//         }
-//         i = j
-//     }
-// }
-
-// fun smoothSort(A: Array<Int>){
-//     val n = A.size
-
-//     var p = n - 1
-//     var q = p
-//     var r = 0
-
-//     while (p > 0){
-//         if (p % 4 != 0){
-//             heapify(A, r, q)
-//         }
-//         val t = leonardo(r)
-//         if (t == p){
-//             r++
-//         }
-//         else{
-//             r--
-//             q -= leonardo(r)
-//             heapify(A, r, q)
-//             q = r - 1
-//             r++
-//         }
-//         swap(A, p, 0)
-//         p--
-//     }
-
-//     for (i in 0 until n-1){
-//         var j = i+1
-//         while (j > 0 && A[j] < A[j-1]){
-//             swap(A, j, j-1)
-//             j--
-//         }
-//     }
-// }
