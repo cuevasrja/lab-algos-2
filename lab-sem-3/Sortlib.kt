@@ -434,3 +434,88 @@ fun smoothSort(A: Array<Int>){
         println("---------")
     }
 }
+
+// fun fibonacci(n: Int): Int {
+//     if (n <= 1) {
+//         return n
+//     }
+//     else if (n % 2 == 0){
+//         return fibonacci(n/2)
+//     }
+//     else{
+//         return fibonacci((n-1)/2) + fibonacci((n+1)/2)
+//     }
+// }
+
+// fun leonardo(n: Int): Int {
+//     var i = 0
+//     while (fibonacci(i) < n){
+//         i++
+//     }
+//     return i
+// }
+
+// fun heapify(A: Array<Int>, start: Int, end: Int){
+//     var i = start
+//     var j = 0
+//     var k = 0
+
+//     while (k < end - start + 1){
+//         if (k%2 != 0){
+//             j += i
+//             i /= 2
+//         }
+//         else{
+//             i += j
+//             j /= 2
+//         }
+//         k++
+//     }
+//     while (i > 0){
+//         j /= 2
+//         k = i + j
+//         while (k < end){
+//             if (A[k] > A[k-1]){
+//                 break
+//             }
+//             swap(A, k, k-1)
+//             k += i
+//         }
+//         i = j
+//     }
+// }
+
+// fun smoothSort(A: Array<Int>){
+//     val n = A.size
+
+//     var p = n - 1
+//     var q = p
+//     var r = 0
+
+//     while (p > 0){
+//         if (p % 4 != 0){
+//             heapify(A, r, q)
+//         }
+//         val t = leonardo(r)
+//         if (t == p){
+//             r++
+//         }
+//         else{
+//             r--
+//             q -= leonardo(r)
+//             heapify(A, r, q)
+//             q = r - 1
+//             r++
+//         }
+//         swap(A, p, 0)
+//         p--
+//     }
+
+//     for (i in 0 until n-1){
+//         var j = i+1
+//         while (j > 0 && A[j] < A[j-1]){
+//             swap(A, j, j-1)
+//             j--
+//         }
+//     }
+// }
