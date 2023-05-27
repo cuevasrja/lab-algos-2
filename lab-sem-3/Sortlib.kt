@@ -241,20 +241,31 @@ fun sift(A: Array<Int>, b: Int, r: Int, c: Int){
         var r2 = r1 - b1 + c1
         if (A[r2] <= A[r1 - 1]){
             r2 = r1 - 1
-            val temp = b1
-            b1 = c1
-            c1 = temp - c1 - 1
+            val temp = c1
+            c1 = b1 - c1 - 1
+            b1 = temp
         }
         if (A[r1] >= A[r2]){
             b1 = 1
         } else {
             swap(A, r1, r2)
             r1 = r2
-            val temp = b1
-            b1 = c1
-            c1 = temp - c1 - 1
+            val temp = c1
+            c1 = b1 - c1 - 1
+            b1 = temp
         }
+        println("sift while: ${A.contentToString()}")
+        println("b1: $b1")
+        println("r1: $r1")
+        println("c1: $c1")
+        println("r2: $r2")
+        println("---------")
     }
+    println("sift: ${A.contentToString()}")
+    println("b1: $b1")
+    println("r1: $r1")
+    println("c1: $c1")
+    println("---------")
 }
 
 fun trinkle(A: Array<Int>, p: Int, b: Int, r: Int, c: Int){
@@ -305,6 +316,13 @@ fun trinkle(A: Array<Int>, p: Int, b: Int, r: Int, c: Int){
             }
         }
         println("trinkle while: ${A.contentToString()}")
+        println("p1: $p1")
+        println("b1: $b1")
+        println("r1: $r1")
+        println("c1: $c1")
+        println("r2: $r2")
+        println("r3: $r3")
+        println("---------")
     }
     println("trinkle: ${A.contentToString()}")
 }
@@ -314,12 +332,18 @@ fun semitrinkle(A: Array<Int>, p: Int, b: Int, r: Int, c: Int){
     var b1 = b
     var r1 = r
     var c1 = c
-    var r2 = r1 - c
+    var r2 = r - c
     if (p1 > 0 && A[r1] > A[r2]){
         swap(A, r1, r2)
         trinkle(A, p1, b1, r2, c1)
     }
     println("semitrinkle: ${A.contentToString()}")
+    println("p1: $p1")
+    println("b1: $b1")
+    println("r1: $r1")
+    println("c1: $c1")
+    println("r2: $r2")
+    println("---------")
 }
 
 fun smoothSort(A: Array<Int>){
@@ -331,7 +355,7 @@ fun smoothSort(A: Array<Int>){
     var r1: Int
     var c1: Int
     var b1: Int
-    while (q != A.size){
+    while (q < A.size){
         r1 = r
         if (p%8 == 3){
             b1 = b
@@ -365,8 +389,14 @@ fun smoothSort(A: Array<Int>){
         q += 1
         r += 1
         println("smoothSort while (q != A.size): ${A.contentToString()}")
+        println("p: $p")
+        println("b: $b")
+        println("r: $r")
+        println("c: $c")
+        println("q: $q")
+        println("---------")
     }
-    while (q != 1){
+    while (q > 1){
         q -= 1
         if (b == 1){
             r -= 1
@@ -396,5 +426,11 @@ fun smoothSort(A: Array<Int>){
             p = 2*p + 1
         }
         println("smoothSort while (q != 1): ${A.contentToString()}")
+        println("p: $p")
+        println("b: $b")
+        println("r: $r")
+        println("c: $c")
+        println("q: $q")
+        println("---------")
     }
 }
