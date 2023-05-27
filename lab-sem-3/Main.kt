@@ -304,4 +304,27 @@ fun main(args: Array<String>): Unit {
     }
     // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
     mensajeOrdenamientoExitoso("Heap Sort", tiempoHeapSort)
+
+    // Se realizan intentos de ordenamiento con Smooth Sort y se mide el tiempo de ejecución
+    val tiempoSmoothSort = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        smoothSort(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            mensajeErrorEnElOrdenamiento("Smooth Sort")
+            println("Secuencia original: " + secuencia.contentToString())
+            println("Secuencia procesada: " + secuenciaCopia.contentToString())
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoSmoothSort[i] = (tiempoFinal - tiempoInicial)
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensajeOrdenamientoExitoso("Smooth Sort", tiempoSmoothSort)
 }

@@ -228,3 +228,173 @@ fun heapSort(A: Array<Int>): Unit {
         maxHeapify(A, 0, i - 1)
     }
 }
+
+fun even(n: Int): Boolean {
+    return n % 2 == 0
+}
+
+fun sift(A: Array<Int>, b: Int, r: Int, c: Int){
+    var b1 = b
+    var r1 = r
+    var c1 = c
+    while (b1 >= 3){
+        var r2 = r1 - b1 + c1
+        if (A[r2] <= A[r1 - 1]){
+            r2 = r1 - 1
+            val temp = b1
+            b1 = c1
+            c1 = temp - c1 - 1
+        }
+        if (A[r1] >= A[r2]){
+            b1 = 1
+        } else {
+            swap(A, r1, r2)
+            r1 = r2
+            val temp = b1
+            b1 = c1
+            c1 = temp - c1 - 1
+        }
+    }
+}
+
+fun trinkle(A: Array<Int>, p: Int, b: Int, r: Int, c: Int){
+    var p1 = p
+    var b1 = b
+    var r1 = r
+    var c1 = c
+    var r2 = r1 - b1
+    while (p1 > 0){
+        while (even(p1)){
+            p1 /= 2
+            val temp = b1
+            b1 += c1 + 1
+            c1 = temp
+            println("trinkle while even: ${A.contentToString()}")
+        }
+        var r3 = r1 - b1
+        if (p1 == 1 || A[r3] <= A[r1]){
+            p1 = 0
+        }
+        else if (p1 > 2 && A[r3] > A[r1]){
+            p1 -= 1
+            if (b1 == 1){
+                swap(A, r1, r3)
+                r1 = r3
+            }
+            else if (b1 >= 3){
+                r2 = r1 - b1 + c1
+                if (A[r2] <= A[r1-1]){
+                    r2 = r1 - 1
+                    val temp = b1
+                    b1 = c1
+                    c1 = temp - c1 - 1
+                    p1 *= 2
+                }
+                if (A[r3] >= A[r2]){
+                    swap(A, r1, r3)
+                    r1 = r3
+                }
+                if (A[r3] <= A[r2]){
+                    swap(A, r1, r2)
+                    r1 = r2
+                    val temp = b1
+                    b1 = c1
+                    c1 = temp - c1 - 1
+                    p1 = 0
+                }
+            }
+        }
+        println("trinkle while: ${A.contentToString()}")
+    }
+    println("trinkle: ${A.contentToString()}")
+}
+
+fun semitrinkle(A: Array<Int>, p: Int, b: Int, r: Int, c: Int){
+    var p1 = p
+    var b1 = b
+    var r1 = r
+    var c1 = c
+    var r2 = r1 - c
+    if (p1 > 0 && A[r1] > A[r2]){
+        swap(A, r1, r2)
+        trinkle(A, p1, b1, r2, c1)
+    }
+    println("semitrinkle: ${A.contentToString()}")
+}
+
+fun smoothSort(A: Array<Int>){
+    var p = 1
+    var b = 1
+    var r = 0
+    var q = 1
+    var c = 1
+    var r1: Int
+    var c1: Int
+    var b1: Int
+    while (q != A.size){
+        r1 = r
+        if (p%8 == 3){
+            b1 = b
+            c1 = c
+            sift(A, b1, r1, c1)
+            p = (p + 1)/4
+            var temp = b
+            b += c + 1
+            c = temp
+            temp = b
+            b += c + 1
+            c = temp
+        }
+        else if (p%4 == 1){
+            if (q + c < A.size){
+                b1 = b
+                c1 = c
+                sift(A, b1, r1, c1)
+            }
+            else {
+                trinkle(A, p, b, r, c)
+            }
+            do {
+                var temp = b
+                b = c
+                c = temp - c - 1
+                p *= 2
+            } while (b != 1)
+            p += 1
+        }
+        q += 1
+        r += 1
+        println("smoothSort while (q != A.size): ${A.contentToString()}")
+    }
+    while (q != 1){
+        q -= 1
+        if (b == 1){
+            r -= 1
+            p -= 1
+            while (even(p)){
+                p /= 2
+                var temp = b
+                b += c + 1
+                c = temp
+            }
+        }
+        else if (b >= 3){
+            p -= 1
+            r += c - b
+            if (p > 0){
+                semitrinkle(A, p, b, r, c)
+            }
+            var temp = b
+            b = c
+            c = temp - c - 1
+            p = 2*p + 1
+            r += c
+            semitrinkle(A, p, b, r, c)
+            temp = b
+            b = c
+            c = temp - c - 1
+            p = 2*p + 1
+        }
+        println("smoothSort while (q != 1): ${A.contentToString()}")
+    }
+}
