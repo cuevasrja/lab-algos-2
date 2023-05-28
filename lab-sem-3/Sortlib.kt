@@ -263,9 +263,7 @@ fun sift(A: Array<Int>, vars: Array<Int>){
             vars[5] = r2
             down1(vars)
         }
-        println("sift: ${A.toList()}")
     }
-    println("sift: ${A.toList()}")
 }
 
 fun trinkle(A: Array<Int>, vars: Array<Int>){
@@ -307,9 +305,8 @@ fun trinkle(A: Array<Int>, vars: Array<Int>){
                 }
             }
         }
-        println("trinkle while: ${A.toList()}")
     }
-    println("trinkle: ${A.toList()}")
+    sift(A, vars)
 }
 
 fun semitrinkle(A: Array<Int>, vars: Array<Int>){
@@ -319,7 +316,6 @@ fun semitrinkle(A: Array<Int>, vars: Array<Int>){
         swap(A, vars[5], vars[2])
         trinkle(A, vars)
     }
-    println("semitrinkle: ${A.toList()}")
 }
 
 fun up(vars: Array<Int>){
@@ -342,7 +338,7 @@ fun smoothSort(A: Array<Int>){
     var p = 1
     var b = 1
     var r = 0
-    var q = 1
+    var q = 0
     var c = 1
     
     // Creamos nuestro conjunto de variables en el orden
@@ -363,18 +359,15 @@ fun smoothSort(A: Array<Int>){
             vars[0] = (vars[0] + 1)/4
             up(vars)
             up(vars)
-            println("smoothSort if(p%8 == 3): ${A.toList()}")
         }
         else if (vars[0]%4 == 1){
             if (vars[3] + vars[4] < n){
                 vars[7] = vars[1]
                 vars[6] = vars[4]
                 sift(A, vars)
-                println("smoothSort if(p%4 == 1) && (q + c < n): ${A.toList()}")
             }
             else {
                 trinkle(A, vars)
-                println("smoothSort if(p%4 == 1) && (q + c >= n): ${A.toList()}")
             }
             down(vars)
             vars[0] *= 2
@@ -386,7 +379,6 @@ fun smoothSort(A: Array<Int>){
         }
         vars[3]++
         vars[2]++
-        println("smoothSort while(q != n): ${A.toList()})")
     }
     while (vars[3] != 1){
         vars[3]--
@@ -403,7 +395,6 @@ fun smoothSort(A: Array<Int>){
             vars[2] = vars[2] - vars[1] + vars[4]
             if (vars[0] > 0){
                 semitrinkle(A, vars)
-                println("smoothSort while(q != 1) if(p >= 3) && p > 0: ${A.toList()}")
             }
             down(vars)
             vars[0] = 2*vars[0] + 1
@@ -411,8 +402,6 @@ fun smoothSort(A: Array<Int>){
             semitrinkle(A, vars)
             down(vars)
             vars[0] = 2*vars[0] + 1
-            println("smoothSort while(q != 1) if(p >= 3): ${A.toList()}")
         }
-        println("smoothSort while(q != 1): ${A.toList()}")
     }
 }
