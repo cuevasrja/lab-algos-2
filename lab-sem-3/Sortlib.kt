@@ -228,11 +228,20 @@ fun heapSort(A: Array<Int>): Unit {
         maxHeapify(A, 0, i - 1)
     }
 }
-
+/**
+* uso: even(n)
+* Precondición: n es un entero
+* Postcondición: devuelve true si n es par, false en caso contrario
+ */
 fun even(n: Int): Boolean {
     return n % 2 == 0
 }
 
+/**
+* uso: down1(vars)
+* Precondición: vars es un arreglo de enteros de tamaño 8
+* Postcondición: realiza un downheap en el arreglo vars
+*/
 fun down1(vars: Array<Int>){
     // * vars: [p, b, r, q, c, r1, c1, b1]
     val temp = vars[6]
@@ -240,6 +249,11 @@ fun down1(vars: Array<Int>){
     vars[7] = temp
 }
 
+/**
+* uso: up1(vars)
+* Precondición: vars es un arreglo de enteros de tamaño 8
+* Postcondición: realiza un upheap en el arreglo vars
+*/
 fun up1(vars: Array<Int>){
     // * vars: [p, b, r, q, c, r1, c1, b1]
     val temp = vars[7]
@@ -247,56 +261,93 @@ fun up1(vars: Array<Int>){
     vars[6] = temp
 }
 
+/**
+* uso: sift(A, vars)
+* Precondición: A es un arreglo de enteros, vars es un arreglo de enteros de tamaño 8
+* Postcondición: realiza un sift en el arreglo A
+* Descripción: asume que el arreglo A es un heap, pero que el elemento en la posición
+* vars[7] puede ser mayor que sus hijos, intercambia A[vars[7]] con su hijo mayor
+*/
 fun sift(A: Array<Int>, vars: Array<Int>){
     // * vars: [p, b, r, q, c, r1, c1, b1]
+    // Mientras que el nodo no sea una hoja y no sea mayor que su hijo mayor
+    // (es decir, no esté en la posición correcta)
     while (vars[7] >= 3){
         var r2 = vars[5] - vars[7] + vars[6]
+        // Si el nodo tiene un hijo derecho
         if (A[r2] <= A[vars[5] - 1]){
             r2 = vars[5] - 1
+            // Moverse hacia abajo
             down1(vars)
         }
+        // Si el hijo derecho es mayor o igual que el hijo izquierdo
         if (A[vars[5]] >= A[r2]){
             vars[7] = 1
         }
+        // Si el hijo izquierdo es mayor que el hijo derecho
         else {
+            // Intercambiar el nodo con el hijo izquierdo
             swap(A, vars[5], r2)
             vars[5] = r2
+            // Moverse hacia abajo
             down1(vars)
         }
     }
 }
-
+/**
+* uso: trinkle(A, vars)
+* Precondición: A es un arreglo de enteros, vars es un arreglo de enteros de tamaño 8
+* Postcondición: realiza un trinkle en el arreglo A
+* Descripción: trinkle es una versión modificada de sift que se utiliza cuando el nodo
+* que se está moviendo hacia abajo tiene un hijo izquierdo que es menor que el nodo
+* y un hijo derecho que es mayor que el nodo. En este caso, se intercambia el nodo con
+* el hijo derecho y se mueve hacia abajo. Si el nodo tiene un hijo derecho, se intercambia
+* con el hijo derecho y se mueve hacia abajo. Si el nodo tiene un hijo izquierdo, se intercambia
+* con el hijo izquierdo y se mueve hacia abajo. Si el nodo no tiene hijos, se detiene.
+*/
 fun trinkle(A: Array<Int>, vars: Array<Int>){
     // * vars: [p, b, r, q, c, r1, c1, b1]
     var p1 = vars[0]
     vars[7] = vars[1]
     vars[6] = vars[4]
+    // Mientras que el nodo no sea una hoja
     while (p1 > 0){
+        // Mientras el nodo tenga un hijo derecho
         while (even(p1)){
             p1 /= 2
+            // Moverse hacia arriba
             up1(vars)
         }
         var r3 = vars[5] - vars[7]
+        // Si el nodo tiene un hijo izquierdo
         if (p1 == 1 || A[r3] <= A[vars[5]]){
+            // Convertir el nodo en una hoja
             p1 = 0
         }
+        // Si el hijo izquierdo es mayor que el hijo derecho
         else if (p1 > 1 && A[r3] > A[vars[5]]){
             p1--
+            // Si el nodo tiene un hijo derecho
             if (vars[7] == 1){
+                // Intercambiar el nodo con el hijo derecho
                 swap(A, vars[5], r3)
                 vars[5] = r3
             }
+            // Si el nodo tiene un hijo izquierdo
             else if (vars[7] >= 3){
                 var r2 = vars[5] - vars[7] + vars[6]
+                // Si el nodo tiene un hijo derecho
                 if (A[r2] <= A[vars[5]-1]){
                     r2 = vars[5] - 1
                     down1(vars)
                     p1 *= 2
                 }
+                // Si el hijo derecho es mayor o igual que el hijo izquierdo
                 if (A[r3] >= A[r2]){
                     swap(A, vars[5], r3)
                     vars[5] = r3
                 }
+                // Si el hijo izquierdo es mayor que el hijo derecho
                 else{
                     swap(A, vars[5], r2)
                     vars[5] = r2
@@ -306,9 +357,21 @@ fun trinkle(A: Array<Int>, vars: Array<Int>){
             }
         }
     }
+    // Si el nodo es una hoja
     sift(A, vars)
 }
 
+/**
+* uso: semitrinkle(A, vars)
+* Precondición: A es un arreglo de enteros, vars es un arreglo de enteros de tamaño 8
+* Postcondición: realiza un semitrinkle en el arreglo A
+* Descripción: semitrinkle es una versión modificada de trinkle que se utiliza cuando el nodo
+* que se está moviendo hacia abajo tiene un hijo izquierdo que es menor que el nodo
+* y un hijo derecho que es mayor que el nodo. En este caso, se intercambia el nodo con
+* el hijo derecho y se mueve hacia abajo. Si el nodo tiene un hijo derecho, se intercambia
+* con el hijo derecho y se mueve hacia abajo. Si el nodo tiene un hijo izquierdo, se intercambia
+* con el hijo izquierdo y se mueve hacia abajo. Si el nodo no tiene hijos, se detiene.
+*/
 fun semitrinkle(A: Array<Int>, vars: Array<Int>){
     // * vars: [p, b, r, q, c, r1, c1, b1]
     vars[5] = vars[2] - vars[4]
@@ -318,6 +381,14 @@ fun semitrinkle(A: Array<Int>, vars: Array<Int>){
     }
 }
 
+/**
+* uso: up(vars)
+* Precondición: vars es un arreglo de enteros de tamaño 8
+* Postcondición: realiza un up en el arreglo vars
+* Descripción: up es una versión modificada de siftup que se utiliza cuando el nodo
+* que se está moviendo hacia arriba tiene un hijo izquierdo que es menor que el nodo
+* y un hijo derecho que es mayor que el nodo.
+*/
 fun up(vars: Array<Int>){
     // * vars: [p, b, r, q, c, r1, c1, b1]
     val temp = vars[1]
@@ -325,6 +396,14 @@ fun up(vars: Array<Int>){
     vars[4] = temp
 }
 
+/**
+* uso: down(vars)
+* Precondición: vars es un arreglo de enteros de tamaño 8
+* Postcondición: realiza un down en el arreglo vars
+* Descripción: down es una versión modificada de siftdown que se utiliza cuando el nodo
+* que se está moviendo hacia abajo tiene un hijo izquierdo que es menor que el nodo
+* y un hijo derecho que es mayor que el nodo.
+*/
 fun down(vars: Array<Int>){
     // * vars: [p, b, r, q, c, r1, c1, b1]
     val temp = vars[4]
@@ -332,9 +411,19 @@ fun down(vars: Array<Int>){
     vars[1] = temp
 }
 
+/**
+* uso: smoothSort(A)
+* Precondición: A es un arreglo de enteros
+* Postcondición: realiza un smoothSort en el arreglo A
+* Descripción: smoothSort es un algoritmo de ordenamiento que utiliza un heap de Fibonacci
+* para ordenar un arreglo de enteros. El algoritmo se basa en el algoritmo de ordenamiento
+* por mezcla natural, pero utiliza un heap de Fibonacci para realizar las mezclas.
+*/
 fun smoothSort(A: Array<Int>){
+    // Guardamos el tamaño del arreglo
     val n = A.size
 
+    // Creamos nuestras variables iniciales
     var p = 1
     var b = 1
     var r = 0
@@ -350,17 +439,24 @@ fun smoothSort(A: Array<Int>){
     vars[3] = q
     vars[4] = c
 
+    // Mientras no hayamos llegado al final del arreglo
     while (vars[3] != n){
         vars[5] = vars[2]
+        // Si el nodo tiene un hijo izquierdo
         if (vars[0]%8 == 3){
             vars[7] = vars[1]
             vars[6] = vars[4]
+            // Hacer un sift
             sift(A, vars)
+            // Reducir el número de nodos
             vars[0] = (vars[0] + 1)/4
+            // Aumentar el tamaño del heap
             up(vars)
             up(vars)
         }
+        // Si el nodo tiene un hijo derecho
         else if (vars[0]%4 == 1){
+            // Si la suma del hijo derecho y el hijo izquierdo es menor que el tamaño del arreglo
             if (vars[3] + vars[4] < n){
                 vars[7] = vars[1]
                 vars[6] = vars[4]
@@ -369,8 +465,10 @@ fun smoothSort(A: Array<Int>){
             else {
                 trinkle(A, vars)
             }
+            // Reducir el tamaño del heap
             down(vars)
             vars[0] *= 2
+            // Mientras el número de nodos sea mayor que 1
             while (vars[1] != 1) {
                 down(vars)
                 vars[0] *= 2
@@ -380,19 +478,24 @@ fun smoothSort(A: Array<Int>){
         vars[3]++
         vars[2]++
     }
+    // Mientras el número de nodos sea mayor que 1
     while (vars[3] != 1){
         vars[3]--
+        // Si el nodo tiene un hijo izquierdo
         if (vars[1] == 1){
             vars[2]--
             vars[0]--
+            // Mientras el número de nodos sea par
             while (even(vars[0])){
                 vars[0] /= 2
                 up(vars)
             }
         }
+        // Si el nodo tiene un hijo derecho y dos hijos izquierdos
         else if (vars[1] >= 3){
             vars[0] -= 1
             vars[2] = vars[2] - vars[1] + vars[4]
+            // Si el nodo no es una hoja
             if (vars[0] > 0){
                 semitrinkle(A, vars)
             }
