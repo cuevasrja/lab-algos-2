@@ -294,6 +294,7 @@ fun sift(A: Array<Int>, vars: Array<Int>){
         }
     }
 }
+
 /**
 * uso: trinkle(A, vars)
 * Precondición: A es un arreglo de enteros, vars es un arreglo de enteros de tamaño 8
@@ -429,7 +430,7 @@ fun smoothSort(A: Array<Int>){
     var r = 0
     var q = 0
     var c = 1
-    
+
     // Creamos nuestro conjunto de variables en el orden
     // vars: [p, b, r, q, c, r1, c1, b1]
     val vars = Array<Int>(8, {0})
