@@ -563,6 +563,31 @@ fun quicksortClasico(A: Array<Int>): Unit {
     quicksort(A, 0, A.size - 1)
 }
 
+fun quickThreeWay(A: Array<Int>, left: Int, right: Int){
+    var i = left - 1
+    var j = right
+    var v = A[right]
+    if(right > 1){
+        while(true){
+            while(A[i+1] < v){
+                i++
+            }
+            while(A[j-1] > v){
+                j--
+            }
+            if(i >= j) break
+            swap(A, i, j)
+        }
+        swap(A, i, right)
+        quickThreeWay(A, left, i - 1)
+        quickThreeWay(A, i + 1, right)
+    }
+}
+
+fun quicksortThreeWay(A: Array<Int>){
+    quickThreeWay(A, 0, A.size - 1)
+}
+
 /**
 * uso: dualPivotQuicksort(A, left, right)
 * Precondición: A es un arreglo de enteros, left y right son enteros

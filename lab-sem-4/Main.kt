@@ -349,6 +349,27 @@ fun main(args: Array<String>): Unit {
     // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
     mensajeOrdenamientoExitoso("Quick Sort clásico", tiempoQuickSort)
 
+    //Se realizan intentos de ordenamiento con Quick Sort con 3 formas de particionamiento y se mide el tiempo de ejecución
+    val tiempoQuickSort3Formas = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        quicksortThreeWay(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            mensajeErrorEnElOrdenamiento("Quick Sort con 3 formas de particionamiento")
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoQuickSort3Formas[i] = (tiempoFinal - tiempoInicial)
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensajeOrdenamientoExitoso("Quick Sort con 3 formas de particionamiento", tiempoQuickSort3Formas)
+
     // Se realizan intentos de ordenamiento con Quick Sort de Doble Pivote y se mide el tiempo de ejecución
     val tiempoQuickSortDoblePivote = Array<Long>(intentos, {0})
     for (i in 0 until intentos) {
