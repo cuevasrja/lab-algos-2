@@ -566,22 +566,37 @@ fun quicksortClasico(A: Array<Int>): Unit {
 fun quickThreeWay(A: Array<Int>, left: Int, right: Int){
     var i = left - 1
     var j = right
-    var v = A[right]
-    if(right > 1){
-        while(true){
-            while(A[i+1] < v){
-                i++
-            }
-            while(A[j-1] > v){
-                j--
-            }
-            if(i >= j) break
-            swap(A, i, j)
+    var p = left - 1
+    var q = right
+    val v = A[right]
+    if (right <= 1) return
+    while (true){
+        while (A[++i] < v);
+        while (v < A[--j]) if (j == left) break
+        if (i >= j) break
+        swap(A, i, j)
+        if (A[i] == v){
+            p++
+            swap(A, p, i)
         }
-        swap(A, i, right)
-        quickThreeWay(A, left, i - 1)
-        quickThreeWay(A, i + 1, right)
+        if (v == A[j]){
+            q--
+            swap(A, q, j)
+        }
     }
+    swap(A, i, right)
+    j = i - 1
+    i++
+    for (k in left..p){
+        swap(A, k, j)
+        j--
+    }
+    for (k in right - 1 downTo q + 1){
+        swap(A, i, k)
+        i++
+    }
+    quickThreeWay(A, left, j)
+    quickThreeWay(A, i, right)
 }
 
 fun quicksortThreeWay(A: Array<Int>){
