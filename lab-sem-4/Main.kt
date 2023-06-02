@@ -362,6 +362,8 @@ fun main(args: Array<String>): Unit {
         if(!estaEnOrdenAscendente(secuenciaCopia)){
             // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
             mensajeErrorEnElOrdenamiento("Quick Sort con 3 formas de particionamiento")
+            println("Secuencia original: " + secuencia.contentToString())
+            println("Secuencia procesada: " + secuenciaCopia.contentToString())
             return
         }
         // Se guarda el tiempo de ejecución
