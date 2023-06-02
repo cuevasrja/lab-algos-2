@@ -1,5 +1,5 @@
 /*
-Laboratorio de la semana 3 de Algoritmos y Estructuras de Datos II (CI-2692).
+Laboratorio de la semana 4 de Algoritmos y Estructuras de Datos II (CI-2692).
 Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 */
 
@@ -294,6 +294,7 @@ fun sift(A: Array<Int>, vars: Array<Int>){
         }
     }
 }
+
 /**
 * uso: trinkle(A, vars)
 * Precondición: A es un arreglo de enteros, vars es un arreglo de enteros de tamaño 8
@@ -429,7 +430,7 @@ fun smoothSort(A: Array<Int>){
     var r = 0
     var q = 0
     var c = 1
-    
+
     // Creamos nuestro conjunto de variables en el orden
     // vars: [p, b, r, q, c, r1, c1, b1]
     val vars = Array<Int>(8, {0})
@@ -507,4 +508,57 @@ fun smoothSort(A: Array<Int>){
             vars[0] = 2*vars[0] + 1
         }
     }
+}
+
+/**
+* uso: partition(A, p, r)
+* Precondición: A es un arreglo de enteros, p y r son enteros
+* Postcondición: realiza un partition en el arreglo A
+*/
+fun partition(A: Array<Int>, p: Int, r: Int): Int {
+    // El pivote
+    val x: Int = A[r]
+    // Indice más alto de la parte izquierda
+    var i: Int = p - 1
+    // Procesa todos los elementos excepto el pivote
+    for (j in p..r - 1) {
+        // Si el elemento actual es menor que el pivote
+        if (A[j] <= x) {
+            // Incrementa el indice más alto en la parte izquierda
+            i++
+            // Intercambia el elemento actual con el índice más alto en la parte izquierda
+            swap(A, i, j)
+        }
+    }
+    // Intercambia el pivote con el primer elemento mayor que el pivote
+    swap(A, i + 1, r)
+    // Regresa el nuevo índice del pivote
+    return i + 1
+}
+
+/**
+* uso: quicksort(A, p, r)
+* Precondición: A es un arreglo de enteros, p y r son enteros
+* Postcondición: realiza un quicksort en el arreglo A
+* Descrición: quicksort crea particiones en el arreglo A y las ordena recursivamente
+*/
+fun quicksort(A: Array<Int>, p: Int, r: Int): Unit {
+    if (p < r) {
+        // Crea una partición que termina en A[q]
+        val q: Int = partition(A, p, r)
+        // Ordena recursivamente el lado izquierdo de la partición
+        quicksort(A, p, q - 1)
+        // Ordena recursivamente el lado derecho de la partición
+        quicksort(A, q + 1, r)
+    }
+}
+
+/**
+* uso: quicksortClasico(A)
+* Precondición: A es un arreglo de enteros
+* Postcondición: realiza un quicksort en el arreglo A
+* Descrición: quicksortClasico crea particiones en el arreglo A y las ordena recursivamente
+*/
+fun quicksortClasico(A: Array<Int>): Unit {
+    quicksort(A, 0, A.size - 1)
 }

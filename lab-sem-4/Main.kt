@@ -1,5 +1,5 @@
 /*
-Laboratorio de la semana 3 de Algoritmos y Estructuras de Datos II (CI-2692).
+Laboratorio de la semana 4 de Algoritmos y Estructuras de Datos II (CI-2692).
 Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 */
 
@@ -327,4 +327,25 @@ fun main(args: Array<String>): Unit {
     }
     // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
     mensajeOrdenamientoExitoso("Smooth Sort", tiempoSmoothSort)
+
+    // Se realizan intentos de ordenamiento con Quick Sort clásico y se mide el tiempo de ejecución
+    val tiempoQuickSort = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        quicksortClasico(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            mensajeErrorEnElOrdenamiento("Quick Sort clásico")
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoQuickSort[i] = (tiempoFinal - tiempoInicial)
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensajeOrdenamientoExitoso("Quick Sort clásico", tiempoQuickSort)
 }
