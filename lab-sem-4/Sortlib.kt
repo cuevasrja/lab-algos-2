@@ -562,3 +562,59 @@ fun quicksort(A: Array<Int>, p: Int, r: Int): Unit {
 fun quicksortClasico(A: Array<Int>): Unit {
     quicksort(A, 0, A.size - 1)
 }
+fun dualPivotPartition(A: Array<Int>, left: Int, right: Int){
+    if(right - left >= 1){
+        var p = A[left]
+        var q = A[right]
+        if(p >= q){
+            swap(A, left, right)
+            print("If(p >= q): ")
+            println("swap(A, $left, $right): ${A.toList()}")
+        }
+        var l = left + 1
+        var g = right - 1
+        var k = l
+        while(k <= g){
+            if(A[k] < p){
+                swap(A, k, l)
+                print("If(A[k] < p:) ")
+                println("swap(A, $k, $l): ${A.toList()}")
+                l++
+            }
+            else{
+                if(A[k] > q){
+                    while(A[g] > q && k < g){
+                        g--
+                    }
+                    swap(A, k, g)
+                    print("If(A[k] > q): ")
+                    println("swap(A, $k, $g): ${A.toList()}")
+                    g--
+                    if(A[k] < p){
+                        swap(A, k, l)
+                        print("If(A[k] < p): ")
+                        println("swap(A, $k, $l): ${A.toList()}")
+                        l++
+                    }
+                }
+            }
+            k++
+        }
+        l--
+        g++
+        swap(A, left, l)
+        print("1 swap(A, $left, $l): ")
+        println("swap(A, $left, $l): ${A.toList()}")
+        swap(A, right, g)
+        print("2 swap(A, $right, $g): ")
+        println("swap(A, $right, $g): ${A.toList()}")
+        dualPivotPartition(A, left, l - 1)
+        dualPivotPartition(A, l + 1, g - 1)
+        dualPivotPartition(A, g + 1, right)
+    }
+}
+
+fun quicksortDualPivot(A: Array<Int>){
+    val n = A.size
+    dualPivotPartition(A, 0, n - 1)
+}

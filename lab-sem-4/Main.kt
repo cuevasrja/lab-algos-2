@@ -348,4 +348,27 @@ fun main(args: Array<String>): Unit {
     }
     // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
     mensajeOrdenamientoExitoso("Quick Sort clásico", tiempoQuickSort)
+
+    // Se realizan intentos de ordenamiento con Quick Sort de Doble Pivote y se mide el tiempo de ejecución
+    val tiempoQuickSortDoblePivote = Array<Long>(intentos, {0})
+    for (i in 0 until intentos) {
+        // Se copia la secuencia original para no modificarla
+        val secuenciaCopia = secuencia.copyOf()
+        // Se ordena la secuencia copia y se mide el tiempo de ejecución
+        val tiempoInicial = System.nanoTime()
+        quicksortDualPivot(secuenciaCopia)
+        val tiempoFinal = System.nanoTime()
+        // Se verifica si la secuencia copia está ordenada
+        if(!estaEnOrdenAscendente(secuenciaCopia)){
+            // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+            mensajeErrorEnElOrdenamiento("Quick Sort de Doble Pivote")
+            println("Secuencia original: " + secuencia.contentToString())
+            println("Secuencia procesada: " + secuenciaCopia.contentToString())
+            return
+        }
+        // Se guarda el tiempo de ejecución
+        tiempoQuickSortDoblePivote[i] = (tiempoFinal - tiempoInicial)
+    }
+    // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+    mensajeOrdenamientoExitoso("Quick Sort de Doble Pivote", tiempoQuickSortDoblePivote)
 }
