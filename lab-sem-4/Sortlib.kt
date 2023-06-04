@@ -564,12 +564,13 @@ fun quicksortClasico(A: Array<Int>): Unit {
 }
 
 fun quickThreeWay(A: Array<Int>, left: Int, right: Int){
+    if (right <= left) return
     var i = left - 1
     var j = right
     var p = left - 1
     var q = right
+    // println("left: $left, right: $right, A.size: ${A.size}")
     val v = A[right]
-    if (right <= 1) return
     while (true){
         while (A[++i] < v);
         while (v < A[--j]) if (j == left) break
