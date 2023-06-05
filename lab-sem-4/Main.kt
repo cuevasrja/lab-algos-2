@@ -98,7 +98,7 @@ fun mensajeErrorEnElOrdenamiento(tipoDeOrdenamiento: String): Unit {
 }
 
 // Declaración del método principal
-fun main(args: Array<String>): Unit {
+fun main(): Unit {
     var pruebas: Array<Int> = arrayOf(500000, 1000000, 1500000, 2000000)
     var intentos: Int = 10
 

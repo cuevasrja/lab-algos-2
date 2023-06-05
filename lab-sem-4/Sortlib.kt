@@ -9,7 +9,7 @@ Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 * Postcondición: intercambia los elementos en las posiciones i y j del arreglo A
 */
 fun swap(A: Array<Int>, i: Int, j: Int): Unit {
-    val aux = A[i]
+    val aux: Int = A[i]
     A[i] = A[j]
     A[j] = aux
 }
@@ -40,7 +40,7 @@ fun bubbleSort(A: Array<Int>): Unit {
 */
 fun insertionSort(A: Array<Int>): Unit {
     for (i in 1 until A.size) {
-        var j = i
+        var j: Int = i
         while (j > 0 && A[j] < A[j - 1]) {
             swap(A, j, j - 1)
             j -= 1
@@ -57,7 +57,7 @@ fun insertionSort(A: Array<Int>): Unit {
 */
 fun selectionSort(A: Array<Int>): Unit {
     for (i in 0 until A.size - 1) {
-        var min = i
+        var min: Int = i
         for (j in (i + 1) until A.size) {
             if (A[j] < A[min]) {
                 min = j
@@ -242,9 +242,9 @@ fun even(n: Int): Boolean {
 * Precondición: vars es un arreglo de enteros de tamaño 8
 * Postcondición: realiza un downheap en el arreglo vars
 */
-fun down1(vars: Array<Int>){
+fun down1(vars: Array<Int>): Unit {
     // * vars: [p, b, r, q, c, r1, c1, b1]
-    val temp = vars[6]
+    val temp: Int = vars[6]
     vars[6] = vars[7] - vars[6] - 1
     vars[7] = temp
 }
@@ -254,9 +254,9 @@ fun down1(vars: Array<Int>){
 * Precondición: vars es un arreglo de enteros de tamaño 8
 * Postcondición: realiza un upheap en el arreglo vars
 */
-fun up1(vars: Array<Int>){
+fun up1(vars: Array<Int>): Unit {
     // * vars: [p, b, r, q, c, r1, c1, b1]
-    val temp = vars[7]
+    val temp: Int = vars[7]
     vars[7] += vars[6] + 1
     vars[6] = temp
 }
@@ -268,20 +268,20 @@ fun up1(vars: Array<Int>){
 * Descripción: asume que el arreglo A es un heap, pero que el elemento en la posición
 * vars[7] puede ser mayor que sus hijos, intercambia A[vars[7]] con su hijo mayor
 */
-fun sift(A: Array<Int>, vars: Array<Int>){
+fun sift(A: Array<Int>, vars: Array<Int>): Unit {
     // * vars: [p, b, r, q, c, r1, c1, b1]
     // Mientras que el nodo no sea una hoja y no sea mayor que su hijo mayor
     // (es decir, no esté en la posición correcta)
-    while (vars[7] >= 3){
-        var r2 = vars[5] - vars[7] + vars[6]
+    while (vars[7] >= 3) {
+        var r2: Int = vars[5] - vars[7] + vars[6]
         // Si el nodo tiene un hijo derecho
-        if (A[r2] <= A[vars[5] - 1]){
+        if (A[r2] <= A[vars[5] - 1]) {
             r2 = vars[5] - 1
             // Moverse hacia abajo
             down1(vars)
         }
         // Si el hijo derecho es mayor o igual que el hijo izquierdo
-        if (A[vars[5]] >= A[r2]){
+        if (A[vars[5]] >= A[r2]) {
             vars[7] = 1
         }
         // Si el hijo izquierdo es mayor que el hijo derecho
@@ -306,50 +306,50 @@ fun sift(A: Array<Int>, vars: Array<Int>){
 * con el hijo derecho y se mueve hacia abajo. Si el nodo tiene un hijo izquierdo, se intercambia
 * con el hijo izquierdo y se mueve hacia abajo. Si el nodo no tiene hijos, se detiene.
 */
-fun trinkle(A: Array<Int>, vars: Array<Int>){
+fun trinkle(A: Array<Int>, vars: Array<Int>): Unit {
     // * vars: [p, b, r, q, c, r1, c1, b1]
-    var p1 = vars[0]
+    var p1: Int = vars[0]
     vars[7] = vars[1]
     vars[6] = vars[4]
     // Mientras que el nodo no sea una hoja
-    while (p1 > 0){
+    while (p1 > 0) {
         // Mientras el nodo tenga un hijo derecho
-        while (even(p1)){
+        while (even(p1)) {
             p1 /= 2
             // Moverse hacia arriba
             up1(vars)
         }
-        var r3 = vars[5] - vars[7]
+        var r3: Int = vars[5] - vars[7]
         // Si el nodo tiene un hijo izquierdo
-        if (p1 == 1 || A[r3] <= A[vars[5]]){
+        if (p1 == 1 || A[r3] <= A[vars[5]]) {
             // Convertir el nodo en una hoja
             p1 = 0
         }
         // Si el hijo izquierdo es mayor que el hijo derecho
-        else if (p1 > 1 && A[r3] > A[vars[5]]){
+        else if (p1 > 1 && A[r3] > A[vars[5]]) {
             p1--
             // Si el nodo tiene un hijo derecho
-            if (vars[7] == 1){
+            if (vars[7] == 1) {
                 // Intercambiar el nodo con el hijo derecho
                 swap(A, vars[5], r3)
                 vars[5] = r3
             }
             // Si el nodo tiene un hijo izquierdo
-            else if (vars[7] >= 3){
-                var r2 = vars[5] - vars[7] + vars[6]
+            else if (vars[7] >= 3) {
+                var r2: Int = vars[5] - vars[7] + vars[6]
                 // Si el nodo tiene un hijo derecho
-                if (A[r2] <= A[vars[5]-1]){
+                if (A[r2] <= A[vars[5]-1]) {
                     r2 = vars[5] - 1
                     down1(vars)
                     p1 *= 2
                 }
                 // Si el hijo derecho es mayor o igual que el hijo izquierdo
-                if (A[r3] >= A[r2]){
+                if (A[r3] >= A[r2]) {
                     swap(A, vars[5], r3)
                     vars[5] = r3
                 }
                 // Si el hijo izquierdo es mayor que el hijo derecho
-                else{
+                else {
                     swap(A, vars[5], r2)
                     vars[5] = r2
                     down1(vars)
@@ -373,10 +373,10 @@ fun trinkle(A: Array<Int>, vars: Array<Int>){
 * con el hijo derecho y se mueve hacia abajo. Si el nodo tiene un hijo izquierdo, se intercambia
 * con el hijo izquierdo y se mueve hacia abajo. Si el nodo no tiene hijos, se detiene.
 */
-fun semitrinkle(A: Array<Int>, vars: Array<Int>){
+fun semitrinkle(A: Array<Int>, vars: Array<Int>): Unit {
     // * vars: [p, b, r, q, c, r1, c1, b1]
     vars[5] = vars[2] - vars[4]
-    if (A[vars[5]] > A[vars[2]]){
+    if (A[vars[5]] > A[vars[2]]) {
         swap(A, vars[5], vars[2])
         trinkle(A, vars)
     }
@@ -390,9 +390,9 @@ fun semitrinkle(A: Array<Int>, vars: Array<Int>){
 * que se está moviendo hacia arriba tiene un hijo izquierdo que es menor que el nodo
 * y un hijo derecho que es mayor que el nodo.
 */
-fun up(vars: Array<Int>){
+fun up(vars: Array<Int>): Unit {
     // * vars: [p, b, r, q, c, r1, c1, b1]
-    val temp = vars[1]
+    val temp: Int = vars[1]
     vars[1] += vars[4] + 1
     vars[4] = temp
 }
@@ -405,9 +405,9 @@ fun up(vars: Array<Int>){
 * que se está moviendo hacia abajo tiene un hijo izquierdo que es menor que el nodo
 * y un hijo derecho que es mayor que el nodo.
 */
-fun down(vars: Array<Int>){
+fun down(vars: Array<Int>): Unit {
     // * vars: [p, b, r, q, c, r1, c1, b1]
-    val temp = vars[4]
+    val temp: Int = vars[4]
     vars[4] = vars[1] - vars[4] - 1
     vars[1] = temp
 }
@@ -420,16 +420,16 @@ fun down(vars: Array<Int>){
 * para ordenar un arreglo de enteros. El algoritmo se basa en el algoritmo de ordenamiento
 * por mezcla natural, pero utiliza un heap de Fibonacci para realizar las mezclas.
 */
-fun smoothSort(A: Array<Int>){
+fun smoothSort(A: Array<Int>): Unit {
     // Guardamos el tamaño del arreglo
-    val n = A.size
+    val n: Int = A.size
 
     // Creamos nuestras variables iniciales
-    var p = 1
-    var b = 1
-    var r = 0
-    var q = 0
-    var c = 1
+    var p: Int = 1
+    var b: Int = 1
+    var r: Int = 0
+    var q: Int = 0
+    var c: Int = 1
 
     // Creamos nuestro conjunto de variables en el orden
     // vars: [p, b, r, q, c, r1, c1, b1]
@@ -441,24 +441,24 @@ fun smoothSort(A: Array<Int>){
     vars[4] = c
 
     // Mientras no hayamos llegado al final del arreglo
-    while (vars[3] != n){
+    while (vars[3] != n) {
         vars[5] = vars[2]
         // Si el nodo tiene un hijo izquierdo
-        if (vars[0]%8 == 3){
+        if (vars[0]%8 == 3) {
             vars[7] = vars[1]
             vars[6] = vars[4]
             // Hacer un sift
             sift(A, vars)
             // Reducir el número de nodos
-            vars[0] = (vars[0] + 1)/4
+            vars[0] = (vars[0] + 1) / 4
             // Aumentar el tamaño del heap
             up(vars)
             up(vars)
         }
         // Si el nodo tiene un hijo derecho
-        else if (vars[0]%4 == 1){
+        else if (vars[0]%4 == 1) {
             // Si la suma del hijo derecho y el hijo izquierdo es menor que el tamaño del arreglo
-            if (vars[3] + vars[4] < n){
+            if (vars[3] + vars[4] < n) {
                 vars[7] = vars[1]
                 vars[6] = vars[4]
                 sift(A, vars)
@@ -480,24 +480,24 @@ fun smoothSort(A: Array<Int>){
         vars[2]++
     }
     // Mientras el número de nodos sea mayor que 1
-    while (vars[3] != 1){
+    while (vars[3] != 1) {
         vars[3]--
         // Si el nodo tiene un hijo izquierdo
-        if (vars[1] == 1){
+        if (vars[1] == 1) {
             vars[2]--
             vars[0]--
             // Mientras el número de nodos sea par
-            while (even(vars[0])){
+            while (even(vars[0])) {
                 vars[0] /= 2
                 up(vars)
             }
         }
         // Si el nodo tiene un hijo derecho y dos hijos izquierdos
-        else if (vars[1] >= 3){
+        else if (vars[1] >= 3) {
             vars[0] -= 1
             vars[2] = vars[2] - vars[1] + vars[4]
             // Si el nodo no es una hoja
-            if (vars[0] > 0){
+            if (vars[0] > 0) {
                 semitrinkle(A, vars)
             }
             down(vars)
@@ -563,24 +563,29 @@ fun quicksortClasico(A: Array<Int>): Unit {
     quicksort(A, 0, A.size - 1)
 }
 
-fun quickThreeWay(A: Array<Int>, left: Int, right: Int){
+/**
+* uso: quickThreeWay(A, p, r)
+* Precondición: A es un arreglo de enteros, p y r son enteros
+* Postcondición: realiza un quicksort con 3 particiones en el arreglo A
+* Descrición: quickThreeWay crea particiones en el arreglo A y las ordena recursivamente
+*/
+fun quickThreeWay(A: Array<Int>, left: Int, right: Int) {
     if (right <= left) return
-    var i = left - 1
-    var j = right
-    var p = left - 1
-    var q = right
-    // println("left: $left, right: $right, A.size: ${A.size}")
-    val v = A[right]
-    while (true){
+    var i: Int = left - 1
+    var j: Int = right
+    var p: Int = left - 1
+    var q: Int = right
+    val v: Int = A[right]
+    while (true) {
         while (A[++i] < v);
         while (v < A[--j]) if (j == left) break
         if (i >= j) break
         swap(A, i, j)
-        if (A[i] == v){
+        if (A[i] == v) {
             p++
             swap(A, p, i)
         }
-        if (v == A[j]){
+        if (v == A[j]) {
             q--
             swap(A, q, j)
         }
@@ -588,11 +593,11 @@ fun quickThreeWay(A: Array<Int>, left: Int, right: Int){
     swap(A, i, right)
     j = i - 1
     i++
-    for (k in left..p){
+    for (k in left..p) {
         swap(A, k, j)
         j--
     }
-    for (k in right - 1 downTo q + 1){
+    for (k in right - 1 downTo q + 1) {
         swap(A, i, k)
         i++
     }
@@ -600,7 +605,13 @@ fun quickThreeWay(A: Array<Int>, left: Int, right: Int){
     quickThreeWay(A, i, right)
 }
 
-fun quicksortThreeWay(A: Array<Int>){
+/**
+* uso: quicksortThreeWay(A)
+* Precondición: A es un arreglo de enteros
+* Postcondición: realiza un quicksort con 3 particiones en el arreglo A
+* Descrición: quicksortThreeWay crea particiones en el arreglo A y las ordena recursivamente
+*/
+fun quicksortThreeWay(A: Array<Int>): Unit {
     quickThreeWay(A, 0, A.size - 1)
 }
 
@@ -610,28 +621,28 @@ fun quicksortThreeWay(A: Array<Int>){
 * Postcondición: realiza un dualPivotQuicksort en el arreglo A
 * Descrición: dualPivotQuicksort crea particiones en el arreglo A y las ordena recursivamente
 */
-fun dualPivotPartition(A: Array<Int>, left: Int, right: Int){
-    if (left < right){
-        if (A[left] > A[right]){
+fun dualPivotPartition(A: Array<Int>, left: Int, right: Int): Unit {
+    if (left < right) {
+        if (A[left] > A[right]) {
             swap(A, left, right)
         }
-        val p = A[left]
-        val q = A[right]
-        var l = left + 1
-        var g = right - 1
-        var k = l
-        while (k <= g){
-            if (A[k] < p){
+        val p: Int = A[left]
+        val q: Int = A[right]
+        var l: Int = left + 1
+        var g: Int = right - 1
+        var k: Int = l
+        while (k <= g) {
+            if (A[k] < p) {
                 swap(A, k, l)
                 l++
             }
             else if (A[k] >= q){
-                while (A[g] > q && k < g){
+                while (A[g] > q && k < g) {
                     g--
                 }
                 swap(A, k, g)
                 g--
-                if (A[k] < p){
+                if (A[k] < p) {
                     swap(A, k, l)
                     l++
                 }
@@ -654,7 +665,7 @@ fun dualPivotPartition(A: Array<Int>, left: Int, right: Int){
 * Postcondición: realiza un quicksortDualPivot en el arreglo A
 * Descrición: quicksortDualPivot crea particiones en el arreglo A y las ordena recursivamente
 */
-fun quicksortDualPivot(A: Array<Int>){
+fun quicksortDualPivot(A: Array<Int>): Unit {
     val n = A.size
     dualPivotPartition(A, 0, n - 1)
 }
