@@ -99,12 +99,11 @@ fun mensajeErrorEnElOrdenamiento(tipoDeOrdenamiento: String): Unit {
 
 // Declaración del método principal
 fun main(): Unit {
-    var pruebas: Array<Int> = arrayOf(500000, 1000000, 1500000, 2000000)
+    var pruebas: Array<Int> = arrayOf(10, 15, 30)
     var intentos: Int = 10
 
-    val tiempoQuickSort = Array<Long>(intentos, {0})
-    val tiempoQuickSort3Formas = Array<Long>(intentos, {0})
-    val tiempoQuickSortDoblePivote = Array<Long>(intentos, {0})
+    val tiempoCoutingSort = Array<Long>(intentos, {0})
+    val tiempoRadixSort = Array<Long>(intentos, {0})
 
     for (i in 0 until pruebas.size){
         val n = pruebas[i]
@@ -113,44 +112,31 @@ fun main(): Unit {
         for (j in 0 until intentos) {
             var error: Boolean = false
             val secuencia: Array<Int> = secuenciaRandom(n)
-            val secuenciaCopia1: Array<Int> = secuencia.copyOf()
-            val secuenciaCopia2: Array<Int> = secuencia.copyOf()
-            val secuenciaCopia3: Array<Int> = secuencia.copyOf()
+            val secuenciaCopia: Array<Int> = secuencia.copyOf()
 
-            val tiempoInicialQuickSort: Long = System.nanoTime()
-            quicksortClasico(secuenciaCopia1)
-            val tiempoFinalQuickSort: Long = System.nanoTime()
-            tiempoQuickSort[j] = tiempoFinalQuickSort - tiempoInicialQuickSort
+            val tiempoInicialCoutingSort: Long = System.nanoTime()
+            countingSort(secuencia)
+            val tiempoFinalCoutingSort: Long = System.nanoTime()
+            tiempoCoutingSort[j] = tiempoFinalCoutingSort - tiempoInicialCoutingSort
 
-            val tiempoInicialQuickSort3Formas: Long = System.nanoTime()
-            quicksortThreeWay(secuenciaCopia2)
-            val tiempoFinalQuickSort3Formas: Long = System.nanoTime()
-            tiempoQuickSort3Formas[j] = tiempoFinalQuickSort3Formas - tiempoInicialQuickSort3Formas
+            val tiempoInicialRadixSort: Long = System.nanoTime()
+            radixSort(secuenciaCopia)
+            val tiempoFinalRadixSort: Long = System.nanoTime()
+            tiempoRadixSort[j] = tiempoFinalRadixSort - tiempoInicialRadixSort
 
-            val tiempoInicialQuickSortDoblePivote: Long = System.nanoTime()
-            quicksortDualPivot(secuenciaCopia3)
-            val tiempoFinalQuickSortDoblePivote: Long = System.nanoTime()
-            tiempoQuickSortDoblePivote[j] = tiempoFinalQuickSortDoblePivote - tiempoInicialQuickSortDoblePivote
-
-            if (!estaEnOrdenAscendente(secuenciaCopia1)) {
-                mensajeErrorEnElOrdenamiento("QuickSort")
+            if (!estaEnOrdenAscendente(secuencia)) {
+                mensajeErrorEnElOrdenamiento("CoutingSort")
                 error = true
             }
-            if (!estaEnOrdenAscendente(secuenciaCopia2)) {
-                mensajeErrorEnElOrdenamiento("QuickSort3Formas")
-                error = true
-            }
-            if (!estaEnOrdenAscendente(secuenciaCopia3)) {
-                mensajeErrorEnElOrdenamiento("QuickSortDoblePivote")
+            if (!estaEnOrdenAscendente(secuenciaCopia)) {
+                mensajeErrorEnElOrdenamiento("RadixSort")
                 error = true
             }
             if (error) {
                 return
             }
         }
-        mensajeOrdenamientoExitoso("QuickSort Clasico", tiempoQuickSort)
-        mensajeOrdenamientoExitoso("QuickSort 3 Formas", tiempoQuickSort3Formas)
-        mensajeOrdenamientoExitoso("QuickSort Doble Pivote", tiempoQuickSortDoblePivote)
+        mensajeOrdenamientoExitoso("CoutingSort", tiempoCoutingSort)
         println("----------------------------------------------------------------------------------------")
     }
 }

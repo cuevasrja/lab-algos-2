@@ -669,3 +669,39 @@ fun quicksortDualPivot(A: Array<Int>): Unit {
     val n = A.size
     dualPivotPartition(A, 0, n - 1)
 }
+
+fun counting(A: Array<Int>, k: Int){
+    val n = A.size
+    val B = Array<Int>(n, {0})
+    val C = Array<Int>(k+1, {0})
+    for (i in 0 until n){
+        C[A[i]]++
+    }
+    for (i in 1 until C.size){
+        C[i] += C[i-1] 
+    }
+    for (i in n-1 downTo 0){
+        B[C[A[i]]-1] = A[i]
+        C[A[i]]--
+    }
+    for (i in 0 until n){
+        A[i] = B[i]
+    }
+}
+
+fun max(A: Array<Int>): Int {
+    var max: Int = 0
+    for (i in 0 until A.size) {
+        if (A[i] > max) max = A[i]
+    }
+    return max
+}
+
+fun countingSort(A: Array<Int>){
+    val m = max(A)
+    counting(A, m)
+}
+
+fun radixSort(A: Array<Int>){
+    
+}
