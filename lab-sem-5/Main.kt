@@ -34,7 +34,7 @@ fun secuenciaRandom(n: Int): Array<Int> {
     val secuencia: Array<Int> = Array(n, {0})
     for (i in 0 until n) {
         // Itera sobre los elementos de la secuencia y les asigna un valor aleatorio
-        secuencia[i] = (0..n).random()
+        secuencia[i] = (0..1000000).random()
     }
     return secuencia
 }
