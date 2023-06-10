@@ -20,6 +20,7 @@ fun swap(A: Array<Int>, i: Int, j: Int): Unit {
 + Postcondición: ordena los elementos de A de menor a mayor
 * Descripcióm: compara dos elementos adyacentes y los intercambia si están
 * en el orden equivocado
+* Complejidad: O(n^2)
 */
 fun bubbleSort(A: Array<Int>): Unit {
     for (i in 0 until A.size - 1) {
@@ -37,6 +38,7 @@ fun bubbleSort(A: Array<Int>): Unit {
 * Postcondición: ordena los elementos de A de menor a mayor
 * Descripción: inserta un elemento en la posición correcta de lo se haya ordenado,
 * empujando los elementos mayores a la derecha
+* Complejidad: O(n^2)
 */
 fun insertionSort(A: Array<Int>): Unit {
     for (i in 1 until A.size) {
@@ -54,6 +56,7 @@ fun insertionSort(A: Array<Int>): Unit {
 * Postcondición: ordena los elementos de A de menor a mayor
 * Descripción: busca el elemento más pequeño de la parte no ordenada y lo intercambia
 * con el primer elemento de la parte no ordenada
+* Complejidad: O(n^2)
 */
 fun selectionSort(A: Array<Int>): Unit {
     for (i in 0 until A.size - 1) {
@@ -73,6 +76,7 @@ fun selectionSort(A: Array<Int>): Unit {
 * Postcondición: ordena los elementos de A de menor a mayor
 * Descripción: primero ordena elementos que estén muy separados entre sí, y
 * posteriormente reduce la separación entre los elementos a ordenar
+* Complejidad: O(n^2)
 */
 fun shellSort(A: Array<Int>): Unit {
     var incr: Int = A.size / 2
@@ -126,6 +130,7 @@ fun merge(A: Array<Int>, B: Array<Int>, C: Array<Int>): Unit {
 * Postcondición: ordena los elementos de A de menor a mayor
 * Descripción: divide el arreglo en dos mitades, ordena cada mitad recursivamente
 * y luego combina las dos mitades ordenadas
+* Complejidad: O(n log n)
 */
 fun mergesortInsertion(A: Array<Int>): Unit {
     if (A.size <= 30) {
@@ -219,6 +224,7 @@ fun buildMaxHeap(A: Array<Int>, heapSize: Int): Unit {
 * Descripción: convierte A en un max-heap, luego intercambia el primer elemento
 * con el último, reduce el tamaño del heap en 1 y llama a maxHeapify en el primer
 * elemento. Repite este proceso hasta que el heap tenga tamaño 1
+* Complejidad: O(n log n)
 */
 fun heapSort(A: Array<Int>): Unit {
     val heapSize: Int = A.size - 1
@@ -419,6 +425,7 @@ fun down(vars: Array<Int>): Unit {
 * Descripción: smoothSort es un algoritmo de ordenamiento que utiliza un heap de Fibonacci
 * para ordenar un arreglo de enteros. El algoritmo se basa en el algoritmo de ordenamiento
 * por mezcla natural, pero utiliza un heap de Fibonacci para realizar las mezclas.
+* Complejidad: O(n log n)
 */
 fun smoothSort(A: Array<Int>): Unit {
     // Guardamos el tamaño del arreglo
@@ -558,6 +565,9 @@ fun quicksort(A: Array<Int>, p: Int, r: Int): Unit {
 * Precondición: A es un arreglo de enteros
 * Postcondición: realiza un quicksort en el arreglo A
 * Descrición: quicksortClasico crea particiones en el arreglo A y las ordena recursivamente
+* usando el último elemento como pivote (el más alto) y el primer elemento como el índice más alto
+* en la parte izquierda (el más bajo).
+* Complejidad: O(n^2)
 */
 fun quicksortClasico(A: Array<Int>): Unit {
     quicksort(A, 0, A.size - 1)
@@ -610,6 +620,7 @@ fun quickThreeWay(A: Array<Int>, left: Int, right: Int) {
 * Precondición: A es un arreglo de enteros
 * Postcondición: realiza un quicksort con 3 particiones en el arreglo A
 * Descrición: quicksortThreeWay crea particiones en el arreglo A y las ordena recursivamente
+* Complejidad: O(n log n)
 */
 fun quicksortThreeWay(A: Array<Int>): Unit {
     quickThreeWay(A, 0, A.size - 1)
@@ -664,42 +675,44 @@ fun dualPivotPartition(A: Array<Int>, left: Int, right: Int): Unit {
 * Precondición: A es un arreglo de enteros
 * Postcondición: realiza un quicksortDualPivot en el arreglo A
 * Descrición: quicksortDualPivot crea particiones en el arreglo A y las ordena recursivamente
+* Complejidad: O(n log n)
 */
 fun quicksortDualPivot(A: Array<Int>): Unit {
     val n: Int = A.size
     dualPivotPartition(A, 0, n - 1)
 }
 
-/**
-* uso: counting(A, k)
-* Precondición: A es un arreglo de enteros, k es un entero
-* Postcondición: realiza un counting en el arreglo A
-* Descripción: Counting se encarga de contar las aparencias de cada elemento en el arreglo A, para luego ordenarlos
-*/
 fun counting(A: Array<Int>, k: Int): Unit {
+    // k es el valor máximo en el arreglo A
+    // n es el tamaño del arreglo A
     val n: Int = A.size
+
+    // B es un arreglo de tamaño n donde se guardará el arreglo ordenado
     val B: Array<Int> = Array<Int>(n, {0})
+    // C es un arreglo de tamaño k+1 donde se guardarán las frecuencias de los elementos de A desde 0 hasta k
     val C: Array<Int> = Array<Int>(k+1, {0})
+
+    // Se guardan las frecuencias de los elementos de A en C
     for (i in 0 until n){
         C[A[i]]++
     }
+    // Se suman las frecuencias de los elementos de C
     for (i in 1 until C.size) {
+        // C[i] va a tener la posición en B donde se va a guardar el elemento i+1
         C[i] += C[i-1]
     }
+    // Se guarda el elemento de A en la posición que le corresponde en B
     for (i in n-1 downTo 0) {
         B[C[A[i]]-1] = A[i]
+        // Se resta 1 a la frecuencia del elemento A[i] para que si hay otro elemento igual se guarde en la posición anterior
         C[A[i]]--
     }
+    // Se copia el arreglo B en A
     for (i in 0 until n) {
         A[i] = B[i]
     }
 }
 
-/**
-* uso: getMax(A)
-* Precondición: A es un arreglo de enteros
-* Postcondición: retorna el elemento más grande del arreglo A
-*/
 fun getMax(A: Array<Int>): Int {
     var max: Int = 0
     for (i in 0 until A.size) {
@@ -708,12 +721,6 @@ fun getMax(A: Array<Int>): Int {
     return max
 }
 
-/**
-* uso: countingSort(A)
-* Precondición: A es un arreglo de enteros
-* Postcondición: realiza un countingSort en el arreglo A
-* Descripción: countingSort se encarga de contar las apariciones de cada elemento en el arreglo A, para luego ordenarlos
-*/
 fun countingSort(A: Array<Int>): Unit {
     val max: Int = getMax(A)
     counting(A, max)
