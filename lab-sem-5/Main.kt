@@ -99,44 +99,196 @@ fun mensajeErrorEnElOrdenamiento(tipoDeOrdenamiento: String): Unit {
 
 // Declaración del método principal
 fun main(): Unit {
-    var pruebas: Array<Int> = arrayOf(10, 15, 30)
-    var intentos: Int = 10
+    // Se especifica el número de intentos que se realizarán para cada tamaño de secuencia
+    val intentos: Int = 3
 
-    val tiempoCoutingSort = Array<Long>(intentos, {0})
-    val tiempoRadixSort = Array<Long>(intentos, {0})
-
-    for (i in 0 until pruebas.size){
-        val n = pruebas[i]
-        println("\u001b[34mPrueba con secuencia de $n elementos \u001b[0m")
+    for (n in 1000000..4000000 step 1000000) {
+         // Se crean las secuencias aleaorias de tamaño n
+        var secuencias: Array<Array<Int>> = Array(3, {Array(n, {0})})
+        for (i in 0 until intentos) {
+            secuencias[i] = secuenciaRandom(n)
+        }
+        println("\u001b[36mTres secuencias de tamaño $n generadas de tipo random\u001b[0m")
         println("----------------------------------------------------------------------------------------")
-        for (j in 0 until intentos) {
-            var error: Boolean = false
-            val secuencia: Array<Int> = secuenciaRandom(n)
-            val secuenciaCopia: Array<Int> = secuencia.copyOf()
 
-            val tiempoInicialCoutingSort: Long = System.nanoTime()
-            countingSort(secuencia)
-            val tiempoFinalCoutingSort: Long = System.nanoTime()
-            tiempoCoutingSort[j] = tiempoFinalCoutingSort - tiempoInicialCoutingSort
+        println("\u001b[34mAlgoritmos con rendimiento O(n * log n):\u001b[0m")
+        println("----------------------------------------------------------------------------------------")
 
-            val tiempoInicialRadixSort: Long = System.nanoTime()
-            radixSort(secuenciaCopia)
-            val tiempoFinalRadixSort: Long = System.nanoTime()
-            tiempoRadixSort[j] = tiempoFinalRadixSort - tiempoInicialRadixSort
-
-            if (!estaEnOrdenAscendente(secuencia)) {
-                mensajeErrorEnElOrdenamiento("CoutingSort")
-                error = true
-            }
-            if (!estaEnOrdenAscendente(secuenciaCopia)) {
-                mensajeErrorEnElOrdenamiento("RadixSort")
-                error = true
-            }
-            if (error) {
+        // Se realizan intentos de ordenamiento con Merge Sort y se mide el tiempo de ejecución
+        val tiempoMergesortInsertion = Array<Long>(intentos, {0})
+        for (i in 0 until intentos) {
+            // Se copia la secuencia original para no modificarla
+            val secuenciaCopia = secuencias[i].copyOf()
+            // Se ordena la secuencia copia y se mide el tiempo de ejecución
+            val tiempoInicial = System.nanoTime()
+            mergesortInsertion(secuenciaCopia)
+            val tiempoFinal = System.nanoTime()
+            // Se verifica si la secuencia copia está ordenada
+            if(!estaEnOrdenAscendente(secuenciaCopia)){
+                // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+                mensajeErrorEnElOrdenamiento("Mergesort Insertion")
                 return
             }
+            // Se guarda el tiempo de ejecución
+            tiempoMergesortInsertion[i] = (tiempoFinal - tiempoInicial)
         }
-        mensajeOrdenamientoExitoso("CoutingSort", tiempoCoutingSort)
+        // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+        mensajeOrdenamientoExitoso("Mergesort Insertion", tiempoMergesortInsertion)
+
+        // Se realizan intentos de ordenamiento con Heap Sort y se mide el tiempo de ejecución
+        val tiempoHeapSort = Array<Long>(intentos, {0})
+        for (i in 0 until intentos) {
+            // Se copia la secuencia original para no modificarla
+            val secuenciaCopia = secuencias[i].copyOf()
+            // Se ordena la secuencia copia y se mide el tiempo de ejecución
+            val tiempoInicial = System.nanoTime()
+            heapSort(secuenciaCopia)
+            val tiempoFinal = System.nanoTime()
+            // Se verifica si la secuencia copia está ordenada
+            if(!estaEnOrdenAscendente(secuenciaCopia)){
+                // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+                mensajeErrorEnElOrdenamiento("Heap Sort")
+                return
+            }
+            // Se guarda el tiempo de ejecución
+            tiempoHeapSort[i] = (tiempoFinal - tiempoInicial)
+        }
+        // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+        mensajeOrdenamientoExitoso("Heap Sort", tiempoHeapSort)
+
+        // Se realizan intentos de ordenamiento con Smooth Sort y se mide el tiempo de ejecución
+        val tiempoSmoothSort = Array<Long>(intentos, {0})
+        for (i in 0 until intentos) {
+            // Se copia la secuencia original para no modificarla
+            val secuenciaCopia = secuencias[i].copyOf()
+            // Se ordena la secuencia copia y se mide el tiempo de ejecución
+            val tiempoInicial = System.nanoTime()
+            smoothSort(secuenciaCopia)
+            val tiempoFinal = System.nanoTime()
+            // Se verifica si la secuencia copia está ordenada
+            if(!estaEnOrdenAscendente(secuenciaCopia)){
+                // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+                mensajeErrorEnElOrdenamiento("Smooth Sort")
+                return
+            }
+            // Se guarda el tiempo de ejecución
+            tiempoSmoothSort[i] = (tiempoFinal - tiempoInicial)
+        }
+        // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+        mensajeOrdenamientoExitoso("Smooth Sort", tiempoSmoothSort)
+
+        println("\u001b[34mVariaciones de Quick Sort:\u001b[0m")
         println("----------------------------------------------------------------------------------------")
+
+        // Se realizan intentos de ordenamiento con Quick Sort y se mide el tiempo de ejecución
+        val tiempoQuickSortClasico = Array<Long>(intentos, {0})
+        for (i in 0 until intentos) {
+            // Se copia la secuencia original para no modificarla
+            val secuenciaCopia = secuencias[i].copyOf()
+            // Se ordena la secuencia copia y se mide el tiempo de ejecución
+            val tiempoInicial = System.nanoTime()
+            quicksortClasico(secuenciaCopia)
+            val tiempoFinal = System.nanoTime()
+            // Se verifica si la secuencia copia está ordenada
+            if(!estaEnOrdenAscendente(secuenciaCopia)){
+                // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+                mensajeErrorEnElOrdenamiento("Quick Sort Clásico")
+                return
+            }
+            // Se guarda el tiempo de ejecución
+            tiempoQuickSortClasico[i] = (tiempoFinal - tiempoInicial)
+        }
+        // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+        mensajeOrdenamientoExitoso("Quick Sort Clásico", tiempoQuickSortClasico)
+
+        // Se realizan intentos de ordenamiento con Quick Sort con 3 formas y se mide el tiempo de ejecución
+        val tiempoQuickSort3Formas = Array<Long>(intentos, {0})
+        for(i in 0 until intentos) {
+            // Se copia la secuencia original para no modificarla
+            val secuenciaCopia = secuencias[i].copyOf()
+            // Se ordena la secuencia copia y se mide el tiempo de ejecución
+            val tiempoInicial = System.nanoTime()
+            quicksortThreeWay(secuenciaCopia)
+            val tiempoFinal = System.nanoTime()
+            // Se verifica si la secuencia copia está ordenada
+            if(!estaEnOrdenAscendente(secuenciaCopia)){
+                // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+                mensajeErrorEnElOrdenamiento("Quick Sort con 3 formas")
+                return
+            }
+            // Se guarda el tiempo de ejecución
+            tiempoQuickSort3Formas[i] = (tiempoFinal - tiempoInicial)
+        }
+        // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+        mensajeOrdenamientoExitoso("Quick Sort con 3 formas", tiempoQuickSort3Formas)
+
+        // Se realizan intentos de ordenamiento con Quick Sort con Doble Pivote y se mide el tiempo de ejecución
+        val tiempoQuickSortDoblePivote = Array<Long>(intentos, {0})
+        for(i in 0 until intentos) {
+            // Se copia la secuencia original para no modificarla
+            val secuenciaCopia = secuencias[i].copyOf()
+            // Se ordena la secuencia copia y se mide el tiempo de ejecución
+            val tiempoInicial = System.nanoTime()
+            quicksortDualPivot(secuenciaCopia)
+            val tiempoFinal = System.nanoTime()
+            // Se verifica si la secuencia copia está ordenada
+            if(!estaEnOrdenAscendente(secuenciaCopia)){
+                // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+                mensajeErrorEnElOrdenamiento("Quick Sort con Doble Pivote")
+                return
+            }
+            // Se guarda el tiempo de ejecución
+            tiempoQuickSortDoblePivote[i] = (tiempoFinal - tiempoInicial)
+        }
+        // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+        mensajeOrdenamientoExitoso("Quick Sort con Doble Pivote", tiempoQuickSortDoblePivote)
+
+        println("\u001b[34mAlgoritmos de ordenamiento lineal:\u001b[0m")
+        println("----------------------------------------------------------------------------------------")
+
+        // Se realizan intentos de ordenamiento con Counting Sort y se mide el tiempo de ejecución
+        val tiempoCountingSort = Array<Long>(intentos, {0})
+        for(i in 0 until intentos) {
+            // Se copia la secuencia original para no modificarla
+            val secuenciaCopia = secuencias[i].copyOf()
+            // Se ordena la secuencia copia y se mide el tiempo de ejecución
+            val tiempoInicial = System.nanoTime()
+            countingSort(secuenciaCopia)
+            val tiempoFinal = System.nanoTime()
+            // Se verifica si la secuencia copia está ordenada
+            if(!estaEnOrdenAscendente(secuenciaCopia)){
+                // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+                mensajeErrorEnElOrdenamiento("Counting Sort")
+                return
+            }
+            // Se guarda el tiempo de ejecución
+            tiempoCountingSort[i] = (tiempoFinal - tiempoInicial)
+        }
+        // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+        mensajeOrdenamientoExitoso("Counting Sort", tiempoCountingSort)
+
+        // Se realizan intentos de ordenamiento con Radix Sort y se mide el tiempo de ejecución
+        val tiempoRagixSort = Array<Long>(intentos, {0})
+        for(i in 0 until intentos) {
+            // Se copia la secuencia original para no modificarla
+            val secuenciaCopia = secuencias[i].copyOf()
+            // Se ordena la secuencia copia y se mide el tiempo de ejecución
+            val tiempoInicial = System.nanoTime()
+            radixSort(secuenciaCopia)
+            val tiempoFinal = System.nanoTime()
+            // Se verifica si la secuencia copia está ordenada
+            if(!estaEnOrdenAscendente(secuenciaCopia)){
+                // Si la secuencia copia no está ordenada, imprime un mensaje de error y termina la ejecución
+                mensajeErrorEnElOrdenamiento("Radix Sort")
+                return
+            }
+            // Se guarda el tiempo de ejecución
+            tiempoRagixSort[i] = (tiempoFinal - tiempoInicial)
+        }
+        // Si la secuencia está ordenada en todos los intentos, imprime un mensaje de éxito
+        mensajeOrdenamientoExitoso("Radix Sort", tiempoRagixSort)
     }
+
+    println("\u001b[1m\u001b[32mTodos los ordenamientos fueron exitosos\u001b[0m")
+    println("----------------------------------------------------------------------------------------")
 }

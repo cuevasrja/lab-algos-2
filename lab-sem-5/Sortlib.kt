@@ -433,7 +433,7 @@ fun smoothSort(A: Array<Int>): Unit {
 
     // Creamos nuestro conjunto de variables en el orden
     // vars: [p, b, r, q, c, r1, c1, b1]
-    val vars = Array<Int>(8, {0})
+    val vars: Array<Int> = Array<Int>(8, {0})
     vars[0] = p
     vars[1] = b
     vars[2] = r
@@ -636,7 +636,7 @@ fun dualPivotPartition(A: Array<Int>, left: Int, right: Int): Unit {
                 swap(A, k, l)
                 l++
             }
-            else if (A[k] >= q){
+            else if (A[k] >= q) {
                 while (A[g] > q && k < g) {
                     g--
                 }
@@ -666,30 +666,30 @@ fun dualPivotPartition(A: Array<Int>, left: Int, right: Int): Unit {
 * Descrición: quicksortDualPivot crea particiones en el arreglo A y las ordena recursivamente
 */
 fun quicksortDualPivot(A: Array<Int>): Unit {
-    val n = A.size
+    val n: Int = A.size
     dualPivotPartition(A, 0, n - 1)
 }
 
-fun counting(A: Array<Int>, k: Int){
-    val n = A.size
-    val B = Array<Int>(n, {0})
-    val C = Array<Int>(k+1, {0})
+fun counting(A: Array<Int>, k: Int): Unit {
+    val n: Int = A.size
+    val B: Array<Int> = Array<Int>(n, {0})
+    val C: Array<Int> = Array<Int>(k+1, {0})
     for (i in 0 until n){
         C[A[i]]++
     }
-    for (i in 1 until C.size){
-        C[i] += C[i-1] 
+    for (i in 1 until C.size) {
+        C[i] += C[i-1]
     }
-    for (i in n-1 downTo 0){
+    for (i in n-1 downTo 0) {
         B[C[A[i]]-1] = A[i]
         C[A[i]]--
     }
-    for (i in 0 until n){
+    for (i in 0 until n) {
         A[i] = B[i]
     }
 }
 
-fun max(A: Array<Int>): Int {
+fun getMax(A: Array<Int>): Int {
     var max: Int = 0
     for (i in 0 until A.size) {
         if (A[i] > max) max = A[i]
@@ -697,11 +697,41 @@ fun max(A: Array<Int>): Int {
     return max
 }
 
-fun countingSort(A: Array<Int>){
-    val m = max(A)
-    counting(A, m)
+fun countingSort(A: Array<Int>): Unit {
+    val max: Int = getMax(A)
+    counting(A, max)
 }
 
-fun radixSort(A: Array<Int>){
-    
+fun getAmountOfDigits(n: Int): Int {
+    var amountOfDigits: Int = 0
+    var number: Int = n
+    while (number > 0) {
+        number /= 10
+        amountOfDigits++
+    }
+    return amountOfDigits
+}
+
+fun radixSort(A: Array<Int>): Unit {
+    val maxElement: Int = getMax(A)
+    val maxAmountOfDigits: Int = getAmountOfDigits(maxElement)
+    for(numberOfDigit in 1..maxAmountOfDigits) {
+        val B: Array<Int> = Array<Int>(A.size, {0})
+        val C: Array<Int> = Array<Int>(10, {0})
+        for (i in 0 until A.size) {
+            val digit: Int = (A[i] / Math.pow(10.0, (numberOfDigit - 1).toDouble())).toInt() % 10
+            C[digit]++
+        }
+        for (i in 1 until C.size) {
+            C[i] += C[i-1]
+        }
+        for (i in A.size-1 downTo 0) {
+            val digit: Int = (A[i] / Math.pow(10.0, (numberOfDigit - 1).toDouble())).toInt() % 10
+            B[C[digit]-1] = A[i]
+            C[digit]--
+        }
+        for (i in 0 until A.size) {
+            A[i] = B[i]
+        }
+    }
 }
