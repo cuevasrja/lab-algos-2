@@ -670,6 +670,12 @@ fun quicksortDualPivot(A: Array<Int>): Unit {
     dualPivotPartition(A, 0, n - 1)
 }
 
+/**
+* uso: counting(A, k)
+* Precondición: A es un arreglo de enteros, k es un entero
+* Postcondición: realiza un counting en el arreglo A
+* Descripción: Counting se encarga de contar las aparencias de cada elemento en el arreglo A, para luego ordenarlos
+*/
 fun counting(A: Array<Int>, k: Int): Unit {
     val n: Int = A.size
     val B: Array<Int> = Array<Int>(n, {0})
@@ -689,6 +695,11 @@ fun counting(A: Array<Int>, k: Int): Unit {
     }
 }
 
+/**
+* uso: getMax(A)
+* Precondición: A es un arreglo de enteros
+* Postcondición: retorna el elemento más grande del arreglo A
+*/
 fun getMax(A: Array<Int>): Int {
     var max: Int = 0
     for (i in 0 until A.size) {
@@ -697,11 +708,22 @@ fun getMax(A: Array<Int>): Int {
     return max
 }
 
+/**
+* uso: countingSort(A)
+* Precondición: A es un arreglo de enteros
+* Postcondición: realiza un countingSort en el arreglo A
+* Descripción: countingSort se encarga de contar las apariciones de cada elemento en el arreglo A, para luego ordenarlos
+*/
 fun countingSort(A: Array<Int>): Unit {
     val max: Int = getMax(A)
     counting(A, max)
 }
 
+/**
+* uso: getAmountOfDigits(n)
+* Precondición: n es un entero
+* Postcondición: retorna la cantidad de dígitos que tiene n
+*/
 fun getAmountOfDigits(n: Int): Int {
     var amountOfDigits: Int = 0
     var number: Int = n
@@ -712,6 +734,12 @@ fun getAmountOfDigits(n: Int): Int {
     return amountOfDigits
 }
 
+/**
+* uso: radixSort(A)
+* Precondición: A es un arreglo de enteros
+* Postcondición: realiza un radixSort en el arreglo A
+* Descripción: radixSort se encarga de ordenar el arreglo por dígitos, ordenando primero por las unidades, luego por las decenas, etc.
+*/
 fun radixSort(A: Array<Int>): Unit {
     val maxElement: Int = getMax(A)
     val maxAmountOfDigits: Int = getAmountOfDigits(maxElement)
