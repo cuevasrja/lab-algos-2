@@ -18,10 +18,17 @@ fun obtenterPuntosRectangulo(P: Array<Pair<Int, Int>>, rectangulo: Array<Pair<In
     
 }
 
-fun distancia(p1: Pair<Int, Int>, p2: Pair<Int, Int>): Int{
+fun distancia2D(p1: Pair<Int, Int>, p2: Pair<Int, Int>): Int{
     val x = p1.first - p2.first
     val y = p1.second - p2.second
     return Math.sqrt((x*x + y*y).toDouble()).toInt()
+}
+
+fun distancia3D(p1: Triple<Int, Int, Int>, p2: Triple<Int, Int, Int>): Int{
+    val x = p1.first - p2.first
+    val y = p1.second - p2.second
+    val z = p1.third - p2.third
+    return Math.sqrt((x*x + y*y + z*z).toDouble()).toInt()
 }
 
 fun distanciaGanada(n1: Int, n2: Int, o1: Int, o2: Int): Int{
