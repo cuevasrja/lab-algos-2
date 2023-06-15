@@ -16,6 +16,30 @@ fun obtenerParticiones(P: Array<Pair<Int, Int>>): Pair<Array<Int>, Array<Int>>{
     
 }
 
+fun obtenerCoordMaxX(P: Array<Pair<Int, Int>>): Int{
+    return P.maxBy { p -> p.first }!!.first
+}
+
+fun obtenerCoordMaxY(P: Array<Pair<Int, Int>>): Int{
+    return P.maxBy { p -> p.second }!!.second
+}
+
+fun obtenerCoordMinX(P: Array<Pair<Int, Int>>): Int{
+    return P.minBy { p -> p.first }!!.first
+}
+
+fun obtenerCoordMinY(P: Array<Pair<Int, Int>>): Int{
+    return P.minBy { p -> p.second }!!.second
+}
+
+fun crearRectangulo(P: Array<Pair<Int, Int>>): Array<Pair<Int, Int>>{
+    val maxX = obtenerCoordMaxX(P)
+    val maxY = obtenerCoordMaxY(P)
+    val minX = obtenerCoordMinX(P)
+    val minY = obtenerCoordMinY(P)
+    return arrayOf(Pair(minX, minY), Pair(maxX, maxY), Pair(maxX, minY), Pair(minX, maxY))
+}
+
 fun obtenterPuntosRectangulo(P: Array<Pair<Int, Int>>, rectangulo: Array<Pair<Int, Int>>): Array<Pair<Int, Int>>{
     
 }
