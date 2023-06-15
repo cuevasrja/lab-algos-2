@@ -25,19 +25,19 @@ fun obtenerParticiones(P: Array<Pair<Int, Int>>): Pair<Array<Int>, Array<Int>>{
 }
 
 fun obtenerCoordMaxX(P: Array<Pair<Int, Int>>): Int{
-    return P.maxBy { p -> p.first }!!.first
+    return P.maxBy { it.first }!!.first
 }
 
 fun obtenerCoordMaxY(P: Array<Pair<Int, Int>>): Int{
-    return P.maxBy { p -> p.second }!!.second
+    return P.maxBy { it.second }!!.second
 }
 
 fun obtenerCoordMinX(P: Array<Pair<Int, Int>>): Int{
-    return P.minBy { p -> p.first }!!.first
+    return P.minBy { it.first }!!.first
 }
 
 fun obtenerCoordMinY(P: Array<Pair<Int, Int>>): Int{
-    return P.minBy { p -> p.second }!!.second
+    return P.minBy { it.second }!!.second
 }
 
 fun crearRectangulo(P: Array<Pair<Int, Int>>): Array<Pair<Int, Int>>{
