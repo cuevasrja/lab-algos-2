@@ -5,6 +5,14 @@ fun obtenerPuntoDeCorte(P: Array<Pair<Int, Int>>, eje: Int): Pair<Int, Int>{
 }
 
 fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Int, Int>>, eje: Int): Pair<Int, Int>{
+    xMin = obtenerCoordMinX(rectangulo)
+    yMin = obtenerCoordMinY(rectangulo)
+    if (eje == 'X') {
+        return Pair(xMin + (obtenerCoordMaxX(rectangulo) - xMin)/2, yMin)
+    }
+    else {
+        return Pair(xMin, yMin + (obtenerCoordMaxY(rectangulo) - yMin)/2)
+    }
 
 }
 
