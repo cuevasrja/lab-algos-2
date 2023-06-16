@@ -10,13 +10,13 @@ import java.io.FileReader
 import java.io.FileWriter
 import java.io.BufferedWriter
 
-fun swap(P: Array<Pair<Int, Int>>, i: Int, j: Int): Unit {
+fun swap(P: Array<Pair<Double, Double>>, i: Int, j: Int): Unit {
     val temp = P[i]
     P[i] = P[j]
     P[j] = temp
 }
 
-fun partitionX(P: Array<Pair<Int, Int>>, l: Int, r: Int): Int {
+fun partitionX(P: Array<Pair<Double, Double>>, l: Int, r: Int): Int {
     val pivot = P[r].first
     var i = l - 1
     for (j in l until r) {
@@ -29,7 +29,7 @@ fun partitionX(P: Array<Pair<Int, Int>>, l: Int, r: Int): Int {
     return i + 1
 }
 
-fun quickSortX(P: Array<Pair<Int, Int>>, l: Int, r: Int): Unit {
+fun quickSortX(P: Array<Pair<Double, Double>>, l: Int, r: Int): Unit {
     if (l < r) {
         val p = partitionX(P, l, r)
         quickSortX(P, l, p - 1)
@@ -37,7 +37,7 @@ fun quickSortX(P: Array<Pair<Int, Int>>, l: Int, r: Int): Unit {
     }
 }
 
-fun partitionY(P: Array<Pair<Int, Int>>, l: Int, r: Int): Int {
+fun partitionY(P: Array<Pair<Double, Double>>, l: Int, r: Int): Int {
     val pivot = P[r].second
     var i = l - 1
     for (j in l until r) {
@@ -50,7 +50,7 @@ fun partitionY(P: Array<Pair<Int, Int>>, l: Int, r: Int): Int {
     return i + 1
 }
 
-fun quickSortY(P: Array<Pair<Int, Int>>, l: Int, r: Int): Unit {
+fun quickSortY(P: Array<Pair<Double, Double>>, l: Int, r: Int): Unit {
     if (l < r) {
         val p = partitionY(P, l, r)
         quickSortY(P, l, p - 1)
@@ -58,7 +58,7 @@ fun quickSortY(P: Array<Pair<Int, Int>>, l: Int, r: Int): Unit {
     }
 }
 
-fun ordenarCoordXIguales(P: Array<Pair<Int, Int>>): Unit {
+fun ordenarCoordXIguales(P: Array<Pair<Double, Double>>): Unit {
     val n = P.size
     for (i in 0 until n - 1) {
         if (P[i].first == P[i + 1].first && obtenerCoordMayor(P[i], P[i + 1], 'X') == P[i]) {
@@ -67,7 +67,7 @@ fun ordenarCoordXIguales(P: Array<Pair<Int, Int>>): Unit {
     }
 }
 
-fun ordenarCoordYIguales(P: Array<Pair<Int, Int>>): Unit {
+fun ordenarCoordYIguales(P: Array<Pair<Double, Double>>): Unit {
     val n = P.size
     for (i in 0 until n - 1) {
         if (P[i].second == P[i + 1].second && obtenerCoordMayor(P[i], P[i + 1], 'Y') == P[i]) {
@@ -76,7 +76,7 @@ fun ordenarCoordYIguales(P: Array<Pair<Int, Int>>): Unit {
     }
 }
 
-fun obtenerCoordMayor(p1: Pair<Int, Int>, p2: Pair<Int, Int>, ejeDeCorte: Char): Pair<Int, Int> {
+fun obtenerCoordMayor(p1: Pair<Double, Double>, p2: Pair<Double, Double>, ejeDeCorte: Char): Pair<Double, Double> {
     if (ejeDeCorte == 'X') {
         if (p1.second > p2.second) {
             return p1
@@ -95,7 +95,7 @@ fun obtenerCoordMayor(p1: Pair<Int, Int>, p2: Pair<Int, Int>, ejeDeCorte: Char):
     }
 }
 
-fun obtenerPuntoDeCorte(P: Array<Pair<Int, Int>>, ejeDeCorte: Char): Pair<Int, Int> {
+fun obtenerPuntoDeCorte(P: Array<Pair<Double, Double>>, ejeDeCorte: Char): Pair<Double, Double> {
     val n = P.size
     val pos = Math.ceil(n/2.0).toInt() - 1
     if (ejeDeCorte == 'X') {
@@ -109,7 +109,7 @@ fun obtenerPuntoDeCorte(P: Array<Pair<Int, Int>>, ejeDeCorte: Char): Pair<Int, I
     return P[pos]
 }
 
-fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Int, Int>>, eje: Char): Pair<Int, Int> {
+fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Double, Double>>, eje: Char): Pair<Double, Double> {
     val xMin = obtenerCoordMinX(rectangulo)
     val yMin = obtenerCoordMinY(rectangulo)
     if (eje == 'X') {
@@ -120,31 +120,31 @@ fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Int, Int>>, eje: Char): Pair
     }
 }
 
-fun aplicarCorte(eje: Int, puntoDeCorte: Pair<Int, Int>, rectangulo: Array<Pair<Int, Int>>): Pair<Int, Int>{
+fun aplicarCorte(eje: Int, puntoDeCorte: Pair<Double, Double>, rectangulo: Array<Pair<Double, Double>>): Pair<Double, Double>{
 
 }
 
-fun obtenerParticiones(P: Array<Pair<Int, Int>>): Pair<Array<Int>, Array<Int>>{
+fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Double>, Array<Double>>{
 
 }
 
-fun obtenerCoordMaxX(P: Array<Pair<Int, Int>>): Int{
+fun obtenerCoordMaxX(P: Array<Pair<Double, Double>>): Double{
     return P.maxBy { it.first }!!.first
 }
 
-fun obtenerCoordMaxY(P: Array<Pair<Int, Int>>): Int{
+fun obtenerCoordMaxY(P: Array<Pair<Double, Double>>): Double{
     return P.maxBy { it.second }!!.second
 }
 
-fun obtenerCoordMinX(P: Array<Pair<Int, Int>>): Int{
+fun obtenerCoordMinX(P: Array<Pair<Double, Double>>): Double{
     return P.minBy { it.first }!!.first
 }
 
-fun obtenerCoordMinY(P: Array<Pair<Int, Int>>): Int{
+fun obtenerCoordMinY(P: Array<Pair<Double, Double>>): Double{
     return P.minBy { it.second }!!.second
 }
 
-fun crearRectangulo(P: Array<Pair<Int, Int>>): Array<Pair<Int, Int>>{
+fun crearRectangulo(P: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>{
     val maxX = obtenerCoordMaxX(P)
     val maxY = obtenerCoordMaxY(P)
     val minX = obtenerCoordMinX(P)
@@ -152,43 +152,43 @@ fun crearRectangulo(P: Array<Pair<Int, Int>>): Array<Pair<Int, Int>>{
     return arrayOf(Pair(minX, minY), Pair(maxX, maxY), Pair(maxX, minY), Pair(minX, maxY))
 }
 
-fun obtenterPuntosRectangulo(P: Array<Pair<Int, Int>>, rectangulo: Array<Pair<Int, Int>>): Array<Pair<Int, Int>>{
+fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>{
 
 }
 
-fun distancia2D(p1: Pair<Int, Int>, p2: Pair<Int, Int>): Int{
+fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Double{
     val x = p1.first - p2.first
     val y = p1.second - p2.second
-    return Math.sqrt((x*x + y*y).toDouble()).toInt()
+    return Math.sqrt((x*x + y*y).toDouble())
 }
 
-fun distancia3D(p1: Triple<Int, Int, Int>, p2: Triple<Int, Int, Int>): Int{
+fun distancia3D(p1: Triple<Double, Double, Double>, p2: Triple<Double, Double, Double>): Double{
     val x = p1.first - p2.first
     val y = p1.second - p2.second
     val z = p1.third - p2.third
-    return Math.sqrt((x*x + y*y + z*z).toDouble()).toInt()
+    return Math.sqrt((x*x + y*y + z*z).toDouble())
 }
 
-fun distanciaGanada(n1: Int, n2: Int, o1: Int, o2: Int): Int{
+fun distanciaGanada(n1: Double, n2: Double, o1: Double, o2: Double): Double{
     return (n1 + n2) - (o1 + o2)
 }
 
-fun divideAndConquerAndLocalSearchTSP(P: Array<Pair<Int, Int>>): Array<Pair<Pair<Int, Int>, Pair<Int, Int>>>{
+fun divideAndConquerAndLocalSearchTSP(P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
     return
 }
 
-fun combinarCiclos(c1: Array<Pair<Pair<Int, Int>, Pair<Int, Int>>>, c2: Array<Pair<Pair<Int, Int>, Pair<Int, Int>>>): Array<Pair<Pair<Int, Int>, Pair<Int, Int>>>{
+fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, c2: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
     return
 }
 
-fun distanciaTotal(ciclo: Array<Pair<Pair<Int, Int>, Pair<Int, Int>>>): Int{
+fun distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Double{
     var acc = 0
     for (i in 0 until ciclo.size){
         acc += distancia2D(ciclo[i].first, ciclo[i].second)
     }
 }
 
-fun divideAndConquerTSP (P: Array<Pair<Int, Int>>): Array<Pair<Pair<Int, Int>, Pair<Int, Int>>>{
+fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
     val n = P.size
     if (n == 0){
         return arrayOf()
@@ -222,11 +222,11 @@ fun main(args: Array<String>) {
     reader.readLine() // Comentario que no nos interesa
 
     // Creamos un arreglo de pares de enteros para almacenar las coordenadas de las ciudades
-    val ciudades = Array<Pair<Int, Int>>(numeroCiudades, { Pair(0, 0) })
+    val ciudades = Array<Pair<Double, Double>>(numeroCiudades, { Pair(0.0, 0.0) })
     for (i in 0 until numeroCiudades) {
         val ciudad = reader.readLine().split(" ")
-        val x = ciudad[1].trim().toInt()
-        val y = ciudad[2].trim().toInt()
+        val x = ciudad[1].trim().toDouble()
+        val y = ciudad[2].trim().toDouble()
         ciudades[i] = Pair(x, y)
     }
 
@@ -249,7 +249,9 @@ fun main(args: Array<String>) {
         val y = solucion[i].first.second
         writer.newLine("${i+1} ${x} ${y}")
         if (i == numeroCiudades - 1) {
-            writer.newLine("${i+2} ${solucion[0].second.first} ${solucion[0].second.second}}")
+            val xf = solucion[i].second.first
+            val yf = solucion[i].second.second
+            writer.newLine("${i+2} $xf $yf")
         }
         
         writer.newLine()

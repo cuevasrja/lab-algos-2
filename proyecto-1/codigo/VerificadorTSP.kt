@@ -14,10 +14,10 @@ import java.io.FileReader
 * Salidas: La distancia euclidiana entre los dos puntos
 * Descripcion: Calcula la distancia euclidiana entre dos puntos en el plano
 */
-fun distancia2D(p1: Pair<Int, Int>, p2: Pair<Int, Int>): Int {
+fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Double {
     val x = p1.first - p2.first
     val y = p1.second - p2.second
-    return Math.sqrt((x * x + y * y).toDouble()).toInt()
+    return Math.sqrt((x * x + y * y).toDouble())
 }
 
 /**
@@ -26,7 +26,7 @@ fun distancia2D(p1: Pair<Int, Int>, p2: Pair<Int, Int>): Int {
 * Salidas: La distancia total de la ruta que recorre todas las ciudades en el orden dado
 * Descripcion: Calcula la distancia total de la ruta que recorre todas las ciudades en el orden dado
 */
-fun distanciaRuta(ciudades: Array<Pair<Int, Int>>): Int {
+fun distanciaRuta(ciudades: Array<Pair<Double, Double>>): Double {
     var acc = 0
     for (i in 0 until ciudades.size - 1) {
         acc += distancia2D(ciudades[i], ciudades[i + 1])
@@ -41,7 +41,7 @@ fun distanciaRuta(ciudades: Array<Pair<Int, Int>>): Int {
 * Salidas: true si la solucion es correcta, false en otro caso
 * Descripcion: Verifica que la solucion dada sea correcta
 */
-fun checkSolution(ciudadesInstancia: Array<Pair<Int, Int>>, ciudadesSolucion: Array<Pair<Int, Int>>): Boolean {
+fun checkSolution(ciudadesInstancia: Array<Pair<Double, Double>>, ciudadesSolucion: Array<Pair<Double, Double>>): Boolean {
     // Verificar que la solucion tenga el mismo numero de ciudades que la instancia
     if (ciudadesInstancia.size != ciudadesSolucion.size) {
         println("Numero de ciudades de instancia ${ciudadesInstancia.size} no coincide con numero de ciudades de solucion ${ciudadesSolucion.size}")
@@ -72,19 +72,19 @@ fun checkSolution(ciudadesInstancia: Array<Pair<Int, Int>>, ciudadesSolucion: Ar
 * Salidas: Un arreglo de pares de enteros que representan las coordenadas de las ciudades
 * Descripcion: Lee el archivo de texto y extrae las coordenadas de las ciudades
 */
-fun leerArchivoRuta(archivo: File): Array<Pair<Int, Int>> {
+fun leerArchivoRuta(archivo: File): Array<Pair<Double, Double>> {
     val lector = BufferedReader(FileReader(archivo, Charsets.UTF_8))
     lector.readLine()
     lector.readLine()
     lector.readLine()
-    val numeroCiudades = lector.readLine().split(":")[1].trim().toInt()
+    val numeroCiudades = lector.readLine().split(":")[1].trim().toDouble()
     lector.readLine()
     lector.readLine()
-    val ciudades = Array<Pair<Int, Int>>(numeroCiudades, { Pair(0, 0) })
+    val ciudades = Array<Pair<Double, Double>>(numeroCiudades, { Pair(0, 0) })
     for (i in 0 until numeroCiudades) {
         val ciudad = lector.readLine().split(" ")
-        val x = ciudad[1].trim().toInt()
-        val y = ciudad[2].trim().toInt()
+        val x = ciudad[1].trim().toDouble()
+        val y = ciudad[2].trim().toDouble()
         ciudades[i] = Pair(x, y)
     }
     return ciudades
