@@ -1,27 +1,119 @@
-fun obtenerPuntoDeCorte(P: Array<Pair<Int, Int>>, eje: Int): Pair<Int, Int>{
-    val n = P.size
-    val pos = Math.ceil(n/2.0).toInt() - 1
-    
+fun swap(P: Array<Pair<Int, Int>>, i: Int, j: Int): Unit {
+    val temp = P[i]
+    P[i] = P[j]
+    P[j] = temp
 }
 
-fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Int, Int>>, eje: Int): Pair<Int, Int>{
-    xMin = obtenerCoordMinX(rectangulo)
-    yMin = obtenerCoordMinY(rectangulo)
+fun partitionX(P: Array<Pair<Int, Int>>, l: Int, r: Int): Int {
+    val pivot = P[r].first
+    var i = l - 1
+    for (j in l until r) {
+        if (P[j].first <= pivot) {
+            i++
+            swap(P, i, j)
+        }
+    }
+    swap(P, i + 1, r)
+    return i + 1
+}
+
+fun quickSortX(P: Array<Pair<Int, Int>>, l: Int, r: Int): Unit {
+    if (l < r) {
+        val p = partitionX(P, l, r)
+        quickSortX(P, l, p - 1)
+        quickSortX(P, p + 1, r)
+    }
+}
+
+fun partitionY(P: Array<Pair<Int, Int>>, l: Int, r: Int): Int {
+    val pivot = P[r].second
+    var i = l - 1
+    for (j in l until r) {
+        if (P[j].second <= pivot) {
+            i++
+            swap(P, i, j)
+        }
+    }
+    swap(P, i + 1, r)
+    return i + 1
+}
+
+fun quickSortY(P: Array<Pair<Int, Int>>, l: Int, r: Int): Unit {
+    if (l < r) {
+        val p = partitionY(P, l, r)
+        quickSortY(P, l, p - 1)
+        quickSortY(P, p + 1, r)
+    }
+}
+
+fun ordenarCoordXIguales(P: Array<Pair<Int, Int>>): Unit {
+    val n = P.size
+    for (i in 0 until n - 1) {
+        if (P[i].first == P[i + 1].first && obtenerCoordMayor(P[i], P[i + 1], 'X') == P[i]) {
+            swap(P, i, i + 1)
+        }
+    }
+}
+
+fun ordenarCoordYIguales(P: Array<Pair<Int, Int>>): Unit {
+    val n = P.size
+    for (i in 0 until n - 1) {
+        if (P[i].second == P[i + 1].second && obtenerCoordMayor(P[i], P[i + 1], 'Y') == P[i]) {
+            swap(P, i, i + 1)
+        }
+    }
+}
+
+fun obtenerCoordMayor(p1: Pair<Int, Int>, p2: Pair<Int, Int>, ejeDeCorte: Char): Pair<Int, Int> {
+    if (ejeDeCorte == 'X') {
+        if (p1.second > p2.second) {
+            return p1
+        }
+        else {
+            return p2
+        }
+    }
+    else {
+        if (p1.first > p2.first) {
+            return p1
+        }
+        else {
+            return p2
+        }
+    }
+}
+
+fun obtenerPuntoDeCorte(P: Array<Pair<Int, Int>>, ejeDeCorte: Char): Pair<Int, Int> {
+    val n = P.size
+    val pos = Math.ceil(n/2.0).toInt() - 1
+    if (ejeDeCorte == 'X') {
+        quickSortX(P, 0, n - 1)
+        ordenarCoordXIguales(P)
+    }
+    else {
+        quickSortY(P, 0, n - 1)
+        ordenarCoordYIguales(P)
+    }
+    return P[pos]
+}
+
+fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Int, Int>>, eje: Char): Pair<Int, Int> {
+    val xMin = obtenerCoordMinX(rectangulo)
+    val yMin = obtenerCoordMinY(rectangulo)
     if (eje == 'X') {
         return Pair(xMin + (obtenerCoordMaxX(rectangulo) - xMin)/2, yMin)
     }
     else {
         return Pair(xMin, yMin + (obtenerCoordMaxY(rectangulo) - yMin)/2)
     }
-
 }
 
 fun aplicarCorte(eje: Int, puntoDeCorte: Pair<Int, Int>, rectangulo: Array<Pair<Int, Int>>): Pair<Int, Int>{
-    
+
 }
 
 fun obtenerParticiones(P: Array<Pair<Int, Int>>): Pair<Array<Int>, Array<Int>>{
-    
+
 }
 
 fun obtenerCoordMaxX(P: Array<Pair<Int, Int>>): Int{
@@ -49,7 +141,7 @@ fun crearRectangulo(P: Array<Pair<Int, Int>>): Array<Pair<Int, Int>>{
 }
 
 fun obtenterPuntosRectangulo(P: Array<Pair<Int, Int>>, rectangulo: Array<Pair<Int, Int>>): Array<Pair<Int, Int>>{
-    
+
 }
 
 fun distancia2D(p1: Pair<Int, Int>, p2: Pair<Int, Int>): Int{
@@ -99,7 +191,6 @@ fun divideAndConquerTSP (P: Array<Pair<Int, Int>>): Array<Pair<Pair<Int, Int>, P
     }
 }
 
-
 fun main(args: Array<String>) {
-    
+
 }
