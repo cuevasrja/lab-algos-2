@@ -1,6 +1,6 @@
 /**
 * Nombre del archivo: DCLSTSP.kt
-* Descripcion: Implementacion del algoritmo "Divide, Conquer, Local Search" para el problema del vendedor viajero
+* Descripcion: Implementacion del algoritmo "Divide, Conquer, Local Search" para el problema del agente viajero
 * Autores: Luis Miguel Isea 19-10175, Juan Cuevas 19-10056
 */
 
@@ -109,10 +109,10 @@ fun obtenerPuntoDeCorte(P: Array<Pair<Double, Double>>, ejeDeCorte: Char): Pair<
     return P[pos]
 }
 
-fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Double, Double>>, eje: Char): Pair<Double, Double> {
+fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Double, Double>>, ejeDeCorte: Char): Pair<Double, Double> {
     val xMin = obtenerCoordMinX(rectangulo)
     val yMin = obtenerCoordMinY(rectangulo)
-    if (eje == 'X') {
+    if (ejeDeCorte == 'X') {
         return Pair(xMin + (obtenerCoordMaxX(rectangulo) - xMin)/2, yMin)
     }
     else {
@@ -120,8 +120,37 @@ fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Double, Double>>, eje: Char)
     }
 }
 
-fun aplicarCorte(eje: Int, puntoDeCorte: Pair<Double, Double>, rectangulo: Array<Pair<Double, Double>>): Pair<Double, Double>{
-
+fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangulo: Array<Pair<Double, Double>>): Array<Array<Pair<Double, Double>>>{
+    val rectanguloIzq = Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})
+    val rectanguloDer = Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})
+    val xMin = obtenerCoordMinX(rectangulo)
+    val yMin = obtenerCoordMinY(rectangulo)
+    val xMax = obtenerCoordMaxX(rectangulo)
+    val yMax = obtenerCoordMaxY(rectangulo)
+    if (ejeDeCorte == 'X') {
+        rectanguloIzq[0] = Pair(xMin, yMin)
+        rectanguloIzq[1] = Pair(puntoDeCorte.first, yMin)
+        rectanguloIzq[2] = Pair(puntoDeCorte.first, yMax)
+        rectanguloIzq[3] = Pair(xMin, yMax)
+        rectanguloDer[0] = Pair(puntoDeCorte.first, yMin)
+        rectanguloDer[1] = Pair(xMax, yMin)
+        rectanguloDer[2] = Pair(xMax, yMax)
+        rectanguloDer[3] = Pair(puntoDeCorte.first, yMax)
+    }
+    else {
+        rectanguloIzq[0] = Pair(xMin, yMin)
+        rectanguloIzq[1] = Pair(xMax, yMin)
+        rectanguloIzq[2] = Pair(xMax, puntoDeCorte.second)
+        rectanguloIzq[3] = Pair(xMin, puntoDeCorte.second)
+        rectanguloDer[0] = Pair(xMin, puntoDeCorte.second)
+        rectanguloDer[1] = Pair(xMax, puntoDeCorte.second)
+        rectanguloDer[2] = Pair(xMax, yMax)
+        rectanguloDer[3] = Pair(xMin, yMax)
+    }
+    val rectangulos = Array<Array<Pair<Double, Double>>>(2, {Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})})
+    rectangulos[0] = rectanguloIzq
+    rectangulos[1] = rectanguloDer
+    return rectangulos
 }
 
 fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Double>, Array<Double>>{
@@ -254,7 +283,7 @@ fun main(args: Array<String>) {
             val yf = solucion[i].second.second
             writer.newLine("${i+2} $xf $yf")
         }
-        
+
         writer.newLine()
     }
 
