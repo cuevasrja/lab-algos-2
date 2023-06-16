@@ -2,6 +2,22 @@ fun swap(P: Array<Pair<Int, Int>>, i: Int, j: Int): Unit {
     val temp = P[i]
     P[i] = P[j]
     P[j] = temp
+/**
+* Nombre del archivo: DCLSTSP.kt
+* Descripcion: Implementacion del algoritmo "Divide, Conquer, Local Search" para el problema del vendedor viajero
+* Autores: Luis Miguel Isea 19-10175, Juan Cuevas 19-10056
+*/
+
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileReader
+import java.io.FileWriter
+import java.io.BufferedWriter
+
+fun obtenerPuntoDeCorte(P: Array<Pair<Int, Int>>, eje: Int): Pair<Int, Int>{
+    val n = P.size
+    val pos = Math.ceil(n/2.0).toInt() - 1
+    
 }
 
 fun partitionX(P: Array<Pair<Int, Int>>, l: Int, r: Int): Int {
@@ -169,6 +185,13 @@ fun combinarCiclos(c1: Array<Pair<Pair<Int, Int>, Pair<Int, Int>>>, c2: Array<Pa
     return
 }
 
+fun distanciaTotal(ciclo: Array<Pair<Pair<Int, Int>, Pair<Int, Int>>>): Int{
+    var acc = 0
+    for (i in 0 until ciclo.size){
+        acc += distancia2D(ciclo[i].first, ciclo[i].second)
+    }
+}
+
 fun divideAndConquerTSP (P: Array<Pair<Int, Int>>): Array<Pair<Pair<Int, Int>, Pair<Int, Int>>>{
     val n = P.size
     if (n == 0){
@@ -192,5 +215,49 @@ fun divideAndConquerTSP (P: Array<Pair<Int, Int>>): Array<Pair<Pair<Int, Int>, P
 }
 
 fun main(args: Array<String>) {
+    val archivoEntrada = File(args[0])
+    val reader = BufferedReader(FileReader(archivoEntrada, Charsets.UTF_8))
 
+    val nombre = reader.readLine().split(":")[1].trim()
+    reader.readLine() // Tipo de archivo que no nos interesa
+    reader.readLine() // Comentario que no nos interesa
+    val numeroCiudades = reader.readLine().split(":")[1].trim().toInt()
+    reader.readLine() // Tipo de coordenadas que no nos interesa
+    reader.readLine() // Comentario que no nos interesa
+
+    // Creamos un arreglo de pares de enteros para almacenar las coordenadas de las ciudades
+    val ciudades = Array<Pair<Int, Int>>(numeroCiudades, { Pair(0, 0) })
+    for (i in 0 until numeroCiudades) {
+        val ciudad = reader.readLine().split(" ")
+        val x = ciudad[1].trim().toInt()
+        val y = ciudad[2].trim().toInt()
+        ciudades[i] = Pair(x, y)
+    }
+
+    // Aplicamos el algoritmo de divide and conquer para obtener la solución
+    val solucion = divideAndConquerTSP(ciudades)
+    val distanciaRuta = distanciaTotal(solucion)
+
+    // Escribimos la solución en un archivo de salida
+    val archivoSalida = archivoSalida("${args[1]}.tsp")
+    val writer = BufferedWriter(FileWriter(archivoSalida))
+
+    writer.write("NAME : ${nombre}")
+    writer.newLine("COMMENT : Length ${distanciaRuta}")
+    writer.newLine("TYPE : TOUR")
+    writer.newLine("DIMENSION : ${numeroCiudades}")
+    writer.newLine("TOUR_SECTION")
+
+    for (i in 0 until numeroCiudades) {
+        val x = solucion[i].first.first
+        val y = solucion[i].first.second
+        writer.newLine("${i+1} ${x} ${y}")
+        if (i == numeroCiudades - 1) {
+            writer.newLine("${i+2} ${solucion[0].second.first} ${solucion[0].second.second}}")
+        }
+        
+        writer.newLine()
+    }
+
+    writer.newLine("EOF")
 }
