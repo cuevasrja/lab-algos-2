@@ -154,18 +154,22 @@ fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangul
 }
 
 fun obtenerCoordMaxX(P: Array<Pair<Double, Double>>): Double{
+    // Buscamos el punto con mayor coordenada X en el arreglo P
     return P.maxBy { it.first }!!.first
 }
 
 fun obtenerCoordMaxY(P: Array<Pair<Double, Double>>): Double{
+    // Buscamos el punto con mayor coordenada Y en el arreglo P
     return P.maxBy { it.second }!!.second
 }
 
 fun obtenerCoordMinX(P: Array<Pair<Double, Double>>): Double{
+    // Buscamos el punto con menor coordenada X en el arreglo P
     return P.minBy { it.first }!!.first
 }
 
 fun obtenerCoordMinY(P: Array<Pair<Double, Double>>): Double{
+    // Buscamos el punto con menor coordenada Y en el arreglo P
     return P.minBy { it.second }!!.second
 }
 
@@ -246,9 +250,12 @@ fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double
         return arrayOf(Pair(P[0], P[1]), Pair(P[1], P[2]), Pair(P[2], P[0]))
     }
     else{
+        // Particionar el conjunto de puntos en dos
         val (pright, pleft) = obtenerParticiones(P)
+        // Resolver el problema para cada conjunto de puntos
         val c1 = divideAndConquerTSP(pright)
         val c2 = divideAndConquerTSP(pleft)
+        // Combinar las soluciones
         return combinarCiclos(c1, c2)
     }
 }
@@ -268,6 +275,9 @@ fun main(args: Array<String>) {
     val ciudades = Array<Pair<Double, Double>>(numeroCiudades, { Pair(0.0, 0.0) })
     for (i in 0 until numeroCiudades) {
         val ciudad = reader.readLine().split(" ")
+        // Las coordenadas de las ciudades vienen en el archivo de entrada con un espacio de separación
+        // por lo que debemos eliminar los espacios en blanco al inicio y al final de cada coordenada
+        // para poder convertirlas a reales
         val x = ciudad[1].trim().toDouble()
         val y = ciudad[2].trim().toDouble()
         ciudades[i] = Pair(x, y)
@@ -297,8 +307,6 @@ fun main(args: Array<String>) {
             val yf = solucion[i].second.second
             writer.newLine("${i+2} $xf $yf")
         }
-
-        writer.newLine()
     }
 
     // Escribimos el EOF que indica el final del archivo
