@@ -1,7 +1,3 @@
-fun swap(P: Array<Pair<Int, Int>>, i: Int, j: Int): Unit {
-    val temp = P[i]
-    P[i] = P[j]
-    P[j] = temp
 /**
 * Nombre del archivo: DCLSTSP.kt
 * Descripcion: Implementacion del algoritmo "Divide, Conquer, Local Search" para el problema del vendedor viajero
@@ -13,6 +9,12 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 import java.io.BufferedWriter
+
+fun swap(P: Array<Pair<Int, Int>>, i: Int, j: Int): Unit {
+    val temp = P[i]
+    P[i] = P[j]
+    P[j] = temp
+}
 
 fun obtenerPuntoDeCorte(P: Array<Pair<Int, Int>>, eje: Int): Pair<Int, Int>{
     val n = P.size
