@@ -74,12 +74,12 @@ fun checkSolution(ciudadesInstancia: Array<Pair<Double, Double>>, ciudadesSoluci
 */
 fun leerArchivoRuta(archivo: File): Array<Pair<Double, Double>> {
     val lector = BufferedReader(FileReader(archivo, Charsets.UTF_8))
-    lector.readLine()
-    lector.readLine()
-    lector.readLine()
+    lector.readLine() // Ignorar primera linea. Es el nombre del archivo
+    lector.readLine() // Ignorar segunda linea. Es el comentario
+    lector.readLine() // Ignorar tercera linea. Es el tipo de archivo
     val numeroCiudades = lector.readLine().split(":")[1].trim().toInt()
-    lector.readLine()
-    lector.readLine()
+    lector.readLine() // Ignorar linea. Es el comentario
+    lector.readLine() // Ignorar linea. Es el comentario
     val ciudades = Array<Pair<Double, Double>>(numeroCiudades, { Pair(0, 0) })
     for (i in 0 until numeroCiudades) {
         val ciudad = lector.readLine().split(" ")
@@ -87,6 +87,7 @@ fun leerArchivoRuta(archivo: File): Array<Pair<Double, Double>> {
         val y = ciudad[2].trim().toDouble()
         ciudades[i] = Pair(x, y)
     }
+    lector.close()
     return ciudades
 }
 

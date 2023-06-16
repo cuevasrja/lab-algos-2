@@ -229,6 +229,7 @@ fun main(args: Array<String>) {
         val y = ciudad[2].trim().toDouble()
         ciudades[i] = Pair(x, y)
     }
+    reader.close()
 
     // Aplicamos el algoritmo de divide and conquer para obtener la solución
     val solucion = divideAndConquerTSP(ciudades)
@@ -258,4 +259,5 @@ fun main(args: Array<String>) {
     }
 
     writer.newLine("EOF")
+    writer.close()
 }
