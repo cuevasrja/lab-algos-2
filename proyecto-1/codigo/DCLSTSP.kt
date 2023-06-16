@@ -204,7 +204,7 @@ fun divideAndConquerTSP (P: Array<Pair<Int, Int>>): Array<Pair<Pair<Int, Int>, P
         return arrayOf(Pair(P[0], P[1]), Pair(P[1], P[0]))
     }
     else if (n == 3){
-        return
+        return arrayOf(Pair(P[0], P[1]), Pair(P[1], P[2]), Pair(P[2], P[0]))
     }
     else{
         val (pright, pleft) = obtenerParticiones(P)

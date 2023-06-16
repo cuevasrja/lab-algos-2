@@ -42,19 +42,26 @@ fun distanciaRuta(ciudades: Array<Pair<Int, Int>>): Int {
 * Descripcion: Verifica que la solucion dada sea correcta
 */
 fun checkSolution(ciudadesInstancia: Array<Pair<Int, Int>>, ciudadesSolucion: Array<Pair<Int, Int>>): Boolean {
+    // Verificar que la solucion tenga el mismo numero de ciudades que la instancia
+    if (ciudadesInstancia.size != ciudadesSolucion.size) {
+        println("Numero de ciudades de instancia ${ciudadesInstancia.size} no coincide con numero de ciudades de solucion ${ciudadesSolucion.size}")
+        return false
+    }
     // Verificar que las ciudades de la ruta de la solucion sean las mismas que las de la instancia
-    for (i in 0 until ciudadesInstanciaOrdenadas.size) {
-        if (ciudadesInstanciaOrdenadas[i] != ciudadesSolucionOrdenadas[i]) {
-            println("Ciudad ${ciudadesInstanciaOrdenadas[i]} no coincide con ${ciudadesSolucionOrdenadas[i]}")
+    for (i in 0 until ciudadesInstancia.size) {
+        if (ciudadesInstancia[i] != ciudadesSolucion[i]) {
+            println("Ciudad ${ciudadesInstancia[i]} no coincide con ${ciudadesSolucion[i]}")
             return false
         }
     }
-    // Verificar que la distancia de la ruta de la solucion sea la misma que la de la instancia
-    distanciaInstancia = distanciaRuta(ciudadesInstanciaOrdenadas)
-    distanciaSolucion = distanciaRuta(ciudadesSolucionOrdenadas)
-    if (distanciaInstancia != distanciaSolucion) {
-        println("Distancia de instancia $distanciaInstancia no coincide con distancia de solucion $distanciaSolucion")
-        return false
+    if (ciudadesInstancia >= 2){
+        // Verificar que la distancia de la ruta de la solucion sea la misma que la de la instancia
+        distanciaInstancia = distanciaRuta(ciudadesInstancia)
+        distanciaSolucion = distanciaRuta(ciudadesSolucion)
+        if (distanciaInstancia != distanciaSolucion) {
+            println("Distancia de instancia $distanciaInstancia no coincide con distancia de solucion $distanciaSolucion")
+            return false
+        }
     }
     return true
 }
@@ -94,6 +101,6 @@ fun main(args: Array<String>) {
         println("Solución incorrecta")
         return
     }
-    
+
     println("Solución correcta")
 }
