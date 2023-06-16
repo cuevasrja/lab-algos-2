@@ -16,12 +16,6 @@ fun swap(P: Array<Pair<Int, Int>>, i: Int, j: Int): Unit {
     P[j] = temp
 }
 
-fun obtenerPuntoDeCorte(P: Array<Pair<Int, Int>>, eje: Int): Pair<Int, Int>{
-    val n = P.size
-    val pos = Math.ceil(n/2.0).toInt() - 1
-    
-}
-
 fun partitionX(P: Array<Pair<Int, Int>>, l: Int, r: Int): Int {
     val pivot = P[r].first
     var i = l - 1
