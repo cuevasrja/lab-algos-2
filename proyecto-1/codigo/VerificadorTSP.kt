@@ -77,7 +77,7 @@ fun leerArchivoRuta(archivo: File): Array<Pair<Double, Double>> {
     lector.readLine()
     lector.readLine()
     lector.readLine()
-    val numeroCiudades = lector.readLine().split(":")[1].trim().toDouble()
+    val numeroCiudades = lector.readLine().split(":")[1].trim().toInt()
     lector.readLine()
     lector.readLine()
     val ciudades = Array<Pair<Double, Double>>(numeroCiudades, { Pair(0, 0) })
