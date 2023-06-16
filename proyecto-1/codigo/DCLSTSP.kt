@@ -153,10 +153,6 @@ fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangul
     return rectangulos
 }
 
-fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Double>, Array<Double>>{
-
-}
-
 fun obtenerCoordMaxX(P: Array<Pair<Double, Double>>): Double{
     return P.maxBy { it.first }!!.first
 }
@@ -182,7 +178,7 @@ fun crearRectangulo(P: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>
 }
 
 fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>{
-
+    return P.filter { it.first >= rectangulo[0].first && it.first <= rectangulo[1].first && it.second >= rectangulo[0].second && it.second <= rectangulo[1].second }.toTypedArray()
 }
 
 fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Double{
@@ -196,6 +192,19 @@ fun distancia3D(p1: Triple<Double, Double, Double>, p2: Triple<Double, Double, D
     val y = p1.second - p2.second
     val z = p1.third - p2.third
     return Math.sqrt((x*x + y*y + z*z).toDouble())
+}
+
+fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Double>, Array<Double>>{
+    val rectangulo = crearRectangulo(P)
+    val xDim = obtenerCoordMaxX(rectangulo) - obtenerCoordMinX(rectangulo)
+    val yDim = obtenerCoordMaxY(rectangulo) - obtenerCoordMinY(rectangulo)
+    if (xDim > yDim){
+        // TODO: Particionar en X
+    }
+    else {
+        // TODO: Particionar en Y
+    }
+    // TODO: Obtener punto de corte
 }
 
 fun distanciaGanada(n1: Double, n2: Double, o1: Double, o2: Double): Double{
