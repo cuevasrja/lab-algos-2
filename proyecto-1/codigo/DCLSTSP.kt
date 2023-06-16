@@ -235,7 +235,7 @@ fun main(args: Array<String>) {
     val distanciaRuta = distanciaTotal(solucion)
 
     // Escribimos la solución en un archivo de salida
-    val archivoSalida = archivoSalida("${args[1]}.tsp")
+    val archivoSalida = archivoSalida(args[1])
     val writer = BufferedWriter(FileWriter(archivoSalida))
 
     writer.write("NAME : ${nombre}")
