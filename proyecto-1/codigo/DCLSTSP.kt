@@ -178,6 +178,8 @@ fun crearRectangulo(P: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>
 }
 
 fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>{
+    // Rectangulo = [Punto inferior izquierdo, Punto superior derecho, Punto inferior derecho, Punto superior izquierdo]
+    // Filtrar puntos que esten dentro del rectangulo, buscando pares <= Punto superior derecho y >= Punto inferior izquierdo
     return P.filter { it.first >= rectangulo[0].first && it.first <= rectangulo[1].first && it.second >= rectangulo[0].second && it.second <= rectangulo[1].second }.toTypedArray()
 }
 
@@ -187,6 +189,7 @@ fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Double{
     return Math.sqrt((x*x + y*y).toDouble())
 }
 
+// ? Revisar si es necesario
 fun distancia3D(p1: Triple<Double, Double, Double>, p2: Triple<Double, Double, Double>): Double{
     val x = p1.first - p2.first
     val y = p1.second - p2.second
@@ -212,10 +215,12 @@ fun distanciaGanada(n1: Double, n2: Double, o1: Double, o2: Double): Double{
 }
 
 fun divideAndConquerAndLocalSearchTSP(P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+    // TODO: Implementar Divide and Conquer and Local Search
     return
 }
 
 fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, c2: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+    // TODO: Implementar combinacion de ciclos
     return
 }
 
@@ -296,6 +301,7 @@ fun main(args: Array<String>) {
         writer.newLine()
     }
 
+    // Escribimos el EOF que indica el final del archivo
     writer.newLine("EOF")
     writer.close()
 }
