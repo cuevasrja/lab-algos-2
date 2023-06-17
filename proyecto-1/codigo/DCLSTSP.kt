@@ -200,10 +200,10 @@ fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Double, Double>>, ejeDeCorte
 * Entradas: ejeDeCorte, un caracter que representa el eje de corte especificado
 *           puntoDeCorte, un par de enteros que representan las coordenadas del punto de corte
 *           rectangulo, un arreglo de pares de enteros que representan las coordenadas de un rectangulo que contiene a las ciudades
-* Salidas: Array<Array<Pair<Double, Double>>>
+* Salidas: Pair<Array<Pair<Double, Double>>, Array<Pair<Double, Double>>>
 * Descripcion: Aplica el corte al rectangulo en base al eje de corte y al punto de corte especificados
 */
-fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangulo: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, Double>>>{
+fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangulo: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, Double>>, Array<Pair<Double, Double>>>{
     val rectanguloIzq = Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})
     val rectanguloDer = Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})
     val xMin = obtenerCoordMinX(rectangulo)
@@ -318,18 +318,24 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Double>, Arra
     val rectangulo = crearRectangulo(P)
     val xDim = obtenerCoordMaxX(rectangulo) - obtenerCoordMinX(rectangulo)
     val yDim = obtenerCoordMaxY(rectangulo) - obtenerCoordMinY(rectangulo)
-    if (xDim > yDim) val ejeDeCorte: Char = 'X' else val ejeDeCorte: Char = 'Y'
+    var ejeDeCorte: Char
+    if (xDim > yDim){
+        ejeDeCorte = 'X'
+    } else{
+        ejeDeCorte = 'Y'
+    }
     val puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
     val rectangulosInternos = aplicarCorte(rectangulo, puntoDeCorte, ejeDeCorte)
     val particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos[0])
     val particionDer = obtenterPuntosRectangulo(P, rectangulosInternos[1])
-    if (particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3){
-        if (ejeDeCorte == 'X') ejeDeCorte = 'Y' else ejeDeCorte = 'X'
+    if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
+        if (ejeDeCorte == 'X') ejeDeCorte = 'Y' 
+        else ejeDeCorte = 'X'
         puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
         rectangulosInternos = aplicarCorte(rectangulo, puntoDeCorte, ejeDeCorte)
         particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos[0])
         particionDer = obtenterPuntosRectangulo(P, rectangulosInternos[1])
-        if (particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3){
+        if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
             if (ejeDeCorte == 'X') ejeDeCorte = 'Y' else ejeDeCorte = 'X'
             puntoDeCorte = obtenerPuntoDeCorteMitad(P, ejeDeCorte)
             rectangulosInternos = aplicarCorte(rectangulo, puntoDeCorte, ejeDeCorte)
@@ -441,7 +447,7 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
 * Salidas: Distancia total del ciclo (Double)
 */
 fun distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Double{
-    var acc = 0
+    var acc: Double = 0.0
     for (i in 0 until ciclo.size){
         acc += distancia2D(ciclo[i].first, ciclo[i].second)
     }
@@ -512,7 +518,7 @@ fun main(args: Array<String>) {
     // Creamos un arreglo de pares de enteros para almacenar las coordenadas de las ciudades
     val ciudades = Array<Pair<Double, Double>>(numeroCiudades, { Pair(0.0, 0.0) })
     for (i in 0 until numeroCiudades) {
-        val ciudad = reader.readLine().split(" ")
+        val ciudad = reader.readLine().trim().split(" ")
         // Las coordenadas de las ciudades vienen en el archivo de entrada con un espacio de separación
         // por lo que debemos eliminar los espacios en blanco al inicio y al final de cada coordenada
         // para poder convertirlas a reales

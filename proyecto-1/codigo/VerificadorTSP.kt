@@ -27,7 +27,7 @@ fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Double {
 * Descripcion: Calcula la distancia total de la ruta que recorre todas las ciudades en el orden dado
 */
 fun distanciaRuta(ciudades: Array<Pair<Double, Double>>): Double {
-    var acc = 0
+    var acc: Double = 0.0
     for (i in 0 until ciudades.size - 1) {
         acc += distancia2D(ciudades[i], ciudades[i + 1])
     }
@@ -54,10 +54,10 @@ fun checkSolution(ciudadesInstancia: Array<Pair<Double, Double>>, ciudadesSoluci
             return false
         }
     }
-    if (ciudadesInstancia >= 2){
+    if (ciudadesInstancia.size >= 2){
         // Verificar que la distancia de la ruta de la solucion sea la misma que la de la instancia
-        distanciaInstancia = distanciaRuta(ciudadesInstancia)
-        distanciaSolucion = distanciaRuta(ciudadesSolucion)
+        val distanciaInstancia = distanciaRuta(ciudadesInstancia)
+        val distanciaSolucion = distanciaRuta(ciudadesSolucion)
         if (distanciaInstancia != distanciaSolucion) {
             println("Distancia de instancia $distanciaInstancia no coincide con distancia de solucion $distanciaSolucion")
             return false
@@ -80,9 +80,9 @@ fun leerArchivoRuta(archivo: File): Array<Pair<Double, Double>> {
     val numeroCiudades = lector.readLine().split(":")[1].trim().toInt()
     lector.readLine() // Ignorar linea. Es el comentario
     lector.readLine() // Ignorar linea. Es el comentario
-    val ciudades = Array<Pair<Double, Double>>(numeroCiudades, { Pair(0, 0) })
+    val ciudades = Array<Pair<Double, Double>>(numeroCiudades, { Pair(0.0, 0.0) })
     for (i in 0 until numeroCiudades) {
-        val ciudad = lector.readLine().split(" ")
+        val ciudad = lector.readLine().trim().split(" ")
         val x = ciudad[1].trim().toDouble()
         val y = ciudad[2].trim().toDouble()
         ciudades[i] = Pair(x, y)
