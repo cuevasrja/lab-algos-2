@@ -554,6 +554,8 @@ fun main(args: Array<String>) {
     }
     reader.close()
 
+    val ciudadesEntrada = ciudades.copyOf()
+
     // Aplicamos el algoritmo de divide and conquer para obtener la solución
     val solucion = divideAndConquerTSP(ciudades)
     val distanciaRuta = distanciaTotal(solucion)
@@ -564,7 +566,7 @@ fun main(args: Array<String>) {
     archivoSalida.writeText("NAME : ${nombre}\n")
     archivoSalida.appendText("COMMENT : Length ${distanciaRuta}\n")
     archivoSalida.appendText("TYPE : TOUR\n")
-    archivoSalida.appendText("DIMENSION : ${numeroCiudades}\n")
+    archivoSalida.appendText("DIMENSION : ${solucion.size - 1}\n")
     archivoSalida.appendText("TOUR_SECTION\n")
 
     // Imprimimos la solución en el stdout
@@ -575,15 +577,17 @@ fun main(args: Array<String>) {
     println("DIMENSION : ${numeroCiudades}")
 
     for (i in 0 until solucion.size) {
+        val par = solucion[i].first
+        val indice = ciudadesEntrada.indexOf(par)
         val x = solucion[i].first.first
         val y = solucion[i].first.second
-        archivoSalida.appendText("${i+1} ${x} ${y}\n")
-        println("${i+1} ${x} ${y}")
+        archivoSalida.appendText("${indice+1} ${x} ${y}\n")
         if (i == numeroCiudades - 1) {
+            val parf = solucion[i].second
+            val indicef = ciudadesEntrada.indexOf(parf)
             val xf = solucion[i].second.first
             val yf = solucion[i].second.second
-            archivoSalida.appendText("${i+2} $xf $yf\n")
-            println("${i+2} $xf $yf")
+            archivoSalida.appendText("${indicef + 1} $xf $yf\n")
         }
     }
 

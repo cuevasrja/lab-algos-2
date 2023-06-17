@@ -7,6 +7,6 @@ if [ ! -f $INPUT ]; then
     echo "No existe el archivo de entrada $1"
     exit 1
 fi
-echo -n "" > $2.tsp
-OUTPUT=$(realpath $2.tsp)
+echo -n "" > $2.out
+OUTPUT=$(realpath $2.out)
 java -Xss100m -jar DCLSTSP.jar "$INPUT" "$OUTPUT"
