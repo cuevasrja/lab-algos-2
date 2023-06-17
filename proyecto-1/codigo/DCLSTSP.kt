@@ -240,7 +240,7 @@ fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangul
 */
 fun obtenerCoordMaxX(P: Array<Pair<Double, Double>>): Double{
     // Buscamos el punto con mayor coordenada X en el arreglo P
-    return P.maxBy { it.first }!!.first
+    return P.maxBy { it.first }.first
 }
 
 /**
@@ -250,7 +250,7 @@ fun obtenerCoordMaxX(P: Array<Pair<Double, Double>>): Double{
 */
 fun obtenerCoordMaxY(P: Array<Pair<Double, Double>>): Double{
     // Buscamos el punto con mayor coordenada Y en el arreglo P
-    return P.maxBy { it.second }!!.second
+    return P.maxBy { it.second }.second
 }
 
 /**
@@ -260,7 +260,7 @@ fun obtenerCoordMaxY(P: Array<Pair<Double, Double>>): Double{
 */
 fun obtenerCoordMinX(P: Array<Pair<Double, Double>>): Double{
     // Buscamos el punto con menor coordenada X en el arreglo P
-    return P.minBy { it.first }!!.first
+    return P.minBy { it.first }.first
 }
 
 /**
@@ -270,7 +270,7 @@ fun obtenerCoordMinX(P: Array<Pair<Double, Double>>): Double{
 */
 fun obtenerCoordMinY(P: Array<Pair<Double, Double>>): Double{
     // Buscamos el punto con menor coordenada Y en el arreglo P
-    return P.minBy { it.second }!!.second
+    return P.minBy { it.second }.second
 }
 
 /**
