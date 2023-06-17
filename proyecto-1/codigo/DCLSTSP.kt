@@ -313,12 +313,12 @@ fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<P
 /**
 * Funcion: distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>)
 * Entradas: p1: Par de coordenadas, p2: Par de coordenadas
-* Salidas: Distancia entre los puntos p1 y p2 como un Double
+* Salidas: Distancia entre los puntos p1 y p2 como un Int
 */
-fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Double{
+fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Int{
     val x = p1.first - p2.first
     val y = p1.second - p2.second
-    return Math.sqrt((x*x + y*y).toDouble())
+    return Math.sqrt((x*x + y*y).toDouble()).toInt()
 }
 
 /**
@@ -366,12 +366,12 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
 }
 
 /**
-* Funcion: distanciaGanada(n1: Double, n2: Double, o1: Double, o2: Double)
+* Funcion: distanciaGanada(n1: Int, n2: Int, o1: Int, o2: Int)
 * Entradas: n1: Distancia del primer ciclo, n2: Distancia del segundo ciclo, o1: Distancia del primer ciclo original, o2: Distancia del segundo ciclo original
 * Salidas: Distancia ganada al combinar los ciclos
 */
-fun distanciaGanada(n1: Double, n2: Double, o1: Double, o2: Double): Double{
-    return (n1 + n2) - (o1 + o2)
+fun distanciaGanada(n1: Int, n2: Int, o1: Int, o2: Int): Int{
+    return ((n1 + n2) - (o1 + o2)).toInt()
 }
 
 /**
@@ -392,7 +392,7 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
     val n = c1.size
     val m = c2.size
     // Definimos minDist como el valor maximo de Double
-    var minDist = Double.MAX_VALUE
+    var minDist = Int.MAX_VALUE
     // Agregamos los puntos de c1 y c2 a un arreglo de puntos
     var aggC1: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
     var aggC2: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
@@ -465,12 +465,12 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
 * Entradas: ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>
 * Salidas: Distancia total del ciclo (Double)
 */
-fun distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Double{
+fun distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Int{
     var acc: Double = 0.0
     for (i in 0 until ciclo.size){
         acc += distancia2D(ciclo[i].first, ciclo[i].second)
     }
-    return acc
+    return acc.toInt()
 }
 
 /**
@@ -561,7 +561,7 @@ fun main(args: Array<String>) {
     archivoSalida.appendText("DIMENSION : ${numeroCiudades}\n")
     archivoSalida.appendText("TOUR_SECTION\n")
 
-    for (i in 0 until numeroCiudades) {
+    for (i in 0 until solucion.size) {
         val x = solucion[i].first.first
         val y = solucion[i].first.second
         archivoSalida.appendText("${i+1} ${x} ${y}\n")
@@ -573,5 +573,5 @@ fun main(args: Array<String>) {
     }
 
     // Escribimos el EOF que indica el final del archivo
-    archivoSalida.appendText("EOF")
+    archivoSalida.appendText("EOF\n")
 }

@@ -26,12 +26,12 @@ fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Double {
 * Salidas: La distancia total de la ruta que recorre todas las ciudades en el orden dado
 * Descripcion: Calcula la distancia total de la ruta que recorre todas las ciudades en el orden dado
 */
-fun distanciaRuta(ciudades: Array<Pair<Double, Double>>): Double {
+fun distanciaRuta(ciudades: Array<Pair<Double, Double>>): Int {
     var acc: Double = 0.0
     for (i in 0 until ciudades.size - 1) {
         acc += distancia2D(ciudades[i], ciudades[i + 1])
     }
-    return acc
+    return acc.toInt()
 }
 
 /**

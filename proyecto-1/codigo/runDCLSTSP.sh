@@ -9,4 +9,4 @@ if [ ! -f $INPUT ]; then
 fi
 echo -n "" > $2.tsp
 OUTPUT=$(realpath $2.tsp)
-java -Xss100m -jar DCLSTSP.jar $INPUT $OUTPUT
+java -Xss100m -jar DCLSTSP.jar "$INPUT" "$OUTPUT"
