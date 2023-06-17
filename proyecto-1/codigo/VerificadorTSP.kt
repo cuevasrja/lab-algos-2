@@ -92,6 +92,9 @@ fun leerArchivoRuta(archivo: File): Array<Pair<Double, Double>> {
 }
 
 fun main(args: Array<String>) {
+    // args[0] es el archivo de instancia
+    // args[1] es el archivo de solucion
+
     val archivoInstancia = File(args[0])
     val ciudadesInstancia = leerArchivoRuta(archivoInstancia)
 
@@ -99,6 +102,7 @@ fun main(args: Array<String>) {
     val ciudadesSolucion = leerArchivoRuta(archivoSolucion)
 
     if (!checkSolution(ciudadesInstancia, ciudadesSolucion)) {
+        // Si la solucion no es correcta, terminar el programa
         println("Solución incorrecta")
         return
     }

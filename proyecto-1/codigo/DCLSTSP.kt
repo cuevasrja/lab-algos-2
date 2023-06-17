@@ -218,14 +218,85 @@ fun distanciaGanada(n1: Double, n2: Double, o1: Double, o2: Double): Double{
     return (n1 + n2) - (o1 + o2)
 }
 
-fun divideAndConquerAndLocalSearchTSP(P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
-    // TODO: Implementar Divide and Conquer and Local Search
-    return
-}
-
 fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, c2: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
-    // TODO: Implementar combinacion de ciclos
-    return
+    if (c1.size == 0){
+        // Si c1 es vacio, retornamos c2
+        return c2
+    }
+    else if (c2.size == 0){
+        // Si c2 es vacio, retornamos c1
+        return c1
+    }
+    // Tomamos los el tamaño de los ciclos
+    val n = c1.size
+    val m = c2.size
+    // Definimos minDist como el valor maximo de Double
+    var minDist = Double.MAX_VALUE
+    // Agregamos los puntos de c1 y c2 a un arreglo de puntos
+    var aggC1: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
+    var aggC2: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
+    // Eliminamos los puntos de c1 y c2 que ya estan en aggC1 y aggC2
+    var delC1: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
+    var delC2: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
+    
+    // Iteramos sobre los ciclos
+    // Sea el par de coordenadas (a, b) en c1. Siendo a y b puntos en el plano
+    for (i in 0 until n){
+        // Calculamos la distancia entre a y b
+        val dOld1 = distancia2D(c1[i].first, c1[i].second)
+        // Sea el par de coordenadas (c, d) en c2. Siendo c y d puntos en el plano
+        for (j in 0 until m){
+            val dOld2 = distancia2D(c2[j].first, c2[j].second) // Calculamos la distancia entre c y d
+            val dNew1 = distancia2D(c1[i].first, c2[j].first) // Calculamos la distancia entre a y c
+            val dNew2 = distancia2D(c1[i].second, c2[j].second) // Calculamos la distancia entre b y d
+            val dNew3 = distancia2D(c1[i].first, c2[j].second) // Calculamos la distancia entre a y d
+            val dNew4 = distancia2D(c1[i].second, c2[j].first) // Calculamos la distancia entre b y c
+            val g1 = distanciaGanada(dNew1, dNew2, dOld1, dOld2) // Calculamos la distancia ganada entre (a, c) y (b, d)
+            val g2 = distanciaGanada(dNew3, dNew4, dOld1, dOld2) // Calculamos la distancia ganada entre (a, d) y (b, c)
+            val dist = Math.min(g1, g2) // Tomamos la distancia minima entre g1 y g2
+
+            // Si la distancia es menor a minDist, actualizamos minDist
+            if (dist < minDist){
+                minDist = dist
+                // Si g1 es menor a g2, agregamos (a, c) y (b, d) a aggC1 y aggC2 respectivamente
+                if (g1 < g2){
+                    aggC1 = Pair(c1[i].first, c2[j].first)
+                    aggC2 = Pair(c1[i].second, c2[j].second)
+                }
+                // En caso contrario, agregamos (a, d) y (b, c) a aggC1 y aggC2 respectivamente
+                else {
+                    aggC1 = Pair(c1[i].first, c2[j].second)
+                    aggC2 = Pair(c1[i].second, c2[j].first)
+                }
+                // Eliminamos los puntos de (a, b) y (c, d) de c1 y c2 respectivamente
+                delC1 = c1[i]
+                delC2 = c2[j]
+            }
+        }
+    }
+    // Creamos un nuevo ciclo con los puntos de c1 y c2
+    val ciclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(n+m-2){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
+    var index = 0
+    // Iteramos sobre c1
+    for (i in 0 until n){
+        // Si el punto no es el punto a eliminar, lo agregamos al nuevo ciclo
+        if (c1[i] != delC1){
+            ciclo[index] = c1[i]
+            index++
+        }
+    }
+    // Iteramos sobre c2
+    for (i in 0 until m){
+        // Si el punto no es el punto a eliminar, lo agregamos al nuevo ciclo
+        if (c2[i] != delC2){
+            ciclo[index] = c2[i]
+            index++
+        }
+    }
+    // Agregamos los puntos de aggC1 y aggC2 al nuevo ciclo
+    ciclo[index] = aggC1
+    ciclo[index+1] = aggC2
+    return ciclo
 }
 
 fun distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Double{
@@ -238,18 +309,23 @@ fun distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>
 fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
     val n = P.size
     if (n == 0){
+        // Cuando n = 0, no hay ciclos
         return arrayOf()
     }
     else if (n == 1){
+        // Cuando n = 1, se tiene un solo ciclo
         return arrayOf(Pair(P[0], P[0]))
     }
     else if (n == 2){
+        // Cuando n = 2, se tiene un solo ciclo
         return arrayOf(Pair(P[0], P[1]), Pair(P[1], P[0]))
     }
     else if (n == 3){
+        // Cuando n = 3, se tienen 3 posibles ciclos, todos con la misma distancia
         return arrayOf(Pair(P[0], P[1]), Pair(P[1], P[2]), Pair(P[2], P[0]))
     }
     else{
+        // Cuando n > 3, se tiene que dividir el conjunto de puntos en dos
         // Particionar el conjunto de puntos en dos
         val (pright, pleft) = obtenerParticiones(P)
         // Resolver el problema para cada conjunto de puntos
@@ -258,6 +334,11 @@ fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double
         // Combinar las soluciones
         return combinarCiclos(c1, c2)
     }
+}
+
+fun divideAndConquerAndLocalSearchTSP(P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+    val c = divideAndConquerTSP(P)
+    return // TODO: Implementar busqueda local
 }
 
 fun main(args: Array<String>) {
