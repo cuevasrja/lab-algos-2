@@ -292,10 +292,13 @@ fun crearRectangulo(P: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>
 * Entradas: P: Arreglo de puntos, rectangulo: Arreglo de puntos que representan un rectangulo
 * Salidas: Arreglo de puntos que estan dentro del rectangulo
 */
-fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>{
+fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>, puntoDeCorte: Pair<Double,Double>): Array<Pair<Double, Double>>{
     var numElementos = 0
     for (punto in P){
         if (punto.first >= rectangulo[0].first && punto.first <= rectangulo[1].first && punto.second >= rectangulo[0].second && punto.second <= rectangulo[3].second){
+            if (numElementos == 0 && punto == puntoDeCorte) {
+                continue
+            }
             numElementos++
         }
     }
@@ -303,6 +306,9 @@ fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<P
     var i = 0
     for (punto in P){
         if (punto.first >= rectangulo[0].first && punto.first <= rectangulo[1].first && punto.second >= rectangulo[0].second && punto.second <= rectangulo[3].second){
+            if (i == 0 && punto == puntoDeCorte) {
+                continue
+            }
             puntosRectangulo[i] = punto
             i++
         }
@@ -338,8 +344,8 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
     }
     var puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
     var rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
-    var particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first)
-    var particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second)
+    var particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first, puntoDeCorte)
+    var particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte)
     if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
         if (ejeDeCorte == 'X') {
             ejeDeCorte = 'Y'
@@ -348,8 +354,8 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
         }
         puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
         rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
-        particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first)
-        particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second)
+        particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first, puntoDeCorte)
+        particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte)
         if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
             if (ejeDeCorte == 'X') {
                 ejeDeCorte = 'Y'
@@ -358,8 +364,8 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
             }
             puntoDeCorte = obtenerPuntoDeCorteMitad(P, ejeDeCorte)
             rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
-            particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first)
-            particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second)
+            particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first, puntoDeCorte)
+            particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte)
         }
     }
     return Pair(particionIzq, particionDer)
@@ -436,7 +442,7 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
         }
     }
     // Creamos un nuevo ciclo con los puntos de c1 y c2
-    val ciclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(n+m-2){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
+    val ciclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(n+m){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
     var index = 0
     // Iteramos sobre c1
     for (i in 0 until n){
@@ -499,12 +505,12 @@ fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double
     else{
         // Cuando n > 3, se tiene que dividir el conjunto de puntos en dos
         // Particionar el conjunto de puntos en dos
-        val (pright, pleft) = obtenerParticiones(P)
+        val (particionIzq, particionDer) = obtenerParticiones(P)
         // Resolver el problema para cada conjunto de puntos
-        val c1 = divideAndConquerTSP(pright)
-        val c2 = divideAndConquerTSP(pleft)
+        val cicloIzq = divideAndConquerTSP(particionIzq)
+        val cicloDer = divideAndConquerTSP(particionDer)
         // Combinar las soluciones
-        return combinarCiclos(c1, c2)
+        return combinarCiclos(cicloIzq, cicloDer)
     }
 }
 
