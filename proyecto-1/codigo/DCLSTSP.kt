@@ -567,17 +567,27 @@ fun main(args: Array<String>) {
     archivoSalida.appendText("DIMENSION : ${numeroCiudades}\n")
     archivoSalida.appendText("TOUR_SECTION\n")
 
+    // Imprimimos la solución en el stdout
+    println("NAME : ${nombre}")
+    println("COMMENT : Length ${distanciaRuta}")
+    println("TYPE : TOUR")
+    println("TOUR_SECTION")
+    println("DIMENSION : ${numeroCiudades}")
+
     for (i in 0 until solucion.size) {
         val x = solucion[i].first.first
         val y = solucion[i].first.second
         archivoSalida.appendText("${i+1} ${x} ${y}\n")
+        println("${i+1} ${x} ${y}")
         if (i == numeroCiudades - 1) {
             val xf = solucion[i].second.first
             val yf = solucion[i].second.second
             archivoSalida.appendText("${i+2} $xf $yf\n")
+            println("${i+2} $xf $yf")
         }
     }
 
-    // Escribimos el EOF que indica el final del archivo
+    // Escribimos el EOF que indica el final del archivo e imprimimos el fin del tour en el stdout
     archivoSalida.appendText("EOF\n")
+    println("Fin del tour.")
 }
