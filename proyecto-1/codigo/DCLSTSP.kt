@@ -24,6 +24,14 @@ fun swap(P: Array<Pair<Double, Double>>, i: Int, j: Int): Unit {
     P[j] = temp
 }
 
+/**
+* Funcion: partitionX(P: Array<Pair<Double, Double>>, l: Int, r: Int)
+* Entradas: P, un arreglo de pares de enteros que representan las coordenadas de las ciudades
+*           l, un entero que representa la posicion del primer elemento del subarreglo a particionar
+*           r, un entero que representa la posicion del ultimo elemento del subarreglo a particionar
+* Salidas: Int
+* Descripcion: Particiona el arreglo P en dos subarreglos en base a las coordenadas X de las ciudades, uno con los elementos menores o iguales al pivote y otro con los elementos mayores al pivote
+*/
 fun partitionX(P: Array<Pair<Double, Double>>, l: Int, r: Int): Int {
     val pivot = P[r].first
     var i = l - 1
@@ -37,6 +45,14 @@ fun partitionX(P: Array<Pair<Double, Double>>, l: Int, r: Int): Int {
     return i + 1
 }
 
+/**
+* Funcion: quickSortX(P: Array<Pair<Double, Double>>, l: Int, r: Int)
+* Entradas: P, un arreglo de pares de enteros que representan las coordenadas de las ciudades
+*           l, un entero que representa la posicion del primer elemento del subarreglo a ordenar
+*           r, un entero que representa la posicion del ultimo elemento del subarreglo a ordenar
+* Salidas: Unit
+* Descripcion: Ordena el arreglo P en base a las coordenadas X de las ciudades
+*/
 fun quickSortX(P: Array<Pair<Double, Double>>, l: Int, r: Int): Unit {
     if (l < r) {
         val p = partitionX(P, l, r)
@@ -45,6 +61,14 @@ fun quickSortX(P: Array<Pair<Double, Double>>, l: Int, r: Int): Unit {
     }
 }
 
+/**
+* Funcion: partitionY(P: Array<Pair<Double, Double>>, l: Int, r: Int)
+* Entradas: P, un arreglo de pares de enteros que representan las coordenadas de las ciudades
+*           l, un entero que representa la posicion del primer elemento del subarreglo a particionar
+*           r, un entero que representa la posicion del ultimo elemento del subarreglo a particionar
+* Salidas: Int
+* Descripcion: Particiona el arreglo P en dos subarreglos en base a las coordenadas Y de las ciudades, uno con los elementos menores o iguales al pivote y otro con los elementos mayores al pivote
+*/
 fun partitionY(P: Array<Pair<Double, Double>>, l: Int, r: Int): Int {
     val pivot = P[r].second
     var i = l - 1
@@ -58,6 +82,14 @@ fun partitionY(P: Array<Pair<Double, Double>>, l: Int, r: Int): Int {
     return i + 1
 }
 
+/**
+* Funcion: quickSortY(P: Array<Pair<Double, Double>>, l: Int, r: Int)
+* Entradas: P, un arreglo de pares de enteros que representan las coordenadas de las ciudades
+*           l, un entero que representa la posicion del primer elemento del subarreglo a ordenar
+*           r, un entero que representa la posicion del ultimo elemento del subarreglo a ordenar
+* Salidas: Unit
+* Descripcion: Ordena el arreglo P en base a las coordenadas Y de las ciudades
+*/
 fun quickSortY(P: Array<Pair<Double, Double>>, l: Int, r: Int): Unit {
     if (l < r) {
         val p = partitionY(P, l, r)
@@ -66,34 +98,46 @@ fun quickSortY(P: Array<Pair<Double, Double>>, l: Int, r: Int): Unit {
     }
 }
 
+/**
+* Funcion: ordenarCoordXIguales(P: Array<Pair<Double, Double>>)
+* Entradas: P, un arreglo de pares de enteros que representan las coordenadas de las ciudades
+* Salidas: Unit
+* Descripcion: Ordena los elementos del arreglo P cuyas coordenadas X son iguales en base a las coordenadas Y de las ciudades
+*/
 fun ordenarCoordXIguales(P: Array<Pair<Double, Double>>): Unit {
     val n = P.size
     for (i in 0 until n - 1) {
-        if (P[i].first == P[i + 1].first && obtenerCoordMayor(P[i], P[i + 1], 'X') == P[i]) {
+        if (P[i].first == P[i + 1].first && obtenerCoordMayor(P[i], P[i + 1], 'Y') == P[i]) {
             swap(P, i, i + 1)
         }
     }
 }
 
+/**
+* Funcion: ordenarCoordYIguales(P: Array<Pair<Double, Double>>)
+* Entradas: P, un arreglo de pares de enteros que representan las coordenadas de las ciudades
+* Salidas: Unit
+* Descripcion: Ordena los elementos del arreglo P cuyas coordenadas Y son iguales en base a las coordenadas X de las ciudades
+*/
 fun ordenarCoordYIguales(P: Array<Pair<Double, Double>>): Unit {
     val n = P.size
     for (i in 0 until n - 1) {
-        if (P[i].second == P[i + 1].second && obtenerCoordMayor(P[i], P[i + 1], 'Y') == P[i]) {
+        if (P[i].second == P[i + 1].second && obtenerCoordMayor(P[i], P[i + 1], 'X') == P[i]) {
             swap(P, i, i + 1)
         }
     }
 }
 
+/**
+* Funcion: obtenerCoordMayor(p1: Pair<Double, Double>, p2: Pair<Double, Double>, ejeDeCorte: Char)
+* Entradas: p1, un par de enteros que representan las coordenadas de una ciudad
+*           p2, un par de enteros que representan las coordenadas de una ciudad
+*           ejeDeCorte, un caracter que representa el eje de corte actual
+* Salidas: Pair<Double, Double>
+* Descripcion: Obtiene el par de coordenadas mayor entre p1 y p2 en base al eje de corte actual
+*/
 fun obtenerCoordMayor(p1: Pair<Double, Double>, p2: Pair<Double, Double>, ejeDeCorte: Char): Pair<Double, Double> {
     if (ejeDeCorte == 'X') {
-        if (p1.second > p2.second) {
-            return p1
-        }
-        else {
-            return p2
-        }
-    }
-    else {
         if (p1.first > p2.first) {
             return p1
         }
@@ -101,11 +145,27 @@ fun obtenerCoordMayor(p1: Pair<Double, Double>, p2: Pair<Double, Double>, ejeDeC
             return p2
         }
     }
+    else {
+        if (p1.second > p2.second) {
+            return p1
+        }
+        else {
+            return p2
+        }
+    }
 }
 
+/**
+* Funcion: obtenerPuntoDeCorte(P: Array<Pair<Double, Double>>, ejeDeCorte: Char)
+* Entradas: P, un arreglo de pares de enteros que representan las coordenadas de las ciudades
+*           ejeDeCorte, un caracter que representa el eje de corte especificado
+* Salidas: Pair<Double, Double>
+* Descripcion: Obtiene el punto de corte del arreglo P en base al eje de corte especificado
+*/
 fun obtenerPuntoDeCorte(P: Array<Pair<Double, Double>>, ejeDeCorte: Char): Pair<Double, Double> {
     val n = P.size
     val pos = Math.ceil(n/2.0).toInt() - 1
+    val puntoDeCorte = P[pos]
     if (ejeDeCorte == 'X') {
         quickSortX(P, 0, n - 1)
         ordenarCoordXIguales(P)
@@ -114,9 +174,16 @@ fun obtenerPuntoDeCorte(P: Array<Pair<Double, Double>>, ejeDeCorte: Char): Pair<
         quickSortY(P, 0, n - 1)
         ordenarCoordYIguales(P)
     }
-    return P[pos]
+    return puntoDeCorte
 }
 
+/**
+* Funcion: obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Double, Double>>, ejeDeCorte: Char)
+* Entradas: rectangulo, un arreglo de pares de enteros que representan las coordenadas de un rectangulo que contiene a las ciudades
+*           ejeDeCorte, un caracter que representa el eje de corte especificado
+* Salidas: Pair<Double, Double>
+* Descripcion: Obtiene el punto de corte del rectangulo en base a la mitad del eje de corte especificado
+*/
 fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Double, Double>>, ejeDeCorte: Char): Pair<Double, Double> {
     val xMin = obtenerCoordMinX(rectangulo)
     val yMin = obtenerCoordMinY(rectangulo)
@@ -128,7 +195,15 @@ fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Double, Double>>, ejeDeCorte
     }
 }
 
-fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangulo: Array<Pair<Double, Double>>): Array<Array<Pair<Double, Double>>>{
+/**
+* Funcion: aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangulo: Array<Pair<Double, Double>>)
+* Entradas: ejeDeCorte, un caracter que representa el eje de corte especificado
+*           puntoDeCorte, un par de enteros que representan las coordenadas del punto de corte
+*           rectangulo, un arreglo de pares de enteros que representan las coordenadas de un rectangulo que contiene a las ciudades
+* Salidas: Array<Array<Pair<Double, Double>>>
+* Descripcion: Aplica el corte al rectangulo en base al eje de corte y al punto de corte especificados
+*/
+fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangulo: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, Double>>>{
     val rectanguloIzq = Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})
     val rectanguloDer = Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})
     val xMin = obtenerCoordMinX(rectangulo)
@@ -155,10 +230,7 @@ fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangul
         rectanguloDer[2] = Pair(xMax, yMax)
         rectanguloDer[3] = Pair(xMin, yMax)
     }
-    val rectangulos = Array<Array<Pair<Double, Double>>>(2, {Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})})
-    rectangulos[0] = rectanguloIzq
-    rectangulos[1] = rectanguloDer
-    return rectangulos
+    return Pair(rectanguloIzq, rectanguloDer)
 }
 
 /**
@@ -246,13 +318,26 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Double>, Arra
     val rectangulo = crearRectangulo(P)
     val xDim = obtenerCoordMaxX(rectangulo) - obtenerCoordMinX(rectangulo)
     val yDim = obtenerCoordMaxY(rectangulo) - obtenerCoordMinY(rectangulo)
-    if (xDim > yDim){
-        // TODO: Particionar en X
+    if (xDim > yDim) val ejeDeCorte: Char = 'X' else val ejeDeCorte: Char = 'Y'
+    val puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
+    val rectangulosInternos = aplicarCorte(rectangulo, puntoDeCorte, ejeDeCorte)
+    val particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos[0])
+    val particionDer = obtenterPuntosRectangulo(P, rectangulosInternos[1])
+    if (particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3){
+        if (ejeDeCorte == 'X') ejeDeCorte = 'Y' else ejeDeCorte = 'X'
+        puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
+        rectangulosInternos = aplicarCorte(rectangulo, puntoDeCorte, ejeDeCorte)
+        particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos[0])
+        particionDer = obtenterPuntosRectangulo(P, rectangulosInternos[1])
+        if (particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3){
+            if (ejeDeCorte == 'X') ejeDeCorte = 'Y' else ejeDeCorte = 'X'
+            puntoDeCorte = obtenerPuntoDeCorteMitad(P, ejeDeCorte)
+            rectangulosInternos = aplicarCorte(rectangulo, puntoDeCorte, ejeDeCorte)
+            particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos[0])
+            particionDer = obtenterPuntosRectangulo(P, rectangulosInternos[1])
+        }
     }
-    else {
-        // TODO: Particionar en Y
-    }
-    // TODO: Obtener punto de corte
+    return Pair(particionIzq, particionDer)
 }
 
 /**
