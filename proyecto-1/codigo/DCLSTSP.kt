@@ -533,6 +533,7 @@ fun main(args: Array<String>) {
         val x = ciudad[1].trim().toDouble()
         val y = ciudad[2].trim().toDouble()
         ciudades[i] = Pair(x, y)
+        println("Ciudad ${i+1}: (${x}, ${y})")
     }
     reader.close()
 
