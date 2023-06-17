@@ -193,14 +193,6 @@ fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Double{
     return Math.sqrt((x*x + y*y).toDouble())
 }
 
-// ? Revisar si es necesario
-fun distancia3D(p1: Triple<Double, Double, Double>, p2: Triple<Double, Double, Double>): Double{
-    val x = p1.first - p2.first
-    val y = p1.second - p2.second
-    val z = p1.third - p2.third
-    return Math.sqrt((x*x + y*y + z*z).toDouble())
-}
-
 fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Double>, Array<Double>>{
     val rectangulo = crearRectangulo(P)
     val xDim = obtenerCoordMaxX(rectangulo) - obtenerCoordMinX(rectangulo)
