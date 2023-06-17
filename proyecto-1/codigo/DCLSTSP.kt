@@ -501,10 +501,10 @@ fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double
 * Entradas: P: Array<Pair<Double, Double>>
 * Salidas: Ciclo de distancia minima (Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
 */
-fun divideAndConquerAndLocalSearchTSP(P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
-    val c = divideAndConquerTSP(P)
-    return // TODO: Implementar busqueda local
-}
+// fun divideAndConquerAndLocalSearchTSP(P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+//     val c = divideAndConquerTSP(P)
+//     return // TODO: Implementar busqueda local
+// }
 
 /**
 * main(args: Array<String>)
@@ -541,27 +541,25 @@ fun main(args: Array<String>) {
     val distanciaRuta = distanciaTotal(solucion)
 
     // Escribimos la solución en un archivo de salida
-    val archivoSalida = archivoSalida(args[1])
-    val writer = BufferedWriter(FileWriter(archivoSalida))
+    val archivoSalida = File(args[1])
 
-    writer.write("NAME : ${nombre}")
-    writer.newLine("COMMENT : Length ${distanciaRuta}")
-    writer.newLine("TYPE : TOUR")
-    writer.newLine("DIMENSION : ${numeroCiudades}")
-    writer.newLine("TOUR_SECTION")
+    archivoSalida.writeText("NAME : ${nombre}\n")
+    archivoSalida.appendText("COMMENT : Length ${distanciaRuta}\n")
+    archivoSalida.appendText("TYPE : TOUR\n")
+    archivoSalida.appendText("DIMENSION : ${numeroCiudades}\n")
+    archivoSalida.appendText("TOUR_SECTION\n")
 
     for (i in 0 until numeroCiudades) {
         val x = solucion[i].first.first
         val y = solucion[i].first.second
-        writer.newLine("${i+1} ${x} ${y}")
+        archivoSalida.appendText("${i+1} ${x} ${y}\n")
         if (i == numeroCiudades - 1) {
             val xf = solucion[i].second.first
             val yf = solucion[i].second.second
-            writer.newLine("${i+2} $xf $yf")
+            archivoSalida.appendText("${i+2} $xf $yf\n")
         }
     }
 
     // Escribimos el EOF que indica el final del archivo
-    writer.newLine("EOF")
-    writer.close()
+    archivoSalida.appendText("EOF")
 }
