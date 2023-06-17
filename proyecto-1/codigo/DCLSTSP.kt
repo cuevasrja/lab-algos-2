@@ -293,13 +293,18 @@ fun crearRectangulo(P: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>
 * Salidas: Arreglo de puntos que estan dentro del rectangulo
 */
 fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>{
-    // Rectangulo = [Punto inferior izquierdo, Punto superior derecho, Punto inferior derecho, Punto superior izquierdo]
-    val puntosRectangulo = Array<Pair<Double, Double>>(P.size, {Pair(0.0, 0.0)})
-    var indice = 0
-    for (i in 0..P.size-1){
-        if (P[i].first >= rectangulo[0].first && P[i].first <= rectangulo[1].first && P[i].second >= rectangulo[0].second && P[i].second <= rectangulo[3].second){
-            puntosRectangulo[indice] = P[i]
-            indice++
+    var numElementos = 0
+    for (punto in P){
+        if (punto.first >= rectangulo[0].first && punto.first <= rectangulo[1].first && punto.second >= rectangulo[0].second && punto.second <= rectangulo[3].second){
+            numElementos++
+        }
+    }
+    val puntosRectangulo = Array<Pair<Double, Double>>(numElementos, {Pair(0.0, 0.0)})
+    var i = 0
+    for (punto in P){
+        if (punto.first >= rectangulo[0].first && punto.first <= rectangulo[1].first && punto.second >= rectangulo[0].second && punto.second <= rectangulo[3].second){
+            puntosRectangulo[i] = punto
+            i++
         }
     }
     return puntosRectangulo
@@ -326,9 +331,9 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
     val xDim = obtenerCoordMaxX(rectangulo) - obtenerCoordMinX(rectangulo)
     val yDim = obtenerCoordMaxY(rectangulo) - obtenerCoordMinY(rectangulo)
     var ejeDeCorte: Char
-    if (xDim > yDim){
+    if (xDim > yDim) {
         ejeDeCorte = 'X'
-    } else{
+    } else {
         ejeDeCorte = 'Y'
     }
     var puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
@@ -336,14 +341,21 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
     var particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first)
     var particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second)
     if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
-        if (ejeDeCorte == 'X') ejeDeCorte = 'Y' 
-        else ejeDeCorte = 'X'
+        if (ejeDeCorte == 'X') {
+            ejeDeCorte = 'Y'
+        } else {
+            ejeDeCorte = 'X'
+        }
         puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
         rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
         particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first)
         particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second)
         if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
-            if (ejeDeCorte == 'X') ejeDeCorte = 'Y' else ejeDeCorte = 'X'
+            if (ejeDeCorte == 'X') {
+                ejeDeCorte = 'Y'
+            } else {
+                ejeDeCorte = 'X'
+            }
             puntoDeCorte = obtenerPuntoDeCorteMitad(P, ejeDeCorte)
             rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
             particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first)
