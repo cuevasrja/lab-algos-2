@@ -203,7 +203,7 @@ fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Double, Double>>, ejeDeCorte
 * Salidas: Pair<Array<Pair<Double, Double>>, Array<Pair<Double, Double>>>
 * Descripcion: Aplica el corte al rectangulo en base al eje de corte y al punto de corte especificados
 */
-fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangulo: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, Double>>, Array<Pair<Double, Double>>>{
+fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangulo: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, Double>>, Array<Pair<Double, Double>>> {
     val rectanguloIzq = Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})
     val rectanguloDer = Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})
     val xMin = obtenerCoordMinX(rectangulo)
@@ -294,8 +294,15 @@ fun crearRectangulo(P: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>
 */
 fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>{
     // Rectangulo = [Punto inferior izquierdo, Punto superior derecho, Punto inferior derecho, Punto superior izquierdo]
-    // Filtrar puntos que esten dentro del rectangulo, buscando pares <= Punto superior derecho y >= Punto inferior izquierdo
-    return P.filter { it.first >= rectangulo[0].first && it.first <= rectangulo[1].first && it.second >= rectangulo[0].second && it.second <= rectangulo[1].second }.toTypedArray()
+    val puntosRectangulo = Array<Pair<Double, Double>>(P.size, {Pair(0.0, 0.0)})
+    var indice = 0
+    for (i in 0..P.size-1){
+        if (P[i].first >= rectangulo[0].first && P[i].first <= rectangulo[1].first && P[i].second >= rectangulo[0].second && P[i].second <= rectangulo[3].second){
+            puntosRectangulo[indice] = P[i]
+            indice++
+        }
+    }
+    return puntosRectangulo
 }
 
 /**
@@ -314,7 +321,7 @@ fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Double{
 * Entradas: P: Arreglo de puntos
 * Salidas: Par de arreglos de puntos que representan las particiones de P
 */
-fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Double>, Array<Double>>{
+fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, Double>>, Array<Pair<Double, Double>>>{
     val rectangulo = crearRectangulo(P)
     val xDim = obtenerCoordMaxX(rectangulo) - obtenerCoordMinX(rectangulo)
     val yDim = obtenerCoordMaxY(rectangulo) - obtenerCoordMinY(rectangulo)
@@ -324,23 +331,23 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Double>, Arra
     } else{
         ejeDeCorte = 'Y'
     }
-    val puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
-    val rectangulosInternos = aplicarCorte(rectangulo, puntoDeCorte, ejeDeCorte)
-    val particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos[0])
-    val particionDer = obtenterPuntosRectangulo(P, rectangulosInternos[1])
+    var puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
+    var rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
+    var particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first)
+    var particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second)
     if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
         if (ejeDeCorte == 'X') ejeDeCorte = 'Y' 
         else ejeDeCorte = 'X'
         puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
-        rectangulosInternos = aplicarCorte(rectangulo, puntoDeCorte, ejeDeCorte)
-        particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos[0])
-        particionDer = obtenterPuntosRectangulo(P, rectangulosInternos[1])
+        rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
+        particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first)
+        particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second)
         if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
             if (ejeDeCorte == 'X') ejeDeCorte = 'Y' else ejeDeCorte = 'X'
             puntoDeCorte = obtenerPuntoDeCorteMitad(P, ejeDeCorte)
-            rectangulosInternos = aplicarCorte(rectangulo, puntoDeCorte, ejeDeCorte)
-            particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos[0])
-            particionDer = obtenterPuntosRectangulo(P, rectangulosInternos[1])
+            rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
+            particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first)
+            particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second)
         }
     }
     return Pair(particionIzq, particionDer)
@@ -380,7 +387,7 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
     // Eliminamos los puntos de c1 y c2 que ya estan en aggC1 y aggC2
     var delC1: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
     var delC2: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
-    
+
     // Iteramos sobre los ciclos
     // Sea el par de coordenadas (a, b) en c1. Siendo a y b puntos en el plano
     for (i in 0 until n){
@@ -451,6 +458,7 @@ fun distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>
     for (i in 0 until ciclo.size){
         acc += distancia2D(ciclo[i].first, ciclo[i].second)
     }
+    return acc
 }
 
 /**
