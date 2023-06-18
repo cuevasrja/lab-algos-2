@@ -41,7 +41,7 @@ fun distanciaRuta(ciudades: Array<Pair<Double, Double>>): Int {
 * Salidas: true si la solucion es correcta, false en otro caso
 * Descripcion: Verifica que la solucion dada sea correcta
 */
-fun checkSolution(ciudades: Array<Pair<Double, Double>>, indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Boolean {
+fun checkSolution(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Boolean {
     // Verificar que la solucion tenga todas las ciudades de la instancia
     for (i in 0 until indicesInstancia.size) {
         if (!indicesInstancia.contains(indicesSolucion[i])) {
@@ -58,15 +58,6 @@ fun checkSolution(ciudades: Array<Pair<Double, Double>>, indicesInstancia: Array
             }
         }
     }
-    // Verificar si la ruta es correcta
-    for (i in 0 until indicesSolucion.size) {
-        val instancia = ciudades[indicesInstancia[i]]
-        val solucion = ciudades[indicesSolucion[i]]
-        if (instancia != solucion) {
-            println("La ciudad ${indicesSolucion[i] + 1} está en la posición incorrecta")
-            return false
-        }
-    }
     return true
 }
 
@@ -81,19 +72,12 @@ fun main(args: Array<String>) {
     val lectorInstancia = BufferedReader(FileReader(archivoInstancia, Charsets.UTF_8))
     lectorInstancia.readLine() // Ignorar primera linea. Es el nombre del archivo
     lectorInstancia.readLine() // Ignorar segunda linea. Es el comentario
-    lectorInstancia.readLine() // Ignorar tercera linea. Es el tipo de archivo
     val numeroCiudadesInstancia = lectorInstancia.readLine().split(":")[1].trim().toInt()
     lectorInstancia.readLine() // Ignorar linea. Es el comentario
-    lectorInstancia.readLine() // Ignorar linea. Es el comentario
     val indicesInstancia = Array<Int>(numeroCiudadesInstancia, { 0 })
-    val ciudades = Array<Pair<Double, Double>>(numeroCiudadesInstancia, { Pair(0.0, 0.0) })
     for (i in 0 until numeroCiudadesInstancia) {
-        val ciudad = lectorInstancia.readLine().trim().split(" ")
-        val indice = ciudad[0].trim().toInt()
-        val x = ciudad[1].trim().toDouble()
-        val y = ciudad[2].trim().toDouble()
+        val indice = lectorInstancia.readLine().trim().toInt()
         indicesInstancia[i] = indice - 1
-        ciudades[i] = Pair(x, y)
     }
     lectorInstancia.close()
 
@@ -110,7 +94,7 @@ fun main(args: Array<String>) {
     }
     lectorSolucion.close()
 
-    if (!checkSolution(ciudades, indicesInstancia, indicesSolucion)) {
+    if (!checkSolution(indicesInstancia, indicesSolucion)) {
         // Si la solucion no es correcta, terminar el programa
         println("Solución incorrecta")
         return

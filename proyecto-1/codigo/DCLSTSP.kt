@@ -569,14 +569,80 @@ fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double
 }
 
 /**
+* busquedaLocalCon2Opt(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
+* Entradas: ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>
+* Salidas: Ciclo de distancia minima (Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
+*/
+fun busquedaLocalCon2Opt(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+    var ruta: Array<Pair<Double, Double>> = cicloARuta(ciclo)
+    val n = ruta.size
+    for (i in 0 until n-1){
+        val distanciaInicial = distanciaRuta(ruta)
+        val rutaNueva = ruta.clone()
+        for (j in i+1 until n){
+            rutaNueva[i] = ruta[j]
+            rutaNueva[j] = ruta[i]
+            val distanciaNueva = distanciaRuta(rutaNueva)
+            if (distanciaNueva < distanciaInicial){
+                ruta = rutaNueva.clone()
+            }
+        }
+    }
+    return rutaACiclo(ruta)
+}
+
+/**
+* Funcion: rutaARuta(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
+* Entradas: ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>
+* Salidas: Ruta (Array<Pair<Double, Double>>)
+*/
+fun rutaACiclo(ruta: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+    var ciclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(ruta.size){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
+    for (i in 0 until ruta.size-1){
+        ciclo[i] = Pair(ruta[i], ruta[i+1])
+    }
+    ciclo[ruta.size-1] = Pair(ruta[ruta.size-1], ruta[0])
+    return ciclo
+}
+
+/**
+* Funcion: distanciaRuta(ruta: Array<Pair<Double, Double>>)
+* Entradas: ruta: Array<Pair<Double, Double>>
+* Salidas: Distancia total de la ruta (Int)
+*/
+fun distanciaRuta(ruta: Array<Pair<Double, Double>>): Int{
+    var acc: Int = 0
+    for (i in 0 until ruta.size-1){
+        acc += distancia2D(ruta[i], ruta[i+1])
+    }
+    return acc
+}
+
+/**
+* Funcion: cicloARuta(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
+* Entradas: ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>
+* Salidas: Ruta (Array<Pair<Double, Double>>)
+* Descripcion: Convierte un ciclo en una ruta
+* Ejemplo: ciclo = [(1, 2), (2, 3), (3, 4), (4, 1)], ruta = [1, 2, 3, 4, 1]
+*/
+fun cicloARuta(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Double, Double>>{
+    val n = ciclo.size
+    var ruta = Array<Pair<Double, Double>>(n+1){Pair(0.0, 0.0)}
+    for (i in 0 until n){
+        ruta[i] = ciclo[i].first
+    }
+    ruta[n] = ciclo[0].first
+    return ruta
+}
+
+/**
 * Funcion: divideAndConquerAndLocalSearchTSP(P: Array<Pair<Double, Double>>)
 * Entradas: P: Array<Pair<Double, Double>>
 * Salidas: Ciclo de distancia minima (Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
 */
-// fun divideAndConquerAndLocalSearchTSP(P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
-//     val c = divideAndConquerTSP(P)
-//     return // TODO: Implementar busqueda local
-// }
+fun divideAndConquerAndLocalSearchTSP(C: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+    return busquedaLocalCon2Opt(C)
+}
 
 /**
 * main(args: Array<String>)
@@ -619,22 +685,20 @@ fun main(args: Array<String>) {
 
     archivoSalida.writeText("NAME : ${nombre}\n")
     archivoSalida.appendText("COMMENT : Length ${distanciaRuta}\n")
-    archivoSalida.appendText("TYPE : TOUR\n")
     archivoSalida.appendText("DIMENSION : ${solucion.size}\n")
     archivoSalida.appendText("TOUR_SECTION\n")
 
     // Imprimimos la solución en el stdout
     println("NAME : ${nombre}")
     println("COMMENT : Length ${distanciaRuta}")
-    println("TYPE : TOUR")
-    println("TOUR_SECTION")
     println("DIMENSION : ${solucion.size}")
+    println("TOUR_SECTION")
 
     // Imprimimos la ruta
     for (i in 0 until solucion.size) {
         val j = ciudadesEntrada.indexOf(solucion[i].first)
         val k = ciudadesEntrada.indexOf(solucion[i].second)
-        println("$j ${solucion[i].first} -> $k ${solucion[i].second}")
+        println("${j+1} ${solucion[i].first} -> ${k+1} ${solucion[i].second}")
     }
 
     for (i in 0 until solucion.size) {
