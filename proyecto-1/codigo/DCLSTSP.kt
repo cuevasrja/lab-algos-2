@@ -418,7 +418,7 @@ fun distanciaGanada(n1: Int, n2: Int, o1: Int, o2: Int): Int{
 */
 fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, c2: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
     // Variables
-    var minG: Int = Int.MAX_VALUE
+    var minG: Int
     var dOLD1: Int
     var dOLD2: Int
     var dNEW1: Int
@@ -436,7 +436,7 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
     var ladosEliminarC1: Pair<Pair<Double, Double>, Pair<Double, Double>>
     var ladosEliminarC2: Pair<Pair<Double, Double>, Pair<Double, Double>>
     var ganancia: Int
-    
+
     // Si alguno de los ciclos es vacio, se retorna el otro
     if (c1.size == 0){
         return c2
@@ -506,7 +506,7 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
     var j: Int
 
     j = 0
-    
+
     // llenamos nuevoCiclo
     for (i in 0 until nuevoCiclo.size) {
         if (i < ladosC1.size) {
@@ -546,15 +546,33 @@ fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double
     }
     else if (n == 1){
         // Cuando n = 1, se tiene un solo ciclo
-        return arrayOf(Pair(P[0], P[0]))
+        val ciclo = arrayOf(Pair(P[0], P[0]))
+        // Imprimir ciclo
+        println("Ciclo: ")
+        for (i in 0 until ciclo.size){
+            println("(${ciclo[i].first.first}, ${ciclo[i].first.second}) -> (${ciclo[i].second.first}, ${ciclo[i].second.second})")
+        }
+        return ciclo
     }
     else if (n == 2){
         // Cuando n = 2, se tiene un solo ciclo
-        return arrayOf(Pair(P[0], P[1]), Pair(P[1], P[0]))
+        val ciclo = arrayOf(Pair(P[0], P[1]), Pair(P[1], P[0]))
+        // Imprimir ciclo
+        println("Ciclo: ")
+        for (i in 0 until ciclo.size){
+            println("(${ciclo[i].first.first}, ${ciclo[i].first.second}) -> (${ciclo[i].second.first}, ${ciclo[i].second.second})")
+        }
+        return ciclo
     }
     else if (n == 3){
         // Cuando n = 3, se tienen 3 posibles ciclos, todos con la misma distancia
-        return arrayOf(Pair(P[0], P[1]), Pair(P[1], P[2]), Pair(P[2], P[0]))
+        val ciclo = arrayOf(Pair(P[0], P[1]), Pair(P[1], P[2]), Pair(P[2], P[0]))
+        // Imprimir ciclos
+        println("Ciclo: ")
+        for (i in 0 until ciclo.size){
+            println("(${ciclo[i].first.first}, ${ciclo[i].first.second}) -> (${ciclo[i].second.first}, ${ciclo[i].second.second})")
+        }
+        return ciclo
     }
     else{
         // Cuando n > 3, se tiene que dividir el conjunto de puntos en dos
