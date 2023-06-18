@@ -385,84 +385,113 @@ fun distanciaGanada(n1: Int, n2: Int, o1: Int, o2: Int): Int{
 * Salidas: Arreglo de ciclos que resulta de combinar los ciclos c1 y c2
 */
 fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, c2: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+    // Variables
+    var minG: Int
+    var dOLD1: Int
+    var dOLD2: Int
+    var dNEW1: Int
+    var dNEW2: Int
+    var dNEW3: Int
+    var dNEW4: Int
+    var a: Pair<Double, Double>
+    var b: Pair<Double, Double>
+    var d: Pair<Double, Double>
+    var c: Pair<Double, Double>
+    var g1: Int
+    var g2: Int
+    var ladosAgregarC1: Pair<Pair<Double, Double>, Pair<Double, Double>>
+    var ladosAgregarC2: Pair<Pair<Double, Double>, Pair<Double, Double>>
+    var ladosEliminarC1: Pair<Pair<Double, Double>, Pair<Double, Double>>
+    var ladosEliminarC2: Pair<Pair<Double, Double>, Pair<Double, Double>>
+    var ganancia: Int
+    
+    // Si alguno de los ciclos es vacio, se retorna el otro
     if (c1.size == 0){
-        // Si c1 es vacio, retornamos c2
         return c2
-    }
-    else if (c2.size == 0){
-        // Si c2 es vacio, retornamos c1
+    } else if (c2.size == 0){
         return c1
     }
-    // Tomamos los el tamaño de los ciclos
-    val n = c1.size
-    val m = c2.size
-    // Definimos minDist como el valor maximo de Double
-    var minDist = Int.MAX_VALUE
-    // Agregamos los puntos de c1 y c2 a un arreglo de puntos
-    var aggC1: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
-    var aggC2: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
-    // Eliminamos los puntos de c1 y c2 que ya estan en aggC1 y aggC2
-    var delC1: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
-    var delC2: Pair<Pair<Double, Double>, Pair<Double, Double>> = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
 
-    // Iteramos sobre los ciclos
-    // Sea el par de coordenadas (a, b) en c1. Siendo a y b puntos en el plano
-    for (i in 0 until n){
-        // Calculamos la distancia entre a y b
-        val dOld1 = distancia2D(c1[i].first, c1[i].second)
-        // Sea el par de coordenadas (c, d) en c2. Siendo c y d puntos en el plano
-        for (j in 0 until m){
-            val dOld2 = distancia2D(c2[j].first, c2[j].second) // Calculamos la distancia entre c y d
-            val dNew1 = distancia2D(c1[i].first, c2[j].first) // Calculamos la distancia entre a y c
-            val dNew2 = distancia2D(c1[i].second, c2[j].second) // Calculamos la distancia entre b y d
-            val dNew3 = distancia2D(c1[i].first, c2[j].second) // Calculamos la distancia entre a y d
-            val dNew4 = distancia2D(c1[i].second, c2[j].first) // Calculamos la distancia entre b y c
-            val g1 = distanciaGanada(dNew1, dNew2, dOld1, dOld2) // Calculamos la distancia ganada entre (a, c) y (b, d)
-            val g2 = distanciaGanada(dNew3, dNew4, dOld1, dOld2) // Calculamos la distancia ganada entre (a, d) y (b, c)
-            val dist = Math.min(g1, g2) // Tomamos la distancia minima entre g1 y g2
+    // inicializamos
+    minG = Int.MAX_VALUE
+    dOLD1 = 0
+    dOLD2 = 0
+    dNEW1 = 0
+    dNEW2 = 0
+    dNEW3 = 0
+    dNEW4 = 0
+    g1 = 0
+    g2 = 0
+    ladosAgregarC1 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
+    ladosAgregarC2 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
+    ladosEliminarC1 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
+    ladosEliminarC2 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
 
-            // Si la distancia es menor a minDist, actualizamos minDist
-            if (dist < minDist){
-                minDist = dist
-                // Si g1 es menor a g2, agregamos (a, c) y (b, d) a aggC1 y aggC2 respectivamente
-                if (g1 < g2){
-                    aggC1 = Pair(c1[i].first, c2[j].first)
-                    aggC2 = Pair(c1[i].second, c2[j].second)
+    for (i in 0 until c1.size) {
+        a = c1[i].first
+        b = c1[i].second
+
+        dOLD1 = distancia2D(a, b)
+        for (j in 0 until c2.size) {
+            c = c2[j].first
+            d = c2[j].second
+
+            dOLD2 = distancia2D(c, d)
+            dNEW1 = distancia2D(a, c)
+            dNEW2 = distancia2D(b, d)
+            dNEW3 = distancia2D(a, d)
+            dNEW4 = distancia2D(b, c)
+
+            g1 = distanciaGanada(dOLD1, dOLD2, dNEW1, dNEW2)
+            g2 = distanciaGanada(dOLD1, dOLD2, dNEW3, dNEW4)
+            ganancia = Math.min(g1, g2)
+            if (ganancia < minG) {
+                minG = ganancia
+
+                if (g1 < g2) {
+                    ladosAgregarC1 = Pair(a, c)
+                    ladosAgregarC2 = Pair(d, b)
+
+                } else {
+                    ladosAgregarC1 = Pair(a, d)
+                    ladosAgregarC2 = Pair(c, b)
                 }
-                // En caso contrario, agregamos (a, d) y (b, c) a aggC1 y aggC2 respectivamente
-                else {
-                    aggC1 = Pair(c1[i].first, c2[j].second)
-                    aggC2 = Pair(c1[i].second, c2[j].first)
-                }
-                // Eliminamos los puntos de (a, b) y (c, d) de c1 y c2 respectivamente
-                delC1 = c1[i]
-                delC2 = c2[j]
+
+                ladosEliminarC1 = Pair(a, b)
+                ladosEliminarC2 = Pair(c, d)
             }
         }
     }
-    // Creamos un nuevo ciclo con los puntos de c1 y c2
-    val ciclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(n+m){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
-    var index = 0
-    // Iteramos sobre c1
-    for (i in 0 until n){
-        // Si el punto no es el punto a eliminar, lo agregamos al nuevo ciclo
-        if (c1[i] != delC1){
-            ciclo[index] = c1[i]
-            index++
+    for (i in 0 until c1.size) {
+            if (c1[i] == ladosEliminarC1) {
+                c1[i] = ladosAgregarC1 // sustituimos el lado a eliminar por el lado a agregar
+                break // ya eliminamos y agregamos el lado
+            }
+        }
+    // analogamente, hacemos lo mismo con c2
+    for (i in 0 until c2.size) {
+        if (c2[i] == ladosEliminarC2) {
+            c2[i] = ladosAgregarC2
+            break // ya eliminamos y agregamos el lado
         }
     }
-    // Iteramos sobre c2
-    for (i in 0 until m){
-        // Si el punto no es el punto a eliminar, lo agregamos al nuevo ciclo
-        if (c2[i] != delC2){
-            ciclo[index] = c2[i]
-            index++
+
+    var nuevoCiclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(c1.size + c2.size){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
+    var j: Int
+
+    j = 0
+    
+    // llenamos nuevoCiclo
+    for (i in 0 until nuevoCiclo.size) {
+        if (i < c1.size) {
+            nuevoCiclo[i] = c1[i]
+        } else {
+            nuevoCiclo[i] = c2[j]
+            j = j + 1
         }
     }
-    // Agregamos los puntos de aggC1 y aggC2 al nuevo ciclo
-    ciclo[index] = aggC1
-    ciclo[index+1] = aggC2
-    return ciclo
+
+    return nuevoCiclo
 }
 
 /**
