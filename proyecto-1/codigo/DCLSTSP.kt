@@ -13,7 +13,7 @@ import kotlin.math.sqrt
 
 
 /**
-* Funcion: swap(P: Array<Pair<Int, Int>>, i: Int, j: Int)
+* Funcion: swap(P: Array<Pair<Double, Double>>, i: Int, j: Int)
 * Entradas: P, un arreglo de pares de enteros que representan las coordenadas de las ciudades
 *           i, un entero que representa la posicion de un elemento del arreglo
 *           j, un entero que representa la posicion de un elemento del arreglo
@@ -24,6 +24,20 @@ fun swap(P: Array<Pair<Double, Double>>, i: Int, j: Int): Unit {
     val temp = P[i]
     P[i] = P[j]
     P[j] = temp
+}
+
+/**
+* Funcion: swapEnCiclos(ciclo:  Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, i: Int, j: Int)
+* Entradas: ciclo, un arreglo de ciudades que realizan un ciclo
+*           i, un entero que representa la posicion de un elemento del arreglo
+*           j, un entero que representa la posicion de un elemento del arreglo
+* Salidas: Unit
+* Descripcion: Intercambia los elementos en las posiciones i y j del arreglo ciclo
+*/
+fun swapEnCiclos(ciclo:  Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, i: Int, j: Int): Unit {
+    val temp = ciclo[i]
+    ciclo[i] = ciclo[j]
+    ciclo[j] = temp
 }
 
 /**
@@ -385,20 +399,6 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
             particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte, ejeDeCorte)
         }
     }
-    // Imprimimos el punto de corte
-    println("Punto de corte: $puntoDeCorte")
-    // Imprimimos los rectangulos internos
-    println("Rectangulo izquierdo: ${rectangulosInternos.first[0]}, ${rectangulosInternos.first[1]}, ${rectangulosInternos.first[2]}, ${rectangulosInternos.first[3]}")
-    println("Rectangulo derecho: ${rectangulosInternos.second[0]}, ${rectangulosInternos.second[1]}, ${rectangulosInternos.second[2]}, ${rectangulosInternos.second[3]}")
-    // Imprimimos las particiones
-    println("Particion izquierda: ")
-    for (punto in particionIzq){
-        println("$punto")
-    }
-    println("Particion derecha: ")
-    for (punto in particionDer){
-        println("$punto")
-    }
     return Pair(particionIzq, particionDer)
 }
 
@@ -412,9 +412,41 @@ fun distanciaGanada(n1: Int, n2: Int, o1: Int, o2: Int): Int{
 }
 
 /**
+* Funcion: ordenarCiclo(ciclos Array<Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>>): Array<Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>>
+* Entradas: ciclo: Arreglo de ciudades que forman un ciclo, pero que puede estar desordenado
+* Salidas: Unit
+* Descipcion: Ordena el ciclo de ciudades, de tal forma que la ciudad i + 1 sea la ciudad con la que la ciudad i tiene un extremo en común
+*/
+fun ordenarCiclo(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Unit {
+    // Iteramos sobre el ciclo, buscando que la ciudad extremo de i sea igual a la ciudad inicial de i + 1
+    // En caso de que no tengan extremos iguales, buscamos a partir de i + 1 ambos extremos, hasta conseguir que el extremo de i sea igual al inicial de i + 1
+    for (i in 0 until ciclo.size - 1) {
+        var j = i + 1
+        while (j < ciclo.size) {
+            if (ciclo[i].second == ciclo[j].first) {
+                // Conseguimos que esta ciudad está en la posición correcta
+                break
+            }
+            if (ciclo[i].second == ciclo[j].second) {
+                // Volteamos ciclo[j]
+                ciclo[j] = Pair(ciclo[j].second, ciclo[j].first)
+                break
+            }
+            j++
+        }
+        // Si el j = i + 1, no haria falta intercambiarlo, pues ya tendrian extremos iguales.
+        // Si j > i + 1 los intercambiamos.
+        // En caso de intercambiarlos, lo intercambiamos con i + 1.
+        if (j > i + 1) {
+            swapEnCiclos(ciclo, i + 1, j)
+        }
+    }
+}
+
+/**
 * Funcion: combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, c2: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
-* Entradas: c1: Arreglo de ciclos, c2: Arreglo de ciclos
-* Salidas: Arreglo de ciclos que resulta de combinar los ciclos c1 y c2
+* Entradas: c1: Arreglo que representa un ciclo, c2: Arreglo que representa un ciclo
+* Salidas: Arreglo que resulta de combinar los ciclos c1 y c2 en un solo ciclo
 */
 fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, c2: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
     // Variables
@@ -468,26 +500,32 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
             dNEW3 = distancia2D(a, d)
             dNEW4 = distancia2D(b, c)
 
+            // Calculamos si hay ganancia
             g1 = distanciaGanada(dOLD1, dOLD2, dNEW1, dNEW2)
             g2 = distanciaGanada(dOLD1, dOLD2, dNEW3, dNEW4)
+
+            // Agarramos la menor distancia
             ganancia = Math.min(g1, g2)
+
+            // Si hay ganancia, la guardamos
             if (ganancia < minG) {
                 minG = ganancia
-
+                // Guardamos los lados a agregar y eliminar
                 if (g1 < g2) {
                     ladosAgregarC1 = Pair(a, c)
                     ladosAgregarC2 = Pair(d, b)
-
-                } else {
+                }
+                else {
                     ladosAgregarC1 = Pair(a, d)
                     ladosAgregarC2 = Pair(c, b)
                 }
-
                 ladosEliminarC1 = Pair(a, b)
                 ladosEliminarC2 = Pair(c, d)
             }
         }
     }
+
+    // Eliminamos el lado a eliminar de c1
     for (i in 0 until ladosC1.size) {
             if (ladosC1[i] == ladosEliminarC1) {
                 ladosC1[i] = ladosAgregarC1 // sustituimos el lado a eliminar por el lado a agregar
@@ -517,6 +555,8 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
         }
     }
 
+    // Por último, ordenamos el ciclo, para que cada ciudad extremo de un lado sea la ciudad inicial o final de otro lado
+    ordenarCiclo(nuevoCiclo)
     return nuevoCiclo
 }
 
@@ -546,33 +586,15 @@ fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double
     }
     else if (n == 1){
         // Cuando n = 1, se tiene un solo ciclo
-        val ciclo = arrayOf(Pair(P[0], P[0]))
-        // Imprimir ciclo
-        println("Ciclo: ")
-        for (i in 0 until ciclo.size){
-            println("(${ciclo[i].first.first}, ${ciclo[i].first.second}) -> (${ciclo[i].second.first}, ${ciclo[i].second.second})")
-        }
-        return ciclo
+        return arrayOf(Pair(P[0], P[0]))
     }
     else if (n == 2){
         // Cuando n = 2, se tiene un solo ciclo
-        val ciclo = arrayOf(Pair(P[0], P[1]), Pair(P[1], P[0]))
-        // Imprimir ciclo
-        println("Ciclo: ")
-        for (i in 0 until ciclo.size){
-            println("(${ciclo[i].first.first}, ${ciclo[i].first.second}) -> (${ciclo[i].second.first}, ${ciclo[i].second.second})")
-        }
-        return ciclo
+        return arrayOf(Pair(P[0], P[1]), Pair(P[1], P[0]))
     }
     else if (n == 3){
         // Cuando n = 3, se tienen 3 posibles ciclos, todos con la misma distancia
-        val ciclo = arrayOf(Pair(P[0], P[1]), Pair(P[1], P[2]), Pair(P[2], P[0]))
-        // Imprimir ciclos
-        println("Ciclo: ")
-        for (i in 0 until ciclo.size){
-            println("(${ciclo[i].first.first}, ${ciclo[i].first.second}) -> (${ciclo[i].second.first}, ${ciclo[i].second.second})")
-        }
-        return ciclo
+        return arrayOf(Pair(P[0], P[1]), Pair(P[1], P[2]), Pair(P[2], P[0]))
     }
     else{
         // Cuando n > 3, se tiene que dividir el conjunto de puntos en dos
@@ -702,7 +724,7 @@ fun main(args: Array<String>) {
     val solucionMejorada = busquedaLocalCon2Opt(solucion)
     val distanciaRutaMejorada = distanciaTotal(solucionMejorada)
 
-// Imprimimos la solución en el stdout
+    // Imprimimos la solución en el stdout
     println("NAME : ${nombre}")
     println("Solucion inicial: ${distanciaRuta}")
     println("Solucion mejorada: ${distanciaRutaMejorada}")
