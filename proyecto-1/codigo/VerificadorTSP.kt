@@ -52,7 +52,7 @@ fun checkSolution(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Bo
     // Verificar que la solucion no tenga ciudades repetidas
     for (i in 0 until indicesSolucion.size) {
         for (j in i + 1 until indicesSolucion.size) {
-            if (indicesSolucion[i] == indicesSolucion[j] && (i != 0 && j != indicesSolucion.size - 1)) {
+            if (indicesSolucion[i] == indicesSolucion[j]) {
                 println("La solución tiene la ciudad ${indicesSolucion[i] + 1} repetida")
                 return false
             }
@@ -68,6 +68,14 @@ fun esOptima(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Boolean
         }
     }
     return true
+}
+
+fun ciudadesFaltantes(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>){
+    for (i in 0 until indicesSolucion.size){
+        if (!indicesInstancia.contains(indicesSolucion[i])){
+            println("La ciudad ${indicesSolucion[i]+1} no se encuentra en la instancia")
+        }
+    }
 }
 
 fun main(args: Array<String>) {
@@ -106,6 +114,7 @@ fun main(args: Array<String>) {
     if (!checkSolution(indicesInstancia, indicesSolucion)) {
         // Si la solucion no es correcta, terminar el programa
         println("Solución incorrecta")
+        ciudadesFaltantes(indicesInstancia, indicesSolucion)
         return
     }
     print("Es una solución correcta")
