@@ -165,7 +165,6 @@ fun obtenerCoordMayor(p1: Pair<Double, Double>, p2: Pair<Double, Double>, ejeDeC
 fun obtenerPuntoDeCorte(P: Array<Pair<Double, Double>>, ejeDeCorte: Char): Pair<Double, Double> {
     val n = P.size
     val pos = Math.ceil(n/2.0).toInt() - 1
-    val puntoDeCorte = P[pos]
     if (ejeDeCorte == 'X') {
         quickSortX(P, 0, n - 1)
         ordenarCoordXIguales(P)
@@ -174,7 +173,7 @@ fun obtenerPuntoDeCorte(P: Array<Pair<Double, Double>>, ejeDeCorte: Char): Pair<
         quickSortY(P, 0, n - 1)
         ordenarCoordYIguales(P)
     }
-    return puntoDeCorte
+    return P[pos]
 }
 
 /**
@@ -566,7 +565,7 @@ fun main(args: Array<String>) {
     archivoSalida.writeText("NAME : ${nombre}\n")
     archivoSalida.appendText("COMMENT : Length ${distanciaRuta}\n")
     archivoSalida.appendText("TYPE : TOUR\n")
-    archivoSalida.appendText("DIMENSION : ${solucion.size - 1}\n")
+    archivoSalida.appendText("DIMENSION : ${solucion.size}\n")
     archivoSalida.appendText("TOUR_SECTION\n")
 
     // Imprimimos la solución en el stdout
@@ -574,7 +573,12 @@ fun main(args: Array<String>) {
     println("COMMENT : Length ${distanciaRuta}")
     println("TYPE : TOUR")
     println("TOUR_SECTION")
-    println("DIMENSION : ${numeroCiudades}")
+    println("DIMENSION : ${solucion.size}")
+
+    // Imprimimos la ruta
+    for (i in 0 until solucion.size) {
+        println("${solucion[i].first} -> ${solucion[i].second}")
+    }
 
     for (i in 0 until solucion.size) {
         val par = solucion[i].first
@@ -582,7 +586,7 @@ fun main(args: Array<String>) {
         val x = solucion[i].first.first
         val y = solucion[i].first.second
         archivoSalida.appendText("${indice+1} ${x} ${y}\n")
-        if (i == numeroCiudades - 1) {
+        if (i == solucion.size - 1) {
             val parf = solucion[i].second
             val indicef = ciudadesEntrada.indexOf(parf)
             val xf = solucion[i].second.first
@@ -590,6 +594,7 @@ fun main(args: Array<String>) {
             archivoSalida.appendText("${indicef + 1} $xf $yf\n")
         }
     }
+    println("La solucion es de tamaño ${solucion.size}")
 
     // Escribimos el EOF que indica el final del archivo e imprimimos el fin del tour en el stdout
     archivoSalida.appendText("EOF\n")

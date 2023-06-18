@@ -60,7 +60,7 @@ fun checkSolution(ciudades: Array<Pair<Double, Double>>, indicesInstancia: Array
     }
     // Verificar si la ruta es correcta
     for (i in 0 until indicesSolucion.size) {
-        val instancia = ciudades[indicesSolucion[i]]
+        val instancia = ciudades[indicesInstancia[i]]
         val solucion = ciudades[indicesSolucion[i]]
         if (instancia != solucion) {
             println("La ciudad ${indicesSolucion[i] + 1} está en la posición incorrecta")
@@ -82,8 +82,7 @@ fun main(args: Array<String>) {
     lectorInstancia.readLine() // Ignorar primera linea. Es el nombre del archivo
     lectorInstancia.readLine() // Ignorar segunda linea. Es el comentario
     lectorInstancia.readLine() // Ignorar tercera linea. Es el tipo de archivo
-    val numeroCiudadesInstancia = lectorInstancia.readLine().split(":")[1].trim().toInt()+1
-    lectorInstancia.readLine() // Ignorar linea. Es el comentario
+    val numeroCiudadesInstancia = lectorInstancia.readLine().split(":")[1].trim().toInt()
     lectorInstancia.readLine() // Ignorar linea. Es el comentario
     val indicesInstancia = Array<Int>(numeroCiudadesInstancia, { 0 })
     val ciudades = Array<Pair<Double, Double>>(numeroCiudadesInstancia, { Pair(0.0, 0.0) })
@@ -101,17 +100,12 @@ fun main(args: Array<String>) {
     val lectorSolucion = BufferedReader(FileReader(archivoSolucion, Charsets.UTF_8))
     lectorSolucion.readLine() // Ignorar primera linea. Es el nombre del archivo
     lectorSolucion.readLine() // Ignorar segunda linea. Es el comentario
-    val numeroCiudadesSolucion = lectorSolucion.readLine().split(":")[1].trim().toInt()+1
+    val numeroCiudadesSolucion = lectorSolucion.readLine().split(":")[1].trim().toInt()
     lectorSolucion.readLine() // Ignorar linea. Es el comentario
     val indicesSolucion = Array<Int>(numeroCiudadesSolucion, { 0 })
     for (i in 0 until numeroCiudadesSolucion) {
         val indice = lectorSolucion.readLine().trim().toInt()
-        if (i == numeroCiudadesSolucion-1){
-            indicesSolucion[i] = 0
-        }
-        else{
-            indicesSolucion[i] = indice-1
-        }
+        indicesSolucion[i] = indice-1
     }
     lectorSolucion.close()
 

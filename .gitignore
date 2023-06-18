@@ -1,2 +1,3 @@
 *.jar
-*.tsp
+*.out
+ccs.tsp
