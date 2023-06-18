@@ -61,6 +61,15 @@ fun checkSolution(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Bo
     return true
 }
 
+fun esOptima(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Boolean {
+    for (i in 0 until indicesInstancia.size) {
+        if (indicesInstancia[i] != indicesSolucion[i]) {
+            return false
+        }
+    }
+    return true
+}
+
 fun main(args: Array<String>) {
     // args[0] es el archivo de instancia
     // args[1] es el archivo de solucion
@@ -99,6 +108,17 @@ fun main(args: Array<String>) {
         println("Solución incorrecta")
         return
     }
+    print("Es una solución correcta")
 
-    println("Solución correcta")
+    // Evaluar si la solucion es optima
+    if (esOptima(indicesInstancia, indicesSolucion)) {
+        println(" y es optima")
+    } else {
+        println(" pero no es optima")
+        for (i in 0 until indicesInstancia.size) {
+            if (indicesInstancia[i] != indicesSolucion[i]) {
+                println("La ciudad ${indicesInstancia[i] + 1} deberia estar en la posicion ${i + 1} pero esta en la posicion ${indicesSolucion.indexOf(indicesInstancia[i]) + 1}")
+            }
+        }
+    }
 }

@@ -418,7 +418,7 @@ fun distanciaGanada(n1: Int, n2: Int, o1: Int, o2: Int): Int{
 */
 fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, c2: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
     // Variables
-    var minG: Int
+    var minG: Int = Int.MAX_VALUE
     var dOLD1: Int
     var dOLD2: Int
     var dNEW1: Int
