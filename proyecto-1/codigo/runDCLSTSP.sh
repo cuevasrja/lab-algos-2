@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 if [ $# -ne 2 ]; then
     echo "Uso: $0 <archivo de entrada> <archivo de salida>"
     exit 1

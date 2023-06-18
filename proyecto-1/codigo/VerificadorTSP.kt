@@ -84,6 +84,7 @@ fun main(args: Array<String>) {
     lectorInstancia.readLine() // Ignorar tercera linea. Es el tipo de archivo
     val numeroCiudadesInstancia = lectorInstancia.readLine().split(":")[1].trim().toInt()
     lectorInstancia.readLine() // Ignorar linea. Es el comentario
+    lectorInstancia.readLine() // Ignorar linea. Es el comentario
     val indicesInstancia = Array<Int>(numeroCiudadesInstancia, { 0 })
     val ciudades = Array<Pair<Double, Double>>(numeroCiudadesInstancia, { Pair(0.0, 0.0) })
     for (i in 0 until numeroCiudadesInstancia) {
