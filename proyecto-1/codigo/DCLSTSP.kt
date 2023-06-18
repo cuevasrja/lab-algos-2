@@ -621,9 +621,9 @@ fun busquedaLocalCon2Opt(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Do
     var index = 1
     for (i in 0 until n-1){
         var minDist = Int.MAX_VALUE
-        for (j in i+1 until n){
+        for (j in 0 until n){
             val dist = distancia2D(ruta[i], ruta[j])
-            if (dist < minDist && !(rutaNueva.contains(ruta[j]))){
+            if (dist < minDist && !(rutaNueva.contains(ruta[j])) && (i != j)){
                 minDist = dist
                 rutaNueva[index] = ruta[j]
             }
