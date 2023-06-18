@@ -210,20 +210,24 @@ fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangul
     val xMax = obtenerCoordMaxX(rectangulo)
     val yMax = obtenerCoordMaxY(rectangulo)
     if (ejeDeCorte == 'X') {
+        // Rectangulo izquierdo = [Punto inferior izquierdo, Punto superior derecho, Punto inferior derecho, Punto superior izquierdo]
         rectanguloIzq[0] = Pair(xMin, yMin)
         rectanguloIzq[1] = Pair(puntoDeCorte.first, yMin)
         rectanguloIzq[2] = Pair(puntoDeCorte.first, yMax)
         rectanguloIzq[3] = Pair(xMin, yMax)
+        // Rectangulo derecho = [Punto inferior izquierdo, Punto superior derecho, Punto inferior derecho, Punto superior izquierdo]
         rectanguloDer[0] = Pair(puntoDeCorte.first, yMin)
         rectanguloDer[1] = Pair(xMax, yMin)
         rectanguloDer[2] = Pair(xMax, yMax)
         rectanguloDer[3] = Pair(puntoDeCorte.first, yMax)
     }
     else {
+        // Rectangulo izquierdo = [Punto inferior izquierdo, Punto superior derecho, Punto inferior derecho, Punto superior izquierdo]
         rectanguloIzq[0] = Pair(xMin, yMin)
         rectanguloIzq[1] = Pair(xMax, yMin)
         rectanguloIzq[2] = Pair(xMax, puntoDeCorte.second)
         rectanguloIzq[3] = Pair(xMin, puntoDeCorte.second)
+        // Rectangulo derecho = [Punto inferior izquierdo, Punto superior derecho, Punto inferior derecho, Punto superior izquierdo]
         rectanguloDer[0] = Pair(xMin, puntoDeCorte.second)
         rectanguloDer[1] = Pair(xMax, puntoDeCorte.second)
         rectanguloDer[2] = Pair(xMax, yMax)
@@ -291,11 +295,17 @@ fun crearRectangulo(P: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>
 * Entradas: P: Arreglo de puntos, rectangulo: Arreglo de puntos que representan un rectangulo
 * Salidas: Arreglo de puntos que estan dentro del rectangulo
 */
-fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>, puntoDeCorte: Pair<Double,Double>): Array<Pair<Double, Double>>{
+fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>, puntoDeCorte: Pair<Double,Double>, ejeDeCorte: Char): Array<Pair<Double, Double>>{
     var numElementos = 0
     for (punto in P){
         if (punto.first >= rectangulo[0].first && punto.first <= rectangulo[1].first && punto.second >= rectangulo[0].second && punto.second <= rectangulo[3].second){
             if (numElementos == 0 && punto == puntoDeCorte) {
+                continue
+            }
+            if (ejeDeCorte == 'X' && punto.first == puntoDeCorte.first && numElementos == 0) {
+                continue
+            }
+            else if (ejeDeCorte == 'Y' && punto.second == puntoDeCorte.second && numElementos == 0) {
                 continue
             }
             numElementos++
@@ -306,6 +316,12 @@ fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<P
     for (punto in P){
         if (punto.first >= rectangulo[0].first && punto.first <= rectangulo[1].first && punto.second >= rectangulo[0].second && punto.second <= rectangulo[3].second){
             if (i == 0 && punto == puntoDeCorte) {
+                continue
+            }
+            if (ejeDeCorte == 'X' && punto.first == puntoDeCorte.first && i == 0) {
+                continue
+            }
+            else if (ejeDeCorte == 'Y' && punto.second == puntoDeCorte.second && i == 0) {
                 continue
             }
             puntosRectangulo[i] = punto
@@ -343,8 +359,8 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
     }
     var puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
     var rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
-    var particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first, puntoDeCorte)
-    var particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte)
+    var particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first, puntoDeCorte, ejeDeCorte)
+    var particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte, ejeDeCorte)
     if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
         if (ejeDeCorte == 'X') {
             ejeDeCorte = 'Y'
@@ -353,8 +369,8 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
         }
         puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
         rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
-        particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first, puntoDeCorte)
-        particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte)
+        particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first, puntoDeCorte, ejeDeCorte)
+        particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte, ejeDeCorte)
         if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
             if (ejeDeCorte == 'X') {
                 ejeDeCorte = 'Y'
@@ -363,9 +379,23 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
             }
             puntoDeCorte = obtenerPuntoDeCorteMitad(P, ejeDeCorte)
             rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
-            particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first, puntoDeCorte)
-            particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte)
+            particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first, puntoDeCorte, ejeDeCorte)
+            particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte, ejeDeCorte)
         }
+    }
+    // Imprimimos el punto de corte
+    println("Punto de corte: $puntoDeCorte")
+    // Imprimimos los rectangulos internos
+    println("Rectangulo izquierdo: ${rectangulosInternos.first[0]}, ${rectangulosInternos.first[1]}, ${rectangulosInternos.first[2]}, ${rectangulosInternos.first[3]}")
+    println("Rectangulo derecho: ${rectangulosInternos.second[0]}, ${rectangulosInternos.second[1]}, ${rectangulosInternos.second[2]}, ${rectangulosInternos.second[3]}")
+    // Imprimimos las particiones
+    println("Particion izquierda: ")
+    for (punto in particionIzq){
+        println("$punto")
+    }
+    println("Particion derecha: ")
+    for (punto in particionDer){
+        println("$punto")
     }
     return Pair(particionIzq, particionDer)
 }
@@ -414,14 +444,6 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
 
     // inicializamos
     minG = Int.MAX_VALUE
-    dOLD1 = 0
-    dOLD2 = 0
-    dNEW1 = 0
-    dNEW2 = 0
-    dNEW3 = 0
-    dNEW4 = 0
-    g1 = 0
-    g2 = 0
     ladosAgregarC1 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
     ladosAgregarC2 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
     ladosEliminarC1 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
