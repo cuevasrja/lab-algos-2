@@ -8,7 +8,9 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
-import java.io.BufferedWriter
+import kotlin.math.abs
+import kotlin.math.sqrt
+
 
 /**
 * Funcion: swap(P: Array<Pair<Int, Int>>, i: Int, j: Int)
@@ -448,15 +450,17 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
     ladosAgregarC2 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
     ladosEliminarC1 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
     ladosEliminarC2 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
+    val ladosC1 = c1.copyOf()
+    val ladosC2 = c2.copyOf()
 
-    for (i in 0 until c1.size) {
-        a = c1[i].first
-        b = c1[i].second
+    for (i in 0 until ladosC1.size) {
+        a = ladosC1[i].first
+        b = ladosC1[i].second
 
         dOLD1 = distancia2D(a, b)
-        for (j in 0 until c2.size) {
-            c = c2[j].first
-            d = c2[j].second
+        for (j in 0 until ladosC2.size) {
+            c = ladosC2[j].first
+            d = ladosC2[j].second
 
             dOLD2 = distancia2D(c, d)
             dNEW1 = distancia2D(a, c)
@@ -484,31 +488,31 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
             }
         }
     }
-    for (i in 0 until c1.size) {
-            if (c1[i] == ladosEliminarC1) {
-                c1[i] = ladosAgregarC1 // sustituimos el lado a eliminar por el lado a agregar
+    for (i in 0 until ladosC1.size) {
+            if (ladosC1[i] == ladosEliminarC1) {
+                ladosC1[i] = ladosAgregarC1 // sustituimos el lado a eliminar por el lado a agregar
                 break // ya eliminamos y agregamos el lado
             }
         }
     // analogamente, hacemos lo mismo con c2
-    for (i in 0 until c2.size) {
-        if (c2[i] == ladosEliminarC2) {
-            c2[i] = ladosAgregarC2
+    for (i in 0 until ladosC2.size) {
+        if (ladosC2[i] == ladosEliminarC2) {
+            ladosC2[i] = ladosAgregarC2
             break // ya eliminamos y agregamos el lado
         }
     }
 
-    var nuevoCiclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(c1.size + c2.size){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
+    var nuevoCiclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(ladosC1.size + ladosC2.size){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
     var j: Int
 
     j = 0
     
     // llenamos nuevoCiclo
     for (i in 0 until nuevoCiclo.size) {
-        if (i < c1.size) {
-            nuevoCiclo[i] = c1[i]
+        if (i < ladosC1.size) {
+            nuevoCiclo[i] = ladosC1[i]
         } else {
-            nuevoCiclo[i] = c2[j]
+            nuevoCiclo[i] = ladosC2[j]
             j = j + 1
         }
     }
@@ -628,7 +632,9 @@ fun main(args: Array<String>) {
 
     // Imprimimos la ruta
     for (i in 0 until solucion.size) {
-        println("${solucion[i].first} -> ${solucion[i].second}")
+        val j = ciudadesEntrada.indexOf(solucion[i].first)
+        val k = ciudadesEntrada.indexOf(solucion[i].second)
+        println("$j ${solucion[i].first} -> $k ${solucion[i].second}")
     }
 
     for (i in 0 until solucion.size) {
