@@ -698,6 +698,15 @@ fun main(args: Array<String>) {
     val solucion = divideAndConquerTSP(ciudades)
     val distanciaRuta = distanciaTotal(solucion)
 
+    // Aplicamos la busqueda local con 2-opt para mejorar la solución
+    val solucionMejorada = busquedaLocalCon2Opt(solucion)
+    val distanciaRutaMejorada = distanciaTotal(solucionMejorada)
+
+// Imprimimos la solución en el stdout
+    println("NAME : ${nombre}")
+    println("Solucion inicial: ${distanciaRuta}")
+    println("Solucion mejorada: ${distanciaRutaMejorada}")
+
     // Escribimos la solución en un archivo de salida
     val archivoSalida = File(args[1])
 
@@ -705,12 +714,6 @@ fun main(args: Array<String>) {
     archivoSalida.appendText("COMMENT : Length ${distanciaRuta}\n")
     archivoSalida.appendText("DIMENSION : ${solucion.size}\n")
     archivoSalida.appendText("TOUR_SECTION\n")
-
-    // Imprimimos la solución en el stdout
-    println("NAME : ${nombre}")
-    println("COMMENT : Length ${distanciaRuta}")
-    println("DIMENSION : ${solucion.size}")
-    println("TOUR_SECTION")
 
     // Imprimimos la ruta
     for (i in 0 until solucion.size) {
@@ -722,17 +725,9 @@ fun main(args: Array<String>) {
     for (i in 0 until solucion.size) {
         val par = solucion[i].first
         val indice = ciudadesEntrada.indexOf(par)
-        val x = solucion[i].first.first
-        val y = solucion[i].first.second
-        archivoSalida.appendText("${indice+1} ${x} ${y}\n")
-        if (i == solucion.size - 1) {
-            val parf = solucion[i].second
-            val indicef = ciudadesEntrada.indexOf(parf)
-            val xf = solucion[i].second.first
-            val yf = solucion[i].second.second
-            archivoSalida.appendText("${indicef + 1} $xf $yf\n")
-        }
+        archivoSalida.appendText("${indice+1}\n")
     }
+    archivoSalida.appendText("-1\n")
     println("La solucion es de tamaño ${solucion.size}")
 
     // Escribimos el EOF que indica el final del archivo e imprimimos el fin del tour en el stdout
