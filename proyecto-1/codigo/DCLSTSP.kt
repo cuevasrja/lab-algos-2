@@ -847,7 +847,7 @@ fun main(args: Array<String>) {
     // Imprimimos la solución en el stdout
     println("NAME : ${nombre}")
     println("Solucion inicial: ${distanciaRuta}")
-    println("Solucion mejorada: ${distanciaRutaMejorada}")
+    println("Solucion mejorada con 2-opt: ${distanciaRutaMejorada}")
 
     // Escribimos la solución en un archivo de salida
     val archivoSalida = File(args[1])
@@ -858,19 +858,14 @@ fun main(args: Array<String>) {
     archivoSalida.appendText("TOUR_SECTION\n")
 
     // Imprimimos la ruta
-    println("Solucion inicial: ")
+    println("Solucion: ")
     for (i in 0 until solucion.size) {
-        val j = ciudadesEntrada.indexOf(solucion[i].first)
-        val k = ciudadesEntrada.indexOf(solucion[i].second)
-        println("${j+1} ${solucion[i].first} -> ${k+1} ${solucion[i].second}")
+        val par = solucion[i].first
+        val indice = ciudadesEntrada.indexOf(par)
+        println("${indice+1}")
     }
-
-    println("Solucion mejorada: ")
-    for (i in 0 until solucionMejorada.size) {
-        val j = ciudadesEntrada.indexOf(solucionMejorada[i].first)
-        val k = ciudadesEntrada.indexOf(solucionMejorada[i].second)
-        println("${j+1} ${solucionMejorada[i].first} -> ${k+1} ${solucionMejorada[i].second}")
-    }
+    // Agregamos -1 para indicar el final del ciclo
+    println("-1")
 
     for (i in 0 until solucion.size) {
         val par = solucion[i].first
