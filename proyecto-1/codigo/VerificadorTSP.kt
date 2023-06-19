@@ -61,6 +61,13 @@ fun checkSolution(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Bo
     return true
 }
 
+/**
+* Funcion: esOptima(ciudadesInstancia: Array<Pair<Int, Int>>, ciudadesSolucion: Array<Pair<Int, Int>>)
+* Entradas: indicesInstancia, un arreglo de pares de enteros que representan las coordenadas de las ciudades de la instancia
+*           indicesSolucion, un arreglo de pares de enteros que representan las coordenadas de las ciudades de la solucion
+* Salidas: true si la solucion es optima, false en otro caso
+* Descripcion: Verifica que la solucion dada sea la mas optima posible
+*/
 fun esOptima(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Boolean {
     for (i in 0 until indicesInstancia.size) {
         if (indicesInstancia[i] != indicesSolucion[i]) {
@@ -70,6 +77,12 @@ fun esOptima(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Boolean
     return true
 }
 
+/**
+* Funcion: ciudadesFaltantes(ciudadesInstancia: Array<Pair<Int, Int>>, ciudadesSolucion: Array<Pair<Int, Int>>)
+* Entradas: indicesInstancia, un arreglo de pares de enteros que representan las coordenadas de las ciudades de la instancia
+*           indicesSolucion, un arreglo de pares de enteros que representan las coordenadas de las ciudades de la solucion
+* Salidas: Imprime (en caso de que sea necesario) las ciudades que faltan en la solucion
+*/
 fun ciudadesFaltantes(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>){
     for (i in 0 until indicesSolucion.size){
         if (!indicesInstancia.contains(indicesSolucion[i])){
@@ -124,10 +137,5 @@ fun main(args: Array<String>) {
         println(" y es optima")
     } else {
         println(" pero no es optima")
-        for (i in 0 until indicesInstancia.size) {
-            if (indicesInstancia[i] != indicesSolucion[i]) {
-                println("La ciudad ${indicesInstancia[i] + 1} deberia estar en la posicion ${i + 1} pero esta en la posicion ${indicesSolucion.indexOf(indicesInstancia[i]) + 1}")
-            }
-        }
     }
 }

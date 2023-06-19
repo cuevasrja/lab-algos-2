@@ -298,6 +298,8 @@ fun obtenerCoordMinY(P: Array<Pair<Double, Double>>): Double{
 * Salidas: Arreglo de puntos que representan un rectangulo que contiene a todos los puntos en P
 */
 fun crearRectangulo(P: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>{
+    // Obtenemos las coordenadas del rectangulo que contiene a todos los puntos en P
+    // Buscamos maximas y minimas coordenadas en X y Y
     val maxX = obtenerCoordMaxX(P)
     val maxY = obtenerCoordMaxY(P)
     val minX = obtenerCoordMinX(P)
@@ -353,8 +355,10 @@ fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<P
 * Salidas: Distancia entre los puntos p1 y p2 como un Int
 */
 fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Int{
+    // Distancia euclidiana entre dos puntos
     val x = p1.first - p2.first
     val y = p1.second - p2.second
+    // Se redondea al entero mas cercano
     return Math.sqrt((x*x + y*y).toDouble()).toInt()
 }
 
@@ -485,16 +489,21 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
     val ladosC1 = c1.copyOf()
     val ladosC2 = c2.copyOf()
 
+    // Ordenamos los ciclos
     for (i in 0 until ladosC1.size) {
+        // Ordenamos el ciclo 1
         a = ladosC1[i].first
         b = ladosC1[i].second
 
+        // Calculamos la distancia original
         dOLD1 = distancia2D(a, b)
         for (j in 0 until ladosC2.size) {
             c = ladosC2[j].first
             d = ladosC2[j].second
 
+            // Calculamos la distancia original
             dOLD2 = distancia2D(c, d)
+            // Calculamos las nuevas distancias
             dNEW1 = distancia2D(a, c)
             dNEW2 = distancia2D(b, d)
             dNEW3 = distancia2D(a, d)
@@ -511,11 +520,11 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
             if (ganancia < minG) {
                 minG = ganancia
                 // Guardamos los lados a agregar y eliminar
-                if (g1 < g2) {
+                if (g1 < g2) { // si g1 es menor, entonces el lado a agregar es (a, c) y (b, d)
                     ladosAgregarC1 = Pair(a, c)
                     ladosAgregarC2 = Pair(d, b)
                 }
-                else {
+                else { // en otro caso, el lado a agregar es (a, d) y (b, c)
                     ladosAgregarC1 = Pair(a, d)
                     ladosAgregarC2 = Pair(c, b)
                 }
@@ -540,10 +549,9 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
         }
     }
 
+    // Ahora, creamos un nuevo ciclo, que es la union de los dos ciclos
     var nuevoCiclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(ladosC1.size + ladosC2.size){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
-    var j: Int
-
-    j = 0
+    var j = 0
 
     // llenamos nuevoCiclo
     for (i in 0 until nuevoCiclo.size) {
@@ -551,7 +559,7 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
             nuevoCiclo[i] = ladosC1[i]
         } else {
             nuevoCiclo[i] = ladosC2[j]
-            j = j + 1
+            j++
         }
     }
 
@@ -566,8 +574,10 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
 * Salidas: Distancia total del ciclo (Double)
 */
 fun distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Int{
+    // Calculamos la distancia total del ciclo
     var acc: Double = 0.0
     for (i in 0 until ciclo.size){
+        // Sumamos la distancia de cada lado
         acc += distancia2D(ciclo[i].first, ciclo[i].second)
     }
     return acc.toInt()
@@ -614,22 +624,35 @@ fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double
 * Salidas: Ciclo de distancia minima (Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
 */
 fun busquedaLocalCon2Opt(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+    // Convertimos el ciclo a una ruta
     val ruta: Array<Pair<Double, Double>> = cicloARuta(ciclo)
+    // Declaramos la ruta nueva
     val rutaNueva = Array<Pair<Double, Double>>(ruta.size){Pair(0.0, 0.0)}
+    // Tomamos la primera ciudad de la ruta
     rutaNueva[0] = ruta[0]
     val n = ruta.size
     var index = 1
+    // Agregamos las ciudades a la ruta nueva
     for (i in 0 until n-1){
+        // Buscamos la ciudad mas cercana a la ciudad actual
         var minDist = Int.MAX_VALUE
+        // Agregamos la ciudad mas cercana a la ruta nueva
         for (j in 0 until n){
+            // Calculamos la distancia entre la ciudad actual y la ciudad j
             val dist = distancia2D(ruta[i], ruta[j])
+            // Si la distancia es menor a la distancia minima y la ciudad j no esta en la ruta nueva y no es la ciudad actual
+            // entonces la ciudad j es la mas cercana a la ciudad actual
             if (dist < minDist && !(rutaNueva.contains(ruta[j])) && (i != j)){
+                // Actualizamos la distancia minima
                 minDist = dist
+                // Agregamos la ciudad j a la ruta nueva
                 rutaNueva[index] = ruta[j]
             }
         }
+        // Actualizamos el indice
         index++
     }
+    // Convertimos la ruta nueva a un ciclo
     return rutaACiclo(ruta)
 }
 
@@ -639,25 +662,16 @@ fun busquedaLocalCon2Opt(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Do
 * Salidas: Ruta (Array<Pair<Double, Double>>)
 */
 fun rutaACiclo(ruta: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+    // Convertimos la ruta a un ciclo
     var ciclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(ruta.size){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
+    // Agregamos las ciudades a la ruta nueva
     for (i in 0 until ruta.size-1){
+        // Agregamos la ciudad mas cercana a la ruta nueva
         ciclo[i] = Pair(ruta[i], ruta[i+1])
     }
+    // Agregamos la ultima ciudad a la ruta nueva, esta ciudad esta conectada con la primera ciudad
     ciclo[ruta.size-1] = Pair(ruta[ruta.size-1], ruta[0])
     return ciclo
-}
-
-/**
-* Funcion: distanciaRuta(ruta: Array<Pair<Double, Double>>)
-* Entradas: ruta: Array<Pair<Double, Double>>
-* Salidas: Distancia total de la ruta (Int)
-*/
-fun distanciaRuta(ruta: Array<Pair<Double, Double>>): Int{
-    var acc: Int = 0
-    for (i in 0 until ruta.size-1){
-        acc += distancia2D(ruta[i], ruta[i+1])
-    }
-    return acc
 }
 
 /**
@@ -669,8 +683,11 @@ fun distanciaRuta(ruta: Array<Pair<Double, Double>>): Int{
 */
 fun cicloARuta(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Double, Double>>{
     val n = ciclo.size
+    // Declaramos la ruta
     var ruta = Array<Pair<Double, Double>>(n){Pair(0.0, 0.0)}
     for (i in 0 until n){
+        // Agregamos la ciudad i a la ruta
+        // La ciudad i es la primera ciudad del par i
         ruta[i] = ciclo[i].first
     }
     return ruta
@@ -759,7 +776,6 @@ fun main(args: Array<String>) {
         archivoSalida.appendText("${indice+1}\n")
     }
     archivoSalida.appendText("-1\n")
-    println("La solucion es de tamaño ${solucion.size}")
 
     // Escribimos el EOF que indica el final del archivo e imprimimos el fin del tour en el stdout
     archivoSalida.appendText("EOF\n")
