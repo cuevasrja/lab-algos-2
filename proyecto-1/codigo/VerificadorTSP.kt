@@ -45,7 +45,7 @@ fun checkSolution(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Bo
     // Verificar que la solucion tenga todas las ciudades de la instancia
     for (i in 0 until indicesInstancia.size) {
         if (!indicesInstancia.contains(indicesSolucion[i])) {
-            println("La solución no contiene la ciudad ${indicesSolucion[i] + 1}")
+            println("La solución no contiene la ciudad ${indicesSolucion[i] + 1}.")
             return false
         }
     }
@@ -53,25 +53,9 @@ fun checkSolution(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Bo
     for (i in 0 until indicesSolucion.size) {
         for (j in i + 1 until indicesSolucion.size) {
             if (indicesSolucion[i] == indicesSolucion[j]) {
-                println("La solución tiene la ciudad ${indicesSolucion[i] + 1} repetida")
+                println("La solución tiene la ciudad ${indicesSolucion[i] + 1} repetida.")
                 return false
             }
-        }
-    }
-    return true
-}
-
-/**
-* Funcion: esOptima(ciudadesInstancia: Array<Pair<Int, Int>>, ciudadesSolucion: Array<Pair<Int, Int>>)
-* Entradas: indicesInstancia, un arreglo de pares de enteros que representan las coordenadas de las ciudades de la instancia
-*           indicesSolucion, un arreglo de pares de enteros que representan las coordenadas de las ciudades de la solucion
-* Salidas: true si la solucion es optima, false en otro caso
-* Descripcion: Verifica que la solucion dada sea la mas optima posible
-*/
-fun esOptima(indicesInstancia: Array<Int>, indicesSolucion: Array<Int>): Boolean {
-    for (i in 0 until indicesInstancia.size) {
-        if (indicesInstancia[i] != indicesSolucion[i]) {
-            return false
         }
     }
     return true
@@ -124,18 +108,13 @@ fun main(args: Array<String>) {
     }
     lectorSolucion.close()
 
+    // Verificar que la solucion sea correcta
     if (!checkSolution(indicesInstancia, indicesSolucion)) {
         // Si la solucion no es correcta, terminar el programa
-        println("Solución incorrecta")
+        println("Solución incorrecta!!")
         ciudadesFaltantes(indicesInstancia, indicesSolucion)
         return
     }
-    print("Es una solución correcta")
-
-    // Evaluar si la solucion es optima
-    if (esOptima(indicesInstancia, indicesSolucion)) {
-        println(" y es optima")
-    } else {
-        println(" pero no es optima")
-    }
+    println("Es una solución correcta!!")
+    println("Se visitaron todas las ciudades de la instancia, solo una vez cada una.")
 }

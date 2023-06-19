@@ -703,6 +703,34 @@ fun divideAndConquerAndLocalSearchTSP(C: Array<Pair<Pair<Double, Double>, Pair<D
 }
 
 /**
+* Funcion: ordenarDesdeLaPrimeraCiudad(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
+* Entradas: ciclo: Representa un ciclo que contenga todas las ciudades
+* Salidas: Unit
+* Descripcion: Ordena el ciclo desde la primera ciudad
+*/
+fun ordenarDesdeLaPrimeraCiudad(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, primerCiudad: Pair<Double, Double>) {
+    val cicloOrdenado = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(ciclo.size){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
+    // Obtenemos el indice de la primera ciudad especificada al inicio del programa dentro del ciclo
+    val indicePrimeraCiudad = ciclo.indexOfFirst { it.first == primerCiudad }
+    // Agregamos la primera ciudad al ciclo ordenado
+    cicloOrdenado[0] = ciclo[indicePrimeraCiudad]
+    // Agregamos las ciudades restantes al ciclo ordenado
+    var index = 1
+    for (i in indicePrimeraCiudad+1 until ciclo.size){
+        cicloOrdenado[index] = ciclo[i]
+        index++
+    }
+    for (i in 0 until indicePrimeraCiudad){
+        cicloOrdenado[index] = ciclo[i]
+        index++
+    }
+    // Actualizamos el ciclo
+    for (i in 0 until ciclo.size){
+        ciclo[i] = cicloOrdenado[i]
+    }
+}
+
+/**
 * main(args: Array<String>)
 * Funcion principal del programa
 * Entradas: args[0] = Nombre del archivo de entrada, args[1] = Nombre del archivo de salida
@@ -734,13 +762,22 @@ fun main(args: Array<String>) {
 
     val ciudadesEntrada = ciudades.copyOf()
 
+    // Obtenemos la primera ciudad
+    val primerCiudad = ciudades[0]
+
     // Aplicamos el algoritmo de divide and conquer para obtener la solución
     val solucion = divideAndConquerTSP(ciudades)
     val distanciaRuta = distanciaTotal(solucion)
 
+    // Ordenamos la solución desde la primera ciudad
+    ordenarDesdeLaPrimeraCiudad(solucion, primerCiudad)
+
     // Aplicamos la busqueda local con 2-opt para mejorar la solución
     val solucionMejorada = busquedaLocalCon2Opt(solucion)
     val distanciaRutaMejorada = distanciaTotal(solucionMejorada)
+
+    // Ordenamos la solución desde la primera ciudad
+    ordenarDesdeLaPrimeraCiudad(solucionMejorada, primerCiudad)
 
     // Imprimimos la solución en el stdout
     println("NAME : ${nombre}")
