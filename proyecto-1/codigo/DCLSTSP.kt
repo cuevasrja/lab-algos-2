@@ -792,21 +792,6 @@ fun main(args: Array<String>) {
     archivoSalida.appendText("DIMENSION : ${solucion.size}\n")
     archivoSalida.appendText("TOUR_SECTION\n")
 
-    // Imprimimos la ruta
-    println("Solucion inicial: ")
-    for (i in 0 until solucion.size) {
-        val j = ciudadesEntrada.indexOf(solucion[i].first)
-        val k = ciudadesEntrada.indexOf(solucion[i].second)
-        println("${j+1} ${solucion[i].first} -> ${k+1} ${solucion[i].second}")
-    }
-
-    println("Solucion mejorada: ")
-    for (i in 0 until solucionMejorada.size) {
-        val j = ciudadesEntrada.indexOf(solucionMejorada[i].first)
-        val k = ciudadesEntrada.indexOf(solucionMejorada[i].second)
-        println("${j+1} ${solucionMejorada[i].first} -> ${k+1} ${solucionMejorada[i].second}")
-    }
-
     for (i in 0 until solucion.size) {
         val par = solucion[i].first
         val indice = ciudadesEntrada.indexOf(par)
