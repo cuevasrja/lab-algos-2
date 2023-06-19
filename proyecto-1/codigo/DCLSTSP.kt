@@ -1,8 +1,11 @@
 /**
 * Nombre del archivo: DCLSTSP.kt
-* Descripcion: Implementacion del algoritmo "Divide, Conquer, Local Search" para el problema del agente viajero
+* Descripcion: Implementacion del algoritmo "Divide, Conquer, Local Search" para el problema del agente viajero. Que consiste en dividir el problema en subproblemas mas pequeños, resolverlos y luego combinar las soluciones de los subproblemas para obtener la solucion del problema original.
+* El problema del agente viajero consiste en encontrar la ruta mas corta que recorra una sola vez todas las ciudades de una instancia dada.
 * Autores: Luis Miguel Isea 19-10175, Juan Cuevas 19-10056
 */
+
+// Importamos las librerias necesarias para escribir y leer archivos y también para calcular la raiz cuadrada y el valor absoluto
 
 import java.io.BufferedReader
 import java.io.File
@@ -10,7 +13,6 @@ import java.io.FileReader
 import java.io.FileWriter
 import kotlin.math.abs
 import kotlin.math.sqrt
-
 
 /**
 * Funcion: swap(P: Array<Pair<Double, Double>>, i: Int, j: Int)
@@ -32,7 +34,7 @@ fun swap(P: Array<Pair<Double, Double>>, i: Int, j: Int): Unit {
 *           i, un entero que representa la posicion de un elemento del arreglo
 *           j, un entero que representa la posicion de un elemento del arreglo
 * Salidas: Unit
-* Descripcion: Intercambia los elementos en las posiciones i y j del arreglo ciclo
+* Descripcion: Intercambia los elementos en las posiciones i y j del ciclo
 */
 fun swapEnCiclos(ciclo:  Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, i: Int, j: Int): Unit {
     val temp = ciclo[i]
@@ -49,14 +51,18 @@ fun swapEnCiclos(ciclo:  Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>
 * Descripcion: Particiona el arreglo P en dos subarreglos en base a las coordenadas X de las ciudades, uno con los elementos menores o iguales al pivote y otro con los elementos mayores al pivote
 */
 fun partitionX(P: Array<Pair<Double, Double>>, l: Int, r: Int): Int {
+    // Seleccionamos el ultimo elemento del arreglo como pivote
     val pivot = P[r].first
     var i = l - 1
     for (j in l until r) {
+        // Si el elemento actual es menor o igual al pivote, lo colocamos en la posicion i+1
         if (P[j].first <= pivot) {
             i++
             swap(P, i, j)
         }
     }
+    // Intercambiamos el pivote con el elemento en la posicion i+1
+    // De esa forma todos los elementos menores o iguales al pivote quedan a la izquierda del pivote y todos los elementos mayores al pivote quedan a la derecha del pivote
     swap(P, i + 1, r)
     return i + 1
 }
@@ -71,7 +77,9 @@ fun partitionX(P: Array<Pair<Double, Double>>, l: Int, r: Int): Int {
 */
 fun quickSortX(P: Array<Pair<Double, Double>>, l: Int, r: Int): Unit {
     if (l < r) {
+        // Particionamos el arreglo en dos subarreglos
         val p = partitionX(P, l, r)
+        // Ordenamos los subarreglos
         quickSortX(P, l, p - 1)
         quickSortX(P, p + 1, r)
     }
@@ -86,14 +94,18 @@ fun quickSortX(P: Array<Pair<Double, Double>>, l: Int, r: Int): Unit {
 * Descripcion: Particiona el arreglo P en dos subarreglos en base a las coordenadas Y de las ciudades, uno con los elementos menores o iguales al pivote y otro con los elementos mayores al pivote
 */
 fun partitionY(P: Array<Pair<Double, Double>>, l: Int, r: Int): Int {
+    // Seleccionamos el ultimo elemento del arreglo como pivote
     val pivot = P[r].second
     var i = l - 1
     for (j in l until r) {
+        // Si el elemento actual es menor o igual al pivote, lo colocamos en la posicion i+1
         if (P[j].second <= pivot) {
             i++
             swap(P, i, j)
         }
     }
+    // Intercambiamos el pivote con el elemento en la posicion i+1
+    // De esa forma todos los elementos menores o iguales al pivote quedan a la izquierda del pivote y todos los elementos mayores al pivote quedan a la derecha del pivote
     swap(P, i + 1, r)
     return i + 1
 }
@@ -108,7 +120,9 @@ fun partitionY(P: Array<Pair<Double, Double>>, l: Int, r: Int): Int {
 */
 fun quickSortY(P: Array<Pair<Double, Double>>, l: Int, r: Int): Unit {
     if (l < r) {
+        // Particionamos el arreglo en dos subarreglos
         val p = partitionY(P, l, r)
+        // Ordenamos los subarreglos
         quickSortY(P, l, p - 1)
         quickSortY(P, p + 1, r)
     }
@@ -123,6 +137,7 @@ fun quickSortY(P: Array<Pair<Double, Double>>, l: Int, r: Int): Unit {
 fun ordenarCoordXIguales(P: Array<Pair<Double, Double>>): Unit {
     val n = P.size
     for (i in 0 until n - 1) {
+        // Si las coordenadas X de los elementos i e i+1 son iguales y la coordenada Y del elemento i es mayor a la coordenada Y del elemento i+1, intercambiamos los elementos
         if (P[i].first == P[i + 1].first && obtenerCoordMayor(P[i], P[i + 1], 'Y') == P[i]) {
             swap(P, i, i + 1)
         }
@@ -138,6 +153,7 @@ fun ordenarCoordXIguales(P: Array<Pair<Double, Double>>): Unit {
 fun ordenarCoordYIguales(P: Array<Pair<Double, Double>>): Unit {
     val n = P.size
     for (i in 0 until n - 1) {
+        // Si las coordenadas Y de los elementos i e i+1 son iguales y la coordenada X del elemento i es mayor a la coordenada X del elemento i+1, intercambiamos los elementos
         if (P[i].second == P[i + 1].second && obtenerCoordMayor(P[i], P[i + 1], 'X') == P[i]) {
             swap(P, i, i + 1)
         }
@@ -154,17 +170,23 @@ fun ordenarCoordYIguales(P: Array<Pair<Double, Double>>): Unit {
 */
 fun obtenerCoordMayor(p1: Pair<Double, Double>, p2: Pair<Double, Double>, ejeDeCorte: Char): Pair<Double, Double> {
     if (ejeDeCorte == 'X') {
+        // Si las coordenadas X de p1 y p2 son iguales, comparamos las coordenadas Y
+        // Si las coordenadas Y de p1 son mayores a las coordenadas Y de p2, p1 es mayor que p2
         if (p1.first > p2.first) {
             return p1
         }
+        // Si las coordenadas Y de p2 son mayores a las coordenadas Y de p1, p2 es mayor que p1
         else {
             return p2
         }
     }
     else {
+        // Si las coordenadas Y de p1 y p2 son iguales, comparamos las coordenadas X
+        // Si las coordenadas X de p1 son mayores a las coordenadas X de p2, p1 es mayor que p2
         if (p1.second > p2.second) {
             return p1
         }
+        // Si las coordenadas X de p2 son mayores a las coordenadas X de p1, p2 es mayor que p1
         else {
             return p2
         }
@@ -180,7 +202,9 @@ fun obtenerCoordMayor(p1: Pair<Double, Double>, p2: Pair<Double, Double>, ejeDeC
 */
 fun obtenerPuntoDeCorte(P: Array<Pair<Double, Double>>, ejeDeCorte: Char): Pair<Double, Double> {
     val n = P.size
+    // Obtenemos la posicion del punto de corte
     val pos = Math.ceil(n/2.0).toInt() - 1
+    // Ordenamos el arreglo P en base al eje de corte especificado
     if (ejeDeCorte == 'X') {
         quickSortX(P, 0, n - 1)
         ordenarCoordXIguales(P)
@@ -202,9 +226,11 @@ fun obtenerPuntoDeCorte(P: Array<Pair<Double, Double>>, ejeDeCorte: Char): Pair<
 fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Double, Double>>, ejeDeCorte: Char): Pair<Double, Double> {
     val xMin = obtenerCoordMinX(rectangulo)
     val yMin = obtenerCoordMinY(rectangulo)
+    // Si el eje de corte es X, el punto de corte es la mitad del eje X y la coordenada Y minima del rectangulo
     if (ejeDeCorte == 'X') {
         return Pair(xMin + (obtenerCoordMaxX(rectangulo) - xMin)/2, yMin)
     }
+    // Si el eje de corte es Y, el punto de corte es la mitad del eje Y y la coordenada X minima del rectangulo
     else {
         return Pair(xMin, yMin + (obtenerCoordMaxY(rectangulo) - yMin)/2)
     }
@@ -221,6 +247,7 @@ fun obtenerPuntoDeCorteMitad(rectangulo: Array<Pair<Double, Double>>, ejeDeCorte
 fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangulo: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, Double>>, Array<Pair<Double, Double>>> {
     val rectanguloIzq = Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})
     val rectanguloDer = Array<Pair<Double, Double>>(4, {Pair(0.0, 0.0)})
+    // Obtenemos las coordenadas del rectangulo
     val xMin = obtenerCoordMinX(rectangulo)
     val yMin = obtenerCoordMinY(rectangulo)
     val xMax = obtenerCoordMaxX(rectangulo)
@@ -256,40 +283,48 @@ fun aplicarCorte(ejeDeCorte: Char, puntoDeCorte: Pair<Double, Double>, rectangul
 * Funcion: obtenerCoordMaxX(P: Array<Pair<Double, Double>>)
 * Entradas: P: Arreglo de puntos
 * Salidas: Coordenada X del punto con mayor coordenada X en el arreglo P
+* Descripcion: Obtiene la coordenada X del punto con mayor coordenada X en el arreglo P
 */
-fun obtenerCoordMaxX(P: Array<Pair<Double, Double>>): Double{
+fun obtenerCoordMaxX(P: Array<Pair<Double, Double>>): Double {
     // Buscamos el punto con mayor coordenada X en el arreglo P
-    return P.maxBy { it.first }.first
+    quickSortX(P, 0, P.size - 1)
+    return P[P.size - 1].first
 }
 
 /**
 * Funcion: obtenerCoordMaxY(P: Array<Pair<Double, Double>>)
 * Entradas: P: Arreglo de puntos
 * Salidas: Coordenada Y del punto con mayor coordenada Y en el arreglo P
+* Descripcion: Obtiene la coordenada Y del punto con mayor coordenada Y en el arreglo P
 */
-fun obtenerCoordMaxY(P: Array<Pair<Double, Double>>): Double{
+fun obtenerCoordMaxY(P: Array<Pair<Double, Double>>): Double {
     // Buscamos el punto con mayor coordenada Y en el arreglo P
-    return P.maxBy { it.second }.second
+    quickSortY(P, 0, P.size - 1)
+    return P[P.size - 1].second
 }
 
 /**
 * Funcion: obtenerCoordMinX(P: Array<Pair<Double, Double>>)
 * Entradas: P: Arreglo de puntos
 * Salidas: Coordenada X del punto con menor coordenada X en el arreglo P
+* Descripcion: Obtiene la coordenada X del punto con menor coordenada X en el arreglo P
 */
-fun obtenerCoordMinX(P: Array<Pair<Double, Double>>): Double{
+fun obtenerCoordMinX(P: Array<Pair<Double, Double>>): Double {
     // Buscamos el punto con menor coordenada X en el arreglo P
-    return P.minBy { it.first }.first
+    quickSortX(P, 0, P.size - 1)
+    return P[0].first
 }
 
 /**
 * Funcion: obtenerCoordMinY(P: Array<Pair<Double, Double>>)
 * Entradas: P: Arreglo de puntos
 * Salidas: Coordenada Y del punto con menor coordenada Y en el arreglo P
+* Descripcion: Obtiene la coordenada Y del punto con menor coordenada Y en el arreglo P
 */
-fun obtenerCoordMinY(P: Array<Pair<Double, Double>>): Double{
+fun obtenerCoordMinY(P: Array<Pair<Double, Double>>): Double {
     // Buscamos el punto con menor coordenada Y en el arreglo P
-    return P.minBy { it.second }.second
+    quickSortY(P, 0, P.size - 1)
+    return P[0].second
 }
 
 /**
@@ -297,7 +332,7 @@ fun obtenerCoordMinY(P: Array<Pair<Double, Double>>): Double{
 * Entradas: P: Arreglo de puntos
 * Salidas: Arreglo de puntos que representan un rectangulo que contiene a todos los puntos en P
 */
-fun crearRectangulo(P: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>{
+fun crearRectangulo(P: Array<Pair<Double, Double>>): Array<Pair<Double, Double>> {
     // Obtenemos las coordenadas del rectangulo que contiene a todos los puntos en P
     // Buscamos maximas y minimas coordenadas en X y Y
     val maxX = obtenerCoordMaxX(P)
@@ -312,17 +347,23 @@ fun crearRectangulo(P: Array<Pair<Double, Double>>): Array<Pair<Double, Double>>
 * Funcion: obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>)
 * Entradas: P: Arreglo de puntos, rectangulo: Arreglo de puntos que representan un rectangulo
 * Salidas: Arreglo de puntos que estan dentro del rectangulo
+* Descripcion: Obtiene los puntos que estan dentro del rectangulo
 */
-fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>, puntoDeCorte: Pair<Double,Double>, ejeDeCorte: Char): Array<Pair<Double, Double>>{
+fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<Pair<Double, Double>>, puntoDeCorte: Pair<Double,Double>, ejeDeCorte: Char): Array<Pair<Double, Double>> {
     var numElementos = 0
-    for (punto in P){
-        if (punto.first >= rectangulo[0].first && punto.first <= rectangulo[1].first && punto.second >= rectangulo[0].second && punto.second <= rectangulo[3].second){
+    // Contamos el numero de elementos que estan dentro del rectangulo
+    for (punto in P) {
+        // Si el punto esta dentro del rectangulo
+        if (punto.first >= rectangulo[0].first && punto.first <= rectangulo[1].first && punto.second >= rectangulo[0].second && punto.second <= rectangulo[3].second) {
+            // Si el punto es el punto de corte y es el primer punto, se ignora
             if (numElementos == 0 && punto == puntoDeCorte) {
                 continue
             }
+            // Si el punto tiene la misma coordenada X que el punto de corte y es el primer punto, se ignora
             if (ejeDeCorte == 'X' && punto.first == puntoDeCorte.first && numElementos == 0) {
                 continue
             }
+            // Si el punto tiene la misma coordenada Y que el punto de corte y es el primer punto, se ignora
             else if (ejeDeCorte == 'Y' && punto.second == puntoDeCorte.second && numElementos == 0) {
                 continue
             }
@@ -331,14 +372,19 @@ fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<P
     }
     val puntosRectangulo = Array<Pair<Double, Double>>(numElementos, {Pair(0.0, 0.0)})
     var i = 0
-    for (punto in P){
-        if (punto.first >= rectangulo[0].first && punto.first <= rectangulo[1].first && punto.second >= rectangulo[0].second && punto.second <= rectangulo[3].second){
+    // Guardamos los puntos que estan dentro del rectangulo
+    for (punto in P) {
+        // Si el punto esta dentro del rectangulo
+        if (punto.first >= rectangulo[0].first && punto.first <= rectangulo[1].first && punto.second >= rectangulo[0].second && punto.second <= rectangulo[3].second) {
+            // Si el punto es el punto de corte y es el primer punto, se ignora
             if (i == 0 && punto == puntoDeCorte) {
                 continue
             }
+            // Si el punto tiene la misma coordenada X que el punto de corte y es el primer punto, se ignora
             if (ejeDeCorte == 'X' && punto.first == puntoDeCorte.first && i == 0) {
                 continue
             }
+            // Si el punto tiene la misma coordenada Y que el punto de corte y es el primer punto, se ignora
             else if (ejeDeCorte == 'Y' && punto.second == puntoDeCorte.second && i == 0) {
                 continue
             }
@@ -353,8 +399,9 @@ fun obtenterPuntosRectangulo(P: Array<Pair<Double, Double>>, rectangulo: Array<P
 * Funcion: distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>)
 * Entradas: p1: Par de coordenadas, p2: Par de coordenadas
 * Salidas: Distancia entre los puntos p1 y p2 como un Int
+* Descripcion: Calcula la distancia entre dos puntos en 2D
 */
-fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Int{
+fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Int {
     // Distancia euclidiana entre dos puntos
     val x = p1.first - p2.first
     val y = p1.second - p2.second
@@ -366,9 +413,12 @@ fun distancia2D(p1: Pair<Double, Double>, p2: Pair<Double, Double>): Int{
 * Funcion: obtenerParticiones(P: Array<Pair<Double, Double>>)
 * Entradas: P: Arreglo de puntos
 * Salidas: Par de arreglos de puntos que representan las particiones de P
+* Descripcion: Obtiene las particiones de P, a través de escoger un eje de corte y un punto de corte, y luego obtener los rectangulos internos, y los puntos que estan dentro de cada rectangulo.
 */
-fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, Double>>, Array<Pair<Double, Double>>>{
+fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, Double>>, Array<Pair<Double, Double>>> {
+    // Se crea el rectangulo que contiene a todos los puntos
     val rectangulo = crearRectangulo(P)
+    // Se obtiene el eje de corte
     val xDim = obtenerCoordMaxX(rectangulo) - obtenerCoordMinX(rectangulo)
     val yDim = obtenerCoordMaxY(rectangulo) - obtenerCoordMinY(rectangulo)
     var ejeDeCorte: Char
@@ -377,11 +427,16 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
     } else {
         ejeDeCorte = 'Y'
     }
+    // Se obtiene el punto de corte
     var puntoDeCorte = obtenerPuntoDeCorte(P, ejeDeCorte)
+    // Se obtienen los rectangulos internos
     var rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
+    // Se obtienen los puntos de cada particion
     var particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first, puntoDeCorte, ejeDeCorte)
     var particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte, ejeDeCorte)
-    if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
+
+    // Si se escogió una mala particion, se cambia el eje de corte y se vuelve a intentar
+    if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)) {
         if (ejeDeCorte == 'X') {
             ejeDeCorte = 'Y'
         } else {
@@ -391,7 +446,9 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
         rectangulosInternos = aplicarCorte(ejeDeCorte, puntoDeCorte, rectangulo)
         particionIzq = obtenterPuntosRectangulo(P, rectangulosInternos.first, puntoDeCorte, ejeDeCorte)
         particionDer = obtenterPuntosRectangulo(P, rectangulosInternos.second, puntoDeCorte, ejeDeCorte)
-        if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)){
+
+        // Si se escogió una mala particion, se cambia el eje de corte y se vuelve a intentar
+        if ((particionIzq.size == 0 && particionDer.size > 3) || (particionDer.size == 0 && particionIzq.size > 3)) {
             if (ejeDeCorte == 'X') {
                 ejeDeCorte = 'Y'
             } else {
@@ -410,8 +467,9 @@ fun obtenerParticiones(P: Array<Pair<Double, Double>>): Pair<Array<Pair<Double, 
 * Funcion: distanciaGanada(n1: Int, n2: Int, o1: Int, o2: Int)
 * Entradas: n1: Distancia del primer ciclo, n2: Distancia del segundo ciclo, o1: Distancia del primer ciclo original, o2: Distancia del segundo ciclo original
 * Salidas: Distancia ganada al combinar los ciclos
+* Descripcion: Calcula la distancia ganada al combinar dos ciclos
 */
-fun distanciaGanada(n1: Int, n2: Int, o1: Int, o2: Int): Int{
+fun distanciaGanada(n1: Int, n2: Int, o1: Int, o2: Int): Int {
     return ((n1 + n2) - (o1 + o2)).toInt()
 }
 
@@ -438,9 +496,8 @@ fun ordenarCiclo(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
             }
             j++
         }
-        // Si el j = i + 1, no haria falta intercambiarlo, pues ya tendrian extremos iguales.
-        // Si j > i + 1 los intercambiamos.
-        // En caso de intercambiarlos, lo intercambiamos con i + 1.
+        // Si j = i + 1, entonces el extremo de i es igual al inicial de i + 1, por lo que no hacemos nada.
+        // Si j > i + 1, intercambiamos el ciclo[j] con el ciclo[i + 1]
         if (j > i + 1) {
             swapEnCiclos(ciclo, i + 1, j)
         }
@@ -451,8 +508,9 @@ fun ordenarCiclo(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
 * Funcion: combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, c2: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
 * Entradas: c1: Arreglo que representa un ciclo, c2: Arreglo que representa un ciclo
 * Salidas: Arreglo que resulta de combinar los ciclos c1 y c2 en un solo ciclo
+* Descripcion: Combina dos ciclos en un solo ciclo, de tal forma que se minimice la distancia total recorrida
 */
-fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, c2: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, c2: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>> {
     // Variables
     var minG: Int
     var dOLD1: Int
@@ -474,13 +532,13 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
     var ganancia: Int
 
     // Si alguno de los ciclos es vacio, se retorna el otro
-    if (c1.size == 0){
+    if (c1.size == 0) {
         return c2
-    } else if (c2.size == 0){
+    } else if (c2.size == 0) {
         return c1
     }
 
-    // inicializamos
+    // Inicializamos
     minG = Int.MAX_VALUE
     ladosAgregarC1 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
     ladosAgregarC2 = Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))
@@ -541,7 +599,7 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
                 break // ya eliminamos y agregamos el lado
             }
         }
-    // analogamente, hacemos lo mismo con c2
+    // Análogamente, hacemos lo mismo con c2
     for (i in 0 until ladosC2.size) {
         if (ladosC2[i] == ladosEliminarC2) {
             ladosC2[i] = ladosAgregarC2
@@ -553,7 +611,7 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
     var nuevoCiclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(ladosC1.size + ladosC2.size){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
     var j = 0
 
-    // llenamos nuevoCiclo
+    // Llenamos nuevoCiclo
     for (i in 0 until nuevoCiclo.size) {
         if (i < ladosC1.size) {
             nuevoCiclo[i] = ladosC1[i]
@@ -572,11 +630,12 @@ fun combinarCiclos(c1: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, 
 * Funcion: distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
 * Entradas: ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>
 * Salidas: Distancia total del ciclo (Double)
+* Descripcion: Calcula la distancia total de un ciclo
 */
-fun distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Int{
+fun distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Int {
     // Calculamos la distancia total del ciclo
     var acc: Double = 0.0
-    for (i in 0 until ciclo.size){
+    for (i in 0 until ciclo.size) {
         // Sumamos la distancia de cada lado
         acc += distancia2D(ciclo[i].first, ciclo[i].second)
     }
@@ -587,26 +646,27 @@ fun distanciaTotal(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>
 * Funcion: divideAndConquerTSP(P: Array<Pair<Double, Double>>)
 * Entradas: P: Array<Pair<Double, Double>>
 * Salidas: Ciclo de distancia minima (Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
+* Descripcion: Calcula el ciclo de distancia minima de un conjunto de puntos recursivamente, con casos base para n = 0, 1, 2 y 3. Y sino divide el conjunto en dos, calcula el ciclo de distancia minima de cada conjunto y luego los une.
 */
-fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>> {
     val n = P.size
-    if (n == 0){
+    if (n == 0) {
         // Cuando n = 0, no hay ciclos
         return arrayOf()
     }
-    else if (n == 1){
+    else if (n == 1) {
         // Cuando n = 1, se tiene un solo ciclo
         return arrayOf(Pair(P[0], P[0]))
     }
-    else if (n == 2){
+    else if (n == 2) {
         // Cuando n = 2, se tiene un solo ciclo
         return arrayOf(Pair(P[0], P[1]), Pair(P[1], P[0]))
     }
-    else if (n == 3){
+    else if (n == 3) {
         // Cuando n = 3, se tienen 3 posibles ciclos, todos con la misma distancia
         return arrayOf(Pair(P[0], P[1]), Pair(P[1], P[2]), Pair(P[2], P[0]))
     }
-    else{
+    else {
         // Cuando n > 3, se tiene que dividir el conjunto de puntos en dos
         // Particionar el conjunto de puntos en dos
         val (particionIzq, particionDer) = obtenerParticiones(P)
@@ -622,6 +682,7 @@ fun divideAndConquerTSP (P: Array<Pair<Double, Double>>): Array<Pair<Pair<Double
 * busquedaLocalCon2Opt(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
 * Entradas: ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>
 * Salidas: Ciclo de distancia minima (Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
+* Descripcion: Calcula el ciclo de distancia minima de un conjunto de puntos, aplicando la busqueda local con 2-opt
 */
 fun busquedaLocalCon2Opt(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
     // Convertimos el ciclo a una ruta
@@ -633,16 +694,16 @@ fun busquedaLocalCon2Opt(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Do
     val n = ruta.size
     var index = 1
     // Agregamos las ciudades a la ruta nueva
-    for (i in 0 until n-1){
+    for (i in 0 until n-1 ){
         // Buscamos la ciudad mas cercana a la ciudad actual
         var minDist = Int.MAX_VALUE
         // Agregamos la ciudad mas cercana a la ruta nueva
-        for (j in 0 until n){
+        for (j in 0 until n) {
             // Calculamos la distancia entre la ciudad actual y la ciudad j
             val dist = distancia2D(ruta[i], ruta[j])
             // Si la distancia es menor a la distancia minima y la ciudad j no esta en la ruta nueva y no es la ciudad actual
             // entonces la ciudad j es la mas cercana a la ciudad actual
-            if (dist < minDist && !(rutaNueva.contains(ruta[j])) && (i != j)){
+            if (dist < minDist && !(rutaNueva.contains(ruta[j])) && (i != j)) {
                 // Actualizamos la distancia minima
                 minDist = dist
                 // Agregamos la ciudad j a la ruta nueva
@@ -657,15 +718,16 @@ fun busquedaLocalCon2Opt(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Do
 }
 
 /**
-* Funcion: rutaARuta(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
-* Entradas: ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>
-* Salidas: Ruta (Array<Pair<Double, Double>>)
+* Funcion: rutaACiclo(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
+* Entradas: ruta: Array<Pair<Double, Double>>
+* Salidas: ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>
+* Descripcion: Convierte una ruta a un ciclo
 */
-fun rutaACiclo(ruta: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+fun rutaACiclo(ruta: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>> {
     // Convertimos la ruta a un ciclo
     var ciclo = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(ruta.size){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
     // Agregamos las ciudades a la ruta nueva
-    for (i in 0 until ruta.size-1){
+    for (i in 0 until ruta.size-1) {
         // Agregamos la ciudad mas cercana a la ruta nueva
         ciclo[i] = Pair(ruta[i], ruta[i+1])
     }
@@ -677,15 +739,15 @@ fun rutaACiclo(ruta: Array<Pair<Double, Double>>): Array<Pair<Pair<Double, Doubl
 /**
 * Funcion: cicloARuta(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
 * Entradas: ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>
-* Salidas: Ruta (Array<Pair<Double, Double>>)
+* Salidas: ruta (Array<Pair<Double, Double>>)
 * Descripcion: Convierte un ciclo en una ruta
 * Ejemplo: ciclo = [(1, 2), (2, 3), (3, 4), (4, 1)], ruta = [1, 2, 3, 4]
 */
-fun cicloARuta(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Double, Double>>{
+fun cicloARuta(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Double, Double>> {
     val n = ciclo.size
     // Declaramos la ruta
     var ruta = Array<Pair<Double, Double>>(n){Pair(0.0, 0.0)}
-    for (i in 0 until n){
+    for (i in 0 until n) {
         // Agregamos la ciudad i a la ruta
         // La ciudad i es la primera ciudad del par i
         ruta[i] = ciclo[i].first
@@ -697,8 +759,9 @@ fun cicloARuta(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): 
 * Funcion: divideAndConquerAndLocalSearchTSP(P: Array<Pair<Double, Double>>)
 * Entradas: P: Array<Pair<Double, Double>>
 * Salidas: Ciclo de distancia minima (Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
+* Descripcion: Calcula el ciclo de distancia minima de un conjunto de puntos, aplicando divide and conquer y busqueda local con 2-opt
 */
-fun divideAndConquerAndLocalSearchTSP(C: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>{
+fun divideAndConquerAndLocalSearchTSP(C: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>): Array<Pair<Pair<Double, Double>, Pair<Double, Double>>> {
     return busquedaLocalCon2Opt(C)
 }
 
@@ -706,7 +769,7 @@ fun divideAndConquerAndLocalSearchTSP(C: Array<Pair<Pair<Double, Double>, Pair<D
 * Funcion: ordenarDesdeLaPrimeraCiudad(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>)
 * Entradas: ciclo: Representa un ciclo que contenga todas las ciudades
 * Salidas: Unit
-* Descripcion: Ordena el ciclo desde la primera ciudad
+* Descripcion: Ordena el ciclo desde la primera ciudad, es decir, la ciudad especificada al inicio del programa
 */
 fun ordenarDesdeLaPrimeraCiudad(ciclo: Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>, primerCiudad: Pair<Double, Double>) {
     val cicloOrdenado = Array<Pair<Pair<Double, Double>, Pair<Double, Double>>>(ciclo.size){Pair(Pair(0.0, 0.0), Pair(0.0, 0.0))}
@@ -716,16 +779,16 @@ fun ordenarDesdeLaPrimeraCiudad(ciclo: Array<Pair<Pair<Double, Double>, Pair<Dou
     cicloOrdenado[0] = ciclo[indicePrimeraCiudad]
     // Agregamos las ciudades restantes al ciclo ordenado
     var index = 1
-    for (i in indicePrimeraCiudad+1 until ciclo.size){
+    for (i in indicePrimeraCiudad+1 until ciclo.size) {
         cicloOrdenado[index] = ciclo[i]
         index++
     }
-    for (i in 0 until indicePrimeraCiudad){
+    for (i in 0 until indicePrimeraCiudad) {
         cicloOrdenado[index] = ciclo[i]
         index++
     }
     // Actualizamos el ciclo
-    for (i in 0 until ciclo.size){
+    for (i in 0 until ciclo.size) {
         ciclo[i] = cicloOrdenado[i]
     }
 }
@@ -737,6 +800,7 @@ fun ordenarDesdeLaPrimeraCiudad(ciclo: Array<Pair<Pair<Double, Double>, Pair<Dou
 * Salidas: Archivo de salida con el ciclo de distancia minima y la distancia total
 */
 fun main(args: Array<String>) {
+    // Leemos el archivo de entrada
     val archivoEntrada = File(args[0])
     val reader = BufferedReader(FileReader(archivoEntrada, Charsets.UTF_8))
 
@@ -760,6 +824,7 @@ fun main(args: Array<String>) {
     }
     reader.close()
 
+    // Creamos una copia de las ciudades para poder encontrar los indices originales de las ciudades en el ciclo final
     val ciudadesEntrada = ciudades.copyOf()
 
     // Obtenemos la primera ciudad
@@ -792,7 +857,7 @@ fun main(args: Array<String>) {
     archivoSalida.appendText("DIMENSION : ${solucion.size}\n")
     archivoSalida.appendText("TOUR_SECTION\n")
 
-    // Imprimimos la ruta
+    // Imprimimos el ciclo de distancia minima en el stdout
     println("Solucion inicial: ")
     for (i in 0 until solucion.size) {
         val j = ciudadesEntrada.indexOf(solucion[i].first)
@@ -800,18 +865,21 @@ fun main(args: Array<String>) {
         println("${j+1} ${solucion[i].first} -> ${k+1} ${solucion[i].second}")
     }
 
-    println("Solucion mejorada: ")
+    // Imprimimos el ciclo de distancia minima con 2-opt en el stdout
+    println("\nSolucion mejorada: ")
     for (i in 0 until solucionMejorada.size) {
         val j = ciudadesEntrada.indexOf(solucionMejorada[i].first)
         val k = ciudadesEntrada.indexOf(solucionMejorada[i].second)
         println("${j+1} ${solucionMejorada[i].first} -> ${k+1} ${solucionMejorada[i].second}")
     }
 
+    // Escribimos el ciclo de distancia minima en el archivo de salida
     for (i in 0 until solucion.size) {
         val par = solucion[i].first
         val indice = ciudadesEntrada.indexOf(par)
         archivoSalida.appendText("${indice+1}\n")
     }
+    // Agregamos -1 para indicar el final del ciclo
     archivoSalida.appendText("-1\n")
 
     // Escribimos el EOF que indica el final del archivo e imprimimos el fin del tour en el stdout
