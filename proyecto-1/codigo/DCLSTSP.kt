@@ -857,7 +857,7 @@ fun main(args: Array<String>) {
     archivoSalida.appendText("DIMENSION : ${solucion.size}\n")
     archivoSalida.appendText("TOUR_SECTION\n")
 
-    // Imprimimos el ciclo de distancia minima en el stdout
+    // Imprimimos la ruta
     println("Solucion inicial: ")
     for (i in 0 until solucion.size) {
         val j = ciudadesEntrada.indexOf(solucion[i].first)
@@ -865,15 +865,13 @@ fun main(args: Array<String>) {
         println("${j+1} ${solucion[i].first} -> ${k+1} ${solucion[i].second}")
     }
 
-    // Imprimimos el ciclo de distancia minima con 2-opt en el stdout
-    println("\nSolucion mejorada: ")
+    println("Solucion mejorada: ")
     for (i in 0 until solucionMejorada.size) {
         val j = ciudadesEntrada.indexOf(solucionMejorada[i].first)
         val k = ciudadesEntrada.indexOf(solucionMejorada[i].second)
         println("${j+1} ${solucionMejorada[i].first} -> ${k+1} ${solucionMejorada[i].second}")
     }
 
-    // Escribimos el ciclo de distancia minima en el archivo de salida
     for (i in 0 until solucion.size) {
         val par = solucion[i].first
         val indice = ciudadesEntrada.indexOf(par)
