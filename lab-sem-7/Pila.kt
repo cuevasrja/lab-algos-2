@@ -3,7 +3,7 @@
 
 /**
 * Clase de Tipos Abstractos de Datos (TAD) de Pila
-* @param n: Int -> El maximo de elementos que puede tener la pila
+* @param n: Int -> El número inicial de elementos que puede tener la pila
 * @property size: Int -> El numero de elementos que tiene la pila
 * @property head: Nodo? -> El nodo que esta en la cabeza de la pila
 * @property tail: Nodo? -> El nodo que esta en la cola de la pila
@@ -11,15 +11,14 @@
 class Pila(val n: Int) {
     // init: Bloque de codigo que se ejecuta al crear un objeto de la clase
     init {
-        // Verificamos que el maximo de la pila sea mayor a 0
+        // Verificamos que el número inicial de elementos que puede tener la pila sea mayor a 0
         if (n <= 0) {
-            throw IllegalArgumentException("El maximo de la pila debe ser mayor a 0")
+            throw IllegalArgumentException("El número inicial de elementos que puede tener la pila debe ser mayor a 0.")
         }
-        println("Se creo una pila con maximo $n")
+        println("Se creó una pila con $n elementos iniciales.")
     }
 
     // Declaramos las variables que vamos a usar en la clase
-    // n: Int -> El maximo de elementos que puede tener la pila
     // size: Int -> El numero de elementos que tiene la pila
     private var size: Int = 0
     // getSize(): Int -> Funcion que devuelve el numero de elementos que tiene la pila
@@ -39,10 +38,6 @@ class Pila(val n: Int) {
 
     // empilar(dato: Int): Unit -> Funcion que agrega un elemento a la pila
     fun empilar(dato: Int): Unit {
-        // Verificamos que la pila no este llena
-        if (size == n) {
-            throw IllegalStateException("La pila esta llena")
-        }
         // Creamos un nuevo nodo con el dato que nos pasan
         val nuevoNodo = Nodo(dato, null)
         // Verificamos si la pila esta vacia
@@ -104,4 +99,9 @@ class Pila(val n: Int) {
         string += "]"
         return string
     }
+}
+
+// crearPila(n: Int): Pila -> Funcion que crea una pila con n elementos iniciales
+fun crearPila(n: Int): Pila {
+    return Pila(n)
 }

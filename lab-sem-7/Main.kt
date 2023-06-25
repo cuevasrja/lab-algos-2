@@ -2,21 +2,21 @@
 // Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 
 fun main() {
-    val prueba = listOf(5, 1, 7, 2, 8)
+    val prueba = arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
 
-    val lista = ListaCircular()
+    val lista: ListaCircular = crearListaCircular()
     for (i in prueba) {
-        lista.agregar(i)
+        lista.agregarAlFinal(i)
     }
     println("Lista original: $lista")
 
-    val pila = Pila(prueba.size)
+    val pila: Pila = crearPila(prueba.size)
     for (i in prueba) {
         pila.empilar(i)
     }
     println("Pila original: $pila")
 
-    val cola = Cola(prueba.size)
+    val cola: Cola = crearCola(prueba.size)
     for (i in prueba) {
         cola.encolar(i)
     }

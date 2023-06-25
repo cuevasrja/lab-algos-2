@@ -3,7 +3,7 @@
 
 /**
 * Clase del TAD de Cola
-* @param n: Int -> El maximo de elementos que puede tener la cola
+* @param n: Int -> El número inicial de elementos que puede tener la cola
 * @property size: Int -> El numero de elementos que tiene la cola
 * @property head: Nodo? -> El nodo que esta en la cabeza de la cola
 * @property tail: Nodo? -> El nodo que esta en la cola de la cola
@@ -11,15 +11,14 @@
 class Cola(val n: Int) {
     // init: Bloque de codigo que se ejecuta al crear un objeto de la clase
     init {
-        // Verificamos que el maximo de la cola sea mayor a 0
+        // Verificamos que el número inicial de elementos que puede tener la cola sea mayor a 0
         if (n <= 0) {
-            throw IllegalArgumentException("El maximo de la cola debe ser mayor a 0")
+            throw IllegalArgumentException("El número inicial de elementos que puede tener la cola debe ser mayor a 0.")
         }
-        println("Se creo una cola con maximo $n")
+        println("Se creó una cola con $n elementos iniciales.")
     }
 
     // Declaramos las variables que vamos a usar en la clase
-    // n: Int -> El maximo de elementos que puede tener la cola
     // size: Int -> El numero de elementos que tiene la cola
     private var size = 0
     // getSize(): Int -> Función que devuelve el numero de elementos que tiene la cola
@@ -39,10 +38,6 @@ class Cola(val n: Int) {
 
     // encolar(dato: Int): Unit -> Función que agrega un elemento a la cola
     fun encolar(dato: Int): Unit {
-        // Verificamos que la cola no este llena
-        if (size == n) {
-            throw IllegalStateException("La cola esta llena")
-        }
         // Creamos un nuevo nodo con el dato que nos pasan
         val nuevoNodo = Nodo(dato, null)
         // Verificamos si la cola esta vacia
@@ -113,4 +108,9 @@ class Cola(val n: Int) {
         string += "]"
         return string
     }
+}
+
+// crearCola(n: Int): Cola -> Función que crea una cola con n elementos inciales
+fun crearCola(n: Int): Cola {
+    return Cola(n)
 }
