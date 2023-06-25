@@ -1,0 +1,10 @@
+Laboratorio de la semana 7 de Algoritmos y Estructuras de Datos II (CI-2692).
+Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+
+En este laboratorio se implementó una representación de las listas circulares y con ellas se implementaron las estructuras de los Tipos Abstractos de Datos (TAD) cola y pila. Se usó a su vez la clase Nodo para representar los nodos de las listas. Por último se probó el funcionamiento de las estructuras implementadas con un cliente que es Main.kt y que se ejecuta con el script runMain.sh.
+
+Compilación:
+> make
+
+Ejecución (no hace falta pasar argumentos):
+> ./runMain.sh
