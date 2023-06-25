@@ -118,6 +118,25 @@ class ListaCircular() {
         return null
     }
 
+    // obtenerIndice(dato: Int): Int -> Devuelve el indice del primer nodo con el dato dado, o si el dato no se encuentra en la lista, devuelve -1
+    fun obtenerIndice(dato: Int): Int {
+        if (estaVacia()) {
+            println("La lista esta vacia")
+            return -1
+        }
+        var nodoActual = sentinel.next
+        var indiceActual = 0
+        while (nodoActual != sentinel) {
+            if (nodoActual!!.obtenerDato()!! == dato) {
+                return indiceActual
+            }
+            nodoActual = nodoActual.next
+            indiceActual++
+        }
+        println("El dato no se encuentra en la lista")
+        return -1
+    }
+
     // buscarPorIndice(indice: Int): Nodo? -> Devuelve el nodo con el indice dado, o si el indice esta fuera de rango, devuelve null
     fun buscarPorIndice(indice: Int): Nodo? {
         // Si la lista esta vacia, o el indice esta fuera de rango, devolvemos un nodo nulo
@@ -288,11 +307,17 @@ class ListaCircular() {
             return "La lista esta vacia"
         }
         var nodoActual = sentinel.next
-        var lista = ""
+        var lista = "("
         while (nodoActual != sentinel) {
-            lista += "${nodoActual} "
-            nodoActual = nodoActual!!.next
+            if (nodoActual!!.next != sentinel) {
+                lista += "${nodoActual.dato}, "
+            }
+            else {
+                lista += "${nodoActual.dato}"
+            }
+            nodoActual = nodoActual.next
         }
+        lista += ")"
         return lista
     }
 }

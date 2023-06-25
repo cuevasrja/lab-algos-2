@@ -15,14 +15,19 @@ class Nodo(val dato: Int?, var next: Nodo?) {
     var prev: Nodo? = null
 
     // Metodos de la clase Nodo
-    // cambiarNext(nodo: Nodo): Unit -> Cambia el nodo siguiente al nodo actual
-    fun cambiarNext(nodo: Nodo): Unit {
+    // cambiarNext(nodo: Nodo?): Unit -> Cambia el nodo siguiente al nodo actual
+    fun cambiarNext(nodo: Nodo?): Unit {
         this.next = nodo
     }
 
-    // cambiarPrev(nodo: Nodo): Unit -> Cambia el nodo anterior al nodo actual
-    fun cambiarPrev(nodo: Nodo): Unit {
+    // cambiarPrev(nodo: Nodo?): Unit -> Cambia el nodo anterior al nodo actual
+    fun cambiarPrev(nodo: Nodo?): Unit {
         this.prev = nodo
+    }
+
+    // obtenerDatos(): Int? -> Funcion que devuelve el dato que contiene el nodo
+    fun obtenerDato(): Int? {
+        return this.dato
     }
 
     // toString(): String -> Funcion que devuelve el dato que contiene el nodo

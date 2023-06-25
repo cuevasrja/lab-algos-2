@@ -45,11 +45,11 @@ class Cola(val n: Int) {
             head = nuevoNodo
             tail = nuevoNodo
         }
-        // Si no esta vacia, el nuevo nodo es la cabeza y el nodo siguiente a la cabeza es el nodo que era la cabeza
+        // Si no esta vacia, el nuevo nodo es la cola y el nodo siguiente a la cola es el nodo que era anteriormente la cola
         else {
-            nuevoNodo.cambiarNext(head!!)
-            head!!.cambiarPrev(nuevoNodo)
-            head = nuevoNodo
+            tail!!.cambiarNext(nuevoNodo)
+            nuevoNodo.cambiarPrev(tail)
+            tail = nuevoNodo
         }
         // Aumentamos el numero de elementos de la cola
         size++
@@ -61,8 +61,9 @@ class Cola(val n: Int) {
         if (estaVacia()) {
             throw IllegalStateException("La cola esta vacia")
         }
-        // Si la cola tiene al menos un elemento, el nodo anterior a la cola es la nueva cola
+        // Si la cola tiene al menos un elemento, se elimina el elemento que esta en la cabeza
         head = head!!.next
+        head!!.cambiarPrev(null)
         // Reducimos el numero de elementos de la cola
         size--
     }
@@ -73,8 +74,8 @@ class Cola(val n: Int) {
         if (estaVacia()) {
             throw IllegalStateException("La cola esta vacia")
         }
-        // Devolvemos el dato del nodo que esta en la cola
-        return head!!.dato!!
+        // Devolvemos el dato del nodo que esta en la cabeza
+        return head!!.obtenerDato()!!
     }
 
     // ultimo(): Int -> Función que devuelve el ultimo elemento de la cola
@@ -84,24 +85,25 @@ class Cola(val n: Int) {
             throw IllegalStateException("La cola esta vacia")
         }
         // Devolvemos el dato del nodo que esta en la cola
-        return tail!!.dato!!
+        return tail!!.obtenerDato()!!
     }
 
     // toString(): String -> Función que devuelve una representacion en String de la cola
     // override significa que estamos sobreescribiendo el método toString de la clase Any
     // Así, cuando usemos la función println() con una cola, se imprimirá la representacion en String de la cola
     override fun toString(): String {
-        var nodoActual = tail
+        var nodoActual = head
         var string = "["
-        for (i in 0 until n) {
+        var sizeCola: Int = getSize()
+        for (i in 0 until sizeCola) {
             if (nodoActual == null) {
                 string += " "
             }
             else {
                 string += nodoActual.toString()
-                nodoActual = nodoActual.prev
+                nodoActual = nodoActual.next
             }
-            if (i != n-1) {
+            if (i != sizeCola - 1) {
                 string += ", "
             }
         }

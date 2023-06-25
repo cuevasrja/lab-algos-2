@@ -64,6 +64,8 @@ class Pila(val n: Int) {
         }
         // Si tiene al menos un elemento, el nodo anterior a la cola es la nueva cola
         tail = tail!!.prev
+        // El nodo siguiente a la nueva cola es null
+        tail!!.cambiarNext(null)
         // Reducimos el numero de elementos de la pila
         size--
     }
@@ -84,7 +86,8 @@ class Pila(val n: Int) {
     override fun toString(): String {
         var nodoActual = head
         var string = "["
-        for (i in 0 until n) {
+        var sizePila: Int = getSize()
+        for (i in 0 until sizePila) {
             if (nodoActual == null) {
                 string += " "
             }
@@ -92,7 +95,7 @@ class Pila(val n: Int) {
                 string += nodoActual.toString()
                 nodoActual = nodoActual.next
             }
-            if (i < n - 1) {
+            if (i < sizePila - 1) {
                 string += ", "
             }
         }
