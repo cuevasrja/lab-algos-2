@@ -1,34 +1,39 @@
-/** 
-* Clase de lista circular, escrita como una secuencia con sentinela
-*/
+// Laboratorio de la semana 7 de Algoritmos y Estructuras de Datos II (CI-2692).
+// Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 
-class ListaCircular(){
+/**
+* Clase de lista circular, escrita como una secuencia con sentinela
+* @property sentinel: Nodo -> El nodo sentinela de la lista
+* @property size: Int -> El tamaño de la lista
+*/
+class ListaCircular() {
     // Declaramos las variables que vamos a usar en la clase
     // sentinel: Nodo -> El nodo sentinela de la lista
     val sentinel = Nodo(null, null)
 
     // size: Int -> El tamaño de la lista
-    private var size = 0
+    private var size: Int = 0
+
     // Metodos de la clase ListaCircular
-    // getSize: Int -> Devuelve el tamaño de la lista
-    fun getSize() : Int{
+    // getSize(): Int -> Devuelve el tamaño de la lista
+    fun getSize(): Int {
         return size
     }
 
     // Metodo init, que se ejecuta al crear un objeto de la clase ListaCircular
-    init{
+    init {
         // Cambiamos el nodo siguiente y anterior del nodo sentinela para que apunte a si mismo
         sentinel.cambiarNext(sentinel)
         sentinel.cambiarPrev(sentinel)
     }
 
-    // estaVacia: Boolean -> Devuelve true si la lista esta vacia, false en caso contrario
-    fun estaVacia() : Boolean{
+    // estaVacia(): Boolean -> Devuelve true si la lista esta vacia, false en caso contrario
+    fun estaVacia(): Boolean {
         return size == 0
     }
 
-    // agregar: Int -> Agrega un nodo con el dato dado al principio de la lista
-    fun agregar(dato: Int){
+    // agregar(dato: Int): Unit -> Agrega un nodo con el dato dado al principio de la lista
+    fun agregar(dato: Int): Unit {
         // Creamos el nuevo nodo
         val nuevoNodo = Nodo(dato, sentinel.next)
         nuevoNodo.cambiarPrev(sentinel) // Cambiamos el nodo anterior del nuevo nodo para que apunte al nodo sentinela
@@ -37,19 +42,19 @@ class ListaCircular(){
         size++ // Aumentamos el tamaño de la lista
     }
 
-    // eliminar: Int -> Elimina el primer nodo con el dato dado
-    fun eliminar(dato: Int){
+    // eliminar(dato: Int): Unit -> Elimina el primer nodo con el dato dado
+    fun eliminar(dato: Int): Unit {
         // Si la lista esta vacia, no hacemos nada
-        if(estaVacia()){
+        if (estaVacia()) {
             println("La lista esta vacia")
             return
         }
         // Declaramos el nodo actual como el nodo siguiente al nodo sentinela
         var nodoActual = sentinel.next
         // Recorremos la lista hasta que el nodo actual sea el nodo sentinela
-        while(nodoActual != sentinel){
+        while (nodoActual != sentinel) {
             // Si el dato del nodo actual es igual al dato que queremos eliminar, cambiamos el nodo siguiente y anterior del nodo anterior y siguiente al nodo actual
-            if(nodoActual!!.dato == dato){
+            if (nodoActual!!.dato == dato) {
                 nodoActual.prev!!.cambiarNext(nodoActual.next!!)
                 nodoActual.next!!.cambiarPrev(nodoActual.prev!!)
                 size--
@@ -60,10 +65,10 @@ class ListaCircular(){
         }
     }
 
-    // eliminarPrimero: Unit -> Elimina el primer nodo de la lista
-    fun eliminarPrimero(){
+    // eliminarPrimero(): Unit -> Elimina el primer nodo de la lista
+    fun eliminarPrimero(): Unit {
         // Si la lista esta vacia, no hacemos nada
-        if(estaVacia()){
+        if (estaVacia()) {
             println("La lista esta vacia")
             return
         }
@@ -73,10 +78,10 @@ class ListaCircular(){
         size--
     }
 
-    // eliminarUltimo: Unit -> Elimina el ultimo nodo de la lista
-    fun eliminarUltimo(){
+    // eliminarUltimo(): Unit -> Elimina el ultimo nodo de la lista
+    fun eliminarUltimo(): Unit {
         // Si la lista esta vacia, no hacemos nada
-        if(estaVacia()){
+        if (estaVacia()) {
             println("La lista esta vacia")
             return
         }
@@ -86,15 +91,15 @@ class ListaCircular(){
         size--
     }
 
-    // buscar: Int -> Devuelve el nodo con el dato dado
-    fun buscar(dato: Int) : Nodo{
-        if(estaVacia()){
+    // buscar(dato: Int): Nodo -> Devuelve el nodo con el dato dado, o un nodo nulo si el dato no se encuentra en la lista
+    fun buscar(dato: Int): Nodo {
+        if (estaVacia()) {
             println("La lista esta vacia")
             return Nodo(null, null)
         }
         var nodoActual = sentinel.next
-        while(nodoActual != sentinel){
-            if(nodoActual!!.dato == dato){
+        while (nodoActual != sentinel) {
+            if (nodoActual!!.dato == dato) {
                 return nodoActual
             }
             nodoActual = nodoActual.next
@@ -103,15 +108,15 @@ class ListaCircular(){
         return Nodo(null, null)
     }
 
-    // buscarPorIndice: Int -> Devuelve el nodo en el indice dado
-    fun buscarPorIndice(indice: Int) : Nodo?{
+    // buscarPorIndice(indice: Int): Nodo? -> Devuelve el nodo con el indice dado, o un nodo nulo si el indice esta fuera de rango
+    fun buscarPorIndice(indice: Int): Nodo? {
         // Si la lista esta vacia, o el indice esta fuera de rango, devolvemos un nodo nulo
-        if(estaVacia()){
+        if (estaVacia()) {
             println("La lista esta vacia")
             return Nodo(null, null)
         }
         // Si el indice es mayor o igual al tamaño de la lista, devolvemos un nodo nulo
-        if(indice >= size){
+        if (indice >= size) {
             println("El indice esta fuera de rango")
             return Nodo(null, null)
         }
@@ -120,9 +125,9 @@ class ListaCircular(){
         // Declaramos el indice actual como 0
         var indiceActual = 0
         // Recorremos la lista hasta que el nodo actual sea el nodo sentinela
-        while(nodoActual != sentinel){
+        while (nodoActual != sentinel) {
             // Si el indice actual es igual al indice dado, devolvemos el nodo actual
-            if(indiceActual == indice){
+            if (indiceActual == indice) {
                 return nodoActual
             }
             // Si no, cambiamos el nodo actual al nodo siguiente al nodo actual, y aumentamos el indice actual en 1
@@ -133,10 +138,10 @@ class ListaCircular(){
         return Nodo(null, null)
     }
 
-    // primeraAparicion: Int -> Devuelve el indice de la primera aparicion del dato dado
-    fun primeraAparicion(dato: Int) : Int{
+    // primeraAparicion(dato: Int): Int -> Devuelve el indice del primer nodo con el dato dado
+    fun primeraAparicion(dato: Int): Int {
         // Si la lista esta vacia, devolvemos -1
-        if(estaVacia()){
+        if (estaVacia()) {
             println("La lista esta vacia")
             return -1
         }
@@ -145,9 +150,9 @@ class ListaCircular(){
         // Declaramos el indice como 0
         var indice = 0
         // Recorremos la lista hasta que el nodo actual sea el nodo sentinela
-        while(nodoActual != sentinel){
+        while (nodoActual != sentinel) {
             // Si el dato del nodo actual es igual al dato dado, devolvemos el indice
-            if(nodoActual!!.dato == dato){
+            if (nodoActual!!.dato == dato) {
                 return indice
             }
             // Si no, cambiamos el nodo actual al nodo siguiente al nodo actual, y aumentamos el indice en 1
@@ -158,25 +163,25 @@ class ListaCircular(){
         return -1
     }
 
-    // primerElemento: Unit -> Devuelve el primer elemento de la lista
-    fun primerElemento() : Int{
+    // primerElemento(): Int -> Devuelve el primer elemento de la lista
+    fun primerElemento(): Int {
         return sentinel.next!!.dato!!
     }
 
-    // ultimoElemento: Unit -> Devuelve el ultimo elemento de la lista
-    fun ultimoElemento() : Int{
+    // ultimoElemento(): Int -> Devuelve el ultimo elemento de la lista
+    fun ultimoElemento(): Int {
         return sentinel.prev!!.dato!!
     }
 
-    // todosMenosPrimero: Unit -> Devuelve una nueva lista con todos los elementos menos el primero
-    fun todosMenosPrimero() : ListaCircular{
+    // todosMenosPrimero(): ListaCircular -> Devuelve una nueva lista con todos los elementos menos el primero
+    fun todosMenosPrimero(): ListaCircular {
         // Si la lista esta vacia, devolvemos una lista vacia
-        if(estaVacia()){
+        if (estaVacia()) {
             println("La lista esta vacia")
             return ListaCircular()
         }
         // Si la lista solo tiene un elemento, devolvemos una lista vacia
-        if(size == 1){
+        if (size == 1) {
             println("La lista solo tiene un elemento")
             return ListaCircular()
         }
@@ -185,7 +190,7 @@ class ListaCircular(){
         // Declaramos el nodo actual como el segundo nodo de la lista
         var nodoActual = sentinel.next!!.next
         // Recorremos la lista hasta que el nodo actual sea el nodo anterior al nodo sentinela
-        while(nodoActual != sentinel){
+        while (nodoActual != sentinel) {
             // Agregamos el dato del nodo actual a la nueva lista, y cambiamos el nodo actual al nodo siguiente al nodo actual
             nuevaLista.agregar(nodoActual!!.dato!!)
             nodoActual = nodoActual.next
@@ -194,15 +199,15 @@ class ListaCircular(){
         return nuevaLista
     }
 
-    // todosMenosUltimo: Unit -> Devuelve una nueva lista con todos los elementos menos el ultimo
-    fun todosMenosUltimo() : ListaCircular{
+    // todosMenosUltimo(): ListaCircular -> Devuelve una nueva lista con todos los elementos menos el ultimo
+    fun todosMenosUltimo(): ListaCircular {
         // Si la lista esta vacia, devolvemos una lista vacia
-        if(estaVacia()){
+        if (estaVacia()) {
             println("La lista esta vacia")
             return ListaCircular()
         }
         // Si la lista solo tiene un elemento, devolvemos una lista vacia
-        if(size == 1){
+        if (size == 1) {
             println("La lista solo tiene un elemento")
             return ListaCircular()
         }
@@ -211,7 +216,7 @@ class ListaCircular(){
         // Declaramos el nodo actual como el nodo siguiente al nodo sentinela
         var nodoActual = sentinel.next
         // Recorremos la lista hasta que el nodo actual sea el nodo anterior al nodo sentinela
-        while(nodoActual != sentinel.prev){
+        while (nodoActual != sentinel.prev) {
             // Agregamos el dato del nodo actual a la nueva lista, y cambiamos el nodo actual al nodo siguiente al nodo actual
             nuevaLista.agregar(nodoActual!!.dato!!)
             nodoActual = nodoActual.next
@@ -220,15 +225,15 @@ class ListaCircular(){
         return nuevaLista
     }
 
-    // concatenarListas: ListaCircular -> Unit -> Concatena la lista dada con la lista actual
-    fun concatenarListas(lista: ListaCircular){
+    // concatenarListas(lista: ListaCircular): Unit -> Concatena la lista dada con la lista actual
+    fun concatenarListas(lista: ListaCircular): Unit {
         // Si la lista dada esta vacia, no hacemos nada
-        if(lista.estaVacia()){
+        if (lista.estaVacia()) {
             println("La lista dada esta vacia")
             return
         }
         // Si la lista actual esta vacia, la igualamos a la lista dada
-        if(estaVacia()){
+        if (estaVacia()) {
             this.sentinel = lista.sentinel
             this.size = lista.size
             return
@@ -236,17 +241,17 @@ class ListaCircular(){
         // Si no, declaramos el nodo actual como el nodo siguiente al nodo sentinela
         var nodoActual = lista.sentinel.next
         // Recorremos la lista dada hasta que el nodo actual sea el nodo sentinela
-        while(nodoActual != lista.sentinel){
+        while (nodoActual != lista.sentinel) {
             // Agregamos el dato del nodo actual a la lista actual, y cambiamos el nodo actual al nodo siguiente al nodo actual
             agregar(nodoActual!!.dato!!)
             nodoActual = nodoActual.next
         }
     }
 
-    // copiarLista: Unit -> Devuelve una copia de la lista actual
-    fun copiarLista() : ListaCircular{
+    // copiarLista(): ListaCircular -> Devuelve una copia de la lista actual
+    fun copiarLista() : ListaCircular {
         // Si la lista esta vacia, devolvemos una lista vacia
-        if(estaVacia()){
+        if (estaVacia()) {
             println("La lista esta vacia")
             return ListaCircular()
         }
@@ -255,7 +260,7 @@ class ListaCircular(){
         // Declaramos el nodo actual como el nodo siguiente al nodo sentinela
         var nodoActual = sentinel.next
         // Recorremos la lista hasta que el nodo actual sea el nodo sentinela
-        while(nodoActual != sentinel){
+        while (nodoActual != sentinel) {
             // Agregamos el dato del nodo actual a la nueva lista, y cambiamos el nodo actual al nodo siguiente al nodo actual
             nuevaLista.agregar(nodoActual!!.dato!!)
             nodoActual = nodoActual.next
@@ -264,14 +269,16 @@ class ListaCircular(){
         return nuevaLista
     }
 
-    // override fun toString: Unit -> Devuelve una representacion en String de la lista
-    override fun toString() : String{
-        if(estaVacia()){
+    // toString(): String -> Devuelve una representacion en String de la lista
+    // override quiere decir que estamos sobreescribiendo el metodo toString de la clase Any
+    // Así, cuando llamemos al metodo toString de una lista, se ejecutara este metodo en vez del metodo toString de la clase Any
+    override fun toString(): String {
+        if (estaVacia()) {
             return "La lista esta vacia"
         }
         var nodoActual = sentinel.prev
         var lista = ""
-        while(nodoActual != sentinel){
+        while (nodoActual != sentinel) {
             lista += "${nodoActual} "
             nodoActual = nodoActual!!.prev
         }

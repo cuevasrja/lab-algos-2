@@ -1,4 +1,7 @@
-fun main(args: Array<String>) {
+// Laboratorio de la semana 7 de Algoritmos y Estructuras de Datos II (CI-2692).
+// Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+
+fun main() {
     val prueba = listOf(5, 1, 7, 2, 8)
 
     val lista = ListaCircular()
