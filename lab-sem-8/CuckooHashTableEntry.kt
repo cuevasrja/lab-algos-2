@@ -1,7 +1,7 @@
 // Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
 // Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 
-class CuckooHashTableEntry(val key: Int, var value: Int){
+class CuckooHashTableEntry(val key: Int?, var value: String?){
     // prev: CuckooHashTableEntry? -> El nodo anterior al nodo actual
     // next: CuckooHashTableEntry? -> El nodo siguiente al nodo actual
     var prev: CuckooHashTableEntry? = null
@@ -24,8 +24,12 @@ class CuckooHashTableEntry(val key: Int, var value: Int){
     }
 
     // obtenerValor(): Int? -> Funcion que devuelve el valor que contiene el nodo
-    fun obtenerValor(): Int? {
+    fun obtenerValor(): String? {
         return this.value
+    }
+
+    fun cambiarValor(valor: String): Unit {
+        this.value = valor
     }
 
     // override significa que estamos sobreescribiendo el método toString de la clase Any
