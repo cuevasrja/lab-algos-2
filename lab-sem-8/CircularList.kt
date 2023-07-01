@@ -52,10 +52,10 @@ class CircularList() {
         size++ // Aumentamos el tamaño de la lista
     }
 
-    // eliminar(clave: Int): Unit -> Elimina el nodo con la clave dada de la lista
-    fun eliminar(clave: Int): Unit {
+    // eliminar(clave: Int): Boolean -> Elimina el nodo con la clave dada de la lista, devuelve true si se elimino el nodo, false en caso contrario
+    fun eliminar(clave: Int): Boolean {
         // Si la lista esta vacia, no hacemos nada
-        if (estaVacia()) return
+        if (estaVacia()) return false
 
         // Declaramos el nodo actual como el nodo siguiente al nodo sentinela
         var nodoActual = sentinel.next
@@ -66,7 +66,7 @@ class CircularList() {
                 nodoActual.prev!!.cambiarNext(nodoActual.next!!)
                 nodoActual.next!!.cambiarPrev(nodoActual.prev!!)
                 size--
-                return
+                return true
             }
             // Si no, cambiamos el nodo actual al nodo siguiente al nodo actual
             nodoActual = nodoActual.next
