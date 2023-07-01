@@ -9,7 +9,7 @@
 */
 class CircularList() {
     // sentinel: HashTableEntry -> El nodo sentinela de la lista
-    var sentinel = HashTableEntry(-1, "")
+    var sentinel = HashTableEntry(null, null)
 
     // size: Int -> El tamaño de la lista
     private var size: Int = 0
@@ -37,6 +37,7 @@ class CircularList() {
         // Creamos el nuevo nodo
         val nuevoNodo = HashTableEntry(clave, valor)
         nuevoNodo.cambiarPrev(sentinel) // Cambiamos el nodo anterior del nuevo nodo para que apunte al nodo sentinela
+        nuevoNodo.cambiarNext(sentinel.next!!) // El nodo siguiente al nodo que agregamos es el siguiente del sentinela
         sentinel.next!!.cambiarPrev(nuevoNodo) // Cambiamos el nodo anterior del nodo siguiente al nuevo nodo para que apunte al nuevo nodo
         sentinel.cambiarNext(nuevoNodo) // Cambiamos el nodo siguiente del nodo sentinela para que apunte al nuevo nodo
         size++ // Aumentamos el tamaño de la lista
@@ -47,6 +48,7 @@ class CircularList() {
         // Creamos el nuevo nodo
         val nuevoNodo = HashTableEntry(clave, valor)
         nuevoNodo.cambiarPrev(sentinel.prev!!) // Cambiamos el nodo anterior del nuevo nodo para que apunte al nodo anterior al nodo sentinela
+        nuevoNodo.cambiarNext(sentinel) // Ahora el nodo siguiente al nodo que agregamos es el sentinel
         sentinel.prev!!.cambiarNext(nuevoNodo) // Cambiamos el nodo siguiente del nodo anterior al nodo sentinela para que apunte al nuevo nodo
         sentinel.cambiarPrev(nuevoNodo) // Cambiamos el nodo anterior del nodo sentinela para que apunte al nuevo nodo
         size++ // Aumentamos el tamaño de la lista
@@ -62,15 +64,16 @@ class CircularList() {
         // Recorremos la lista hasta que el nodo actual sea el nodo sentinela
         while (nodoActual != sentinel) {
             // Si la clave del nodo actual es igual a la clave dada, eliminamos el nodo actual
-            if (nodoActual!!.obtenerClave() == clave) {
-                nodoActual.prev!!.cambiarNext(nodoActual.next!!)
-                nodoActual.next!!.cambiarPrev(nodoActual.prev!!)
+            if (nodoActual?.obtenerClave() == clave) {
+                nodoActual.prev?.cambiarNext(nodoActual.next!!)
+                nodoActual.next?.cambiarPrev(nodoActual.prev!!)
                 size--
                 return true
             }
             // Si no, cambiamos el nodo actual al nodo siguiente al nodo actual
-            nodoActual = nodoActual.next
+            nodoActual = nodoActual?.next
         }
+        return false
     }
 
     // eliminarPrimero(): Unit -> Elimina el primer nodo de la lista
@@ -131,6 +134,18 @@ class CircularList() {
 
         // Si no se encuentra el nodo con la clave dada, devolvemos null
         return false
+    }
+
+    // obtenerPrimero(): HashTableEntry? -> Devuelve el primer nodo de la lista, o null si la lista esta vacia
+    fun obtenerPrimero(): HashTableEntry? {
+        if (estaVacia()) return null
+        return sentinel.next
+    }
+
+    // obtenerUltimo(): HashTableEntry? -> Devuelve el ultimo nodo de la lista, o null si la lista esta vacia
+    fun obtenerUltimo(): HashTableEntry? {
+        if (estaVacia()) return null
+        return sentinel.prev
     }
 
     // toString(): String -> Devuelve una representacion en String de la lista

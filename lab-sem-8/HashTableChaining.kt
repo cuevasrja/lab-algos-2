@@ -10,7 +10,7 @@
 */
 class DictionaryChaining() {
     // conocidas: Array<Int> -> Arreglo que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
-    var conocidas: Array<Int> = Array(7) { 0 }
+    var conocidas: Array<Int?> = Array(7) { null }
     // tabla: Array<CircularList> -> Arreglo que contiene las listas enlazadas que representan la tabla de hash
     var tabla: Array<CircularList> = Array(7) { CircularList() }
 
@@ -46,16 +46,21 @@ class DictionaryChaining() {
 
         // Se recorre la tabla de hash actual
         for (i in 0 until this.tabla.size) {
-            // Se recorre la lista enlazada actual
-            for (j in 0 until this.tabla[i].obtenerTamano()) {
-                // Se obtiene el elemento actual
-                val elemento = this.tabla[i].obtenerElemento(j)
+            // Se obtiene el primer elemento de la lista enlazada en la posición i de la tabla de hash actual
+            var elemento = this.tabla[i].obtenerPrimero()
+            // Si la lista está vacía entonces saltamos a la siguiente lista
+            if (elemento == null) continue
+            // Se recorre la lista enlazada en la posición i de la tabla de hash actual
+            while (elemento != this.tabla[i].sentinel) {
                 // Se obtiene el índice de la nueva tabla de hash donde se debe insertar el elemento
-                val indice = this.hashFunction(elemento.obtenerClave()!!)
+                val indice = this.hashFunction(elemento!!.obtenerClave()!!)
                 // Se inserta el elemento en la nueva tabla de hash
                 nuevaTabla[indice].agregarAlFinal(elemento.obtenerClave()!!, elemento.obtenerValor()!!)
                 // Se actualiza la lista de claves conocidas
                 this.conocidas[indice] = elemento.obtenerClave()!!
+
+                // Se obtiene el siguiente elemento de la lista
+                elemento = elemento.next!!
             }
         }
 
@@ -74,7 +79,7 @@ class DictionaryChaining() {
         if (this.existe(clave)) return
 
         // Si la tabla de hash está llena, entonces se hace rehash
-        if (obtenerFactorCarga > 0.7) this.rehash()
+        if (this.obtenerFactorCarga() > 0.7) this.rehash()
 
         // Se obtiene el índice de la tabla de hash donde se debe insertar el elemento
         val indice = this.hashFunction(clave)
@@ -100,7 +105,7 @@ class DictionaryChaining() {
         // Si el elemento existe en la tabla de hash, entonces se elimina
         if (this.tabla[indice].eliminar(clave)) {
             // Se elimina la clave de la lista de claves conocidas
-            this.conocidas[indice] = 0
+            this.conocidas[indice] = null
             // Se disminuye el número de elementos en la tabla de hash
             this.numElementos--
         }
@@ -129,8 +134,8 @@ class DictionaryChaining() {
         return this.numElementos
     }
 
-    // obtenerTamano(): Int -> Función que devuelve el tamaño de la tabla de hash
-    fun obtenerTamano(): Int {
+    // getSize(): Int -> Función que devuelve el tamaño de la tabla de hash
+    fun getSize(): Int {
         return this.tabla.size
     }
 
@@ -138,8 +143,15 @@ class DictionaryChaining() {
     override fun toString(): String {
         var str = ""
         for (i in 0 until this.tabla.size) {
-            str += "[${this.conocidas[i]}] -> ${this.tabla[i]}\n"
+            var claveConocida = this.conocidas[i]
+            if (claveConocida == null) str += "[] -> ${this.tabla[i]}\n"
+            else str += "[${this.conocidas[i]}] -> ${this.tabla[i]}\n"
         }
         return str
     }
+}
+
+// createDictionaryChaining(): DictionaryChaining -> Función que crea un objeto de la clase DictionaryChaining
+fun createDictionaryChaining(): DictionaryChaining {
+    return DictionaryChaining()
 }

@@ -8,7 +8,7 @@
 * @property prev: HashTableEntry? -> El nodo anterior al nodo actual
 * @property next: HashTableEntry? -> El nodo siguiente al nodo actual
 */
-class HashTableEntry(val clave: Int, val valor: String) {
+class HashTableEntry(val clave: Int?, val valor: String?) {
     // prev: HashTableEntry? -> El nodo anterior al nodo actual
     // next: HashTableEntry? -> El nodo siguiente al nodo actual
     var prev: HashTableEntry? = null
