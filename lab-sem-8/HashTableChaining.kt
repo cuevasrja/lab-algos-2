@@ -2,13 +2,13 @@
 // Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 
 /**
-* Creacion de la clase DictionaryChaining usando tablas de hash con encadenamiento
+* Creacion de la clase HashTableChaining usando tablas de hash con encadenamiento
 * Por defecto, la tabla de hash tiene 7 elementos. Pero su tamaño es dinámico.
 * @property conocidas: Array<Int> -> Arreglo que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
 * @property tabla: Array<CircularList> -> Arreglo que contiene las listas enlazadas que representan la tabla de hash
 * @property numElementos: Int -> Número de elementos que hay en la tabla de hash
 */
-class DictionaryChaining() {
+class HashTableChaining() {
     // conocidas: Array<Int> -> Arreglo que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
     var conocidas: Array<Int?> = Array(7) { null }
     // tabla: Array<CircularList> -> Arreglo que contiene las listas enlazadas que representan la tabla de hash
@@ -25,16 +25,16 @@ class DictionaryChaining() {
         }
     }
 
-    // Métodos de la clase DictionaryChaining
+    // Métodos de la clase HashTableChaining
     // hashFunction(clave: Int): Int -> Función hash que devuelve el índice de la lista en la tabla de hash donde se debe insertar el elemento o donde se encuentra el elemento
-    fun hashFunction(clave: Int): Int {
+    private fun hashFunction(clave: Int): Int {
         return clave % this.tabla.size
     }
 
     // rehash(): Unit -> Función que hace rehash de la tabla de hash
-    fun rehash(): Unit {
+    private fun rehash(): Unit {
         // Se crea una nueva tabla de hash con un tamaño mayor
-        val nuevaTabla = Array((this.tabla.size + 16) * 3/2) { CircularList() }
+        val nuevaTabla = Array(((this.tabla.size + 16) * 3/2).toInt()) { CircularList() }
 
         // Se inicializa la nueva tabla de hash
         for (i in 0 until nuevaTabla.size) {
@@ -42,7 +42,7 @@ class DictionaryChaining() {
         }
 
         // Se actualizan las claves conocidas
-        this.conocidas = Array(nuevaTabla.size) { 0 }
+        this.conocidas = Array(nuevaTabla.size) { null }
 
         // Se recorre la tabla de hash actual
         for (i in 0 until this.tabla.size) {
@@ -151,7 +151,7 @@ class DictionaryChaining() {
     }
 }
 
-// createDictionaryChaining(): DictionaryChaining -> Función que crea un objeto de la clase DictionaryChaining
-fun createDictionaryChaining(): DictionaryChaining {
-    return DictionaryChaining()
+// createDictionaryChaining(): HashTableChaining -> Función que crea un dictionatio que es un objeto de la clase HashTableChaining
+fun createDictionaryChaining(): HashTableChaining {
+    return HashTableChaining()
 }

@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
     println("\u001b[36mPrueba del diccionario basado en una tabla de hash con encadenamiento:\u001b[0m")
     println("----------------------------------------------------------------")
     // Se crea un diccionario vacío, basado en una tabla de hash de encadenamiento.
-    val dictChaining: DictionaryChaining = createDictionaryChaining()
+    val dictChaining: HashTableChaining = createDictionaryChaining()
 
     // Se insertan los elementos del arreglo A en el diccionario.
     for (i in 0 until n) {
