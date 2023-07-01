@@ -21,6 +21,8 @@ fun main(args: Array<String>) {
     // Se crea un diccionario vacío, basado en una tabla de hash de encadenamiento.
     val dictChaining: HashTableChaining = createDictionaryChaining()
 
+    // Empezamos a medir el tiempo de ejecución de las inserciones y eliminaciones.
+    val startTime = System.nanoTime()
     // Se insertan los elementos del arreglo A en el diccionario.
     for (i in 0 until n) {
         // Se busca si la clave ya existe en el diccionario.
@@ -32,7 +34,13 @@ fun main(args: Array<String>) {
             dictChaining.agregar(A[i].first, A[i].second)
         }
     }
-    println("Se insertaron y eliminaron los elementos del arreglo A en el diccionario.")
+    // Se termina de medir el tiempo de ejecución de las inserciones y eliminaciones.
+    val endTime = System.nanoTime()
+    // Se calcula el tiempo de ejecución de las inserciones y eliminaciones.
+    val tiempoDictChaining = endTime - startTime
+
+    println("\u001b[32mSe insertaron y eliminaron exitosamente los elementos del arreglo A en el diccionario.\u001b[0m")
+    println("El tiempo de ejecución de las inserciones y eliminaciones fue de: \u001b[33m${tiempoDictChaining/1000000000.0} segundos.\u001b[0m")
     println("El diccionario tiene ${dictChaining.obtenerNumElementos()} elementos.")
     println("El factor de carga del diccionario es ${dictChaining.obtenerFactorCarga()}.")
     println("\nEl diccionario luego de todas las inserciones y eliminaciones:")
