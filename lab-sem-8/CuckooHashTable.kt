@@ -79,10 +79,10 @@ class CuckooHashTable() {
         }
 
         // Se calculan los hashes de la clave
-        val hash1 = hashFunction(clave)
-        val hash2 = hashFunction(hash1 xor clave)
+        val hash1 = h1(clave)
+        val hash2 = h2(clave)
 
-        // !REVISAR: Se inserta la clave en la tabla de hash
+        // Se inserta la clave en la tabla de hash
         if (this.tabla1[hash1].obtenerClave() == null) {
             this.tabla1[hash1].cambiarClave(clave)
             this.tabla1[hash1].cambiarValor(valor)
@@ -90,13 +90,16 @@ class CuckooHashTable() {
             this.tabla2[hash2].cambiarClave(clave)
             this.tabla2[hash2].cambiarValor(valor)
         } else {
-            // Se obtiene la clave que se va a reemplazar
-            val claveReemplazar = this.tabla1[hash1].obtenerClave()
-            // Se reemplaza la clave
+            // Se obtiene la clave que se va a mover
+            val claveMover = this.tabla1[hash1].obtenerClave()
+            val valorMover = this.tabla1[hash1].obtenerValor()
+
+            // Se inserta la clave en la tabla de hash
             this.tabla1[hash1].cambiarClave(clave)
             this.tabla1[hash1].cambiarValor(valor)
-            // Se inserta la clave reemplazada en la tabla de hash
-            this.insertar(claveReemplazar)
+
+            // Se inserta la clave que se movió en la otra tabla de hash
+            this.insertar(claveMover!!, valorMover!!)
         }
 
         // Se aumenta el número de elementos de la tabla de hash
