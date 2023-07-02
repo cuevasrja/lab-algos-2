@@ -47,7 +47,7 @@ fun main(args: Array<String>) {
             dictChaining.eliminar(A[i].first)
         } else {
             // Si la clave no existe, se agrega el par (clave, valor) en el diccionario.
-            dictChaining.agregar(A[i].first, A[i].second)
+            dictChaining.agregar(A[i].first, A[i].second, true)
         }
     }
     // Se termina de medir el tiempo de ejecución

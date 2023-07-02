@@ -29,13 +29,13 @@ class CuckooHashTable() {
     // h1(clave: Int): Int -> Función hash que se usa para la primera tabla de hash
     private fun h1(clave: Int): Int {
         // Se usa el método de la división
-        return clave % this.conocidas.size
+        return (clave % this.totalHashSize()).toInt()
     }
 
     // h2(clave: Int): Int -> Función hash que se usa para la segunda tabla de hash
     private fun h2(clave: Int): Int {
         // Se usa el método de la multiplicación
-        return (((clave * this.A) % 1) * this.conocidas.size).toInt()
+        return (((clave * this.A) % 1) * this.totalHashSize()).toInt()
     }
 
     // incr(size: Int): Int -> Función que devuelve el nuevo tamaño de cada tabla de hash
@@ -43,70 +43,109 @@ class CuckooHashTable() {
         return ((size + 16) * 3/2).toInt()
     }
 
+    // swap(clave: Int?, valor: String?, tabla: Array<CuckooHashTableEntry>, indice: Int): CuckooHashTableEntry -> Función que intercambia la clave y el valor especificados en la tabla posición dada de la tabla de hash, y devuelve la clave y el valor que se reemplazaron
+    private fun swap(clave: Int?, valor: String?, tabla: Array<CuckooHashTableEntry>, indice: Int): CuckooHashTableEntry {
+        // Obtenemos el valor de la clave y el valor en la tabla de hash
+        val claveVieja = tabla[indice].obtenerClave()
+        val valorViejo = tabla[indice].obtenerValor()
+
+        // Reemplazamos el valor de la clave y el valor en la tabla de hash
+        tabla[indice].cambiarValor(valor!!)
+        tabla[indice].cambiarClave(clave!!)
+
+        // Retornamos el valor de la clave y el valor que se reemplazó
+        return CuckooHashTableEntry(claveVieja, valorViejo)
+    }
+
+
     // obtenerFactorCarga(): Double -> Función que devuelve el factor de carga del cuckoo hash
     fun obtenerFactorCarga(): Double {
         return (this.obtenerNumElementos().toDouble() / this.totalHashSize().toDouble())
     }
 
-    // rehash(): Unit -> Función que hace rehash de la tabla de hash
+    // rehash(): Unit -> Función que hace rehash del cuckoo hash
     private fun rehash(): Unit {
-        // Se duplica el tamaño de las tablas de hash
-        val newSize = ((this.conocidas.size + 16) * 3/2).toInt()
-        this.conocidas = Array(newSize) { null }
-        this.tabla1 = Array(newSize) { CircularList() }
-        this.tabla2 = Array(newSize) { CircularList() }
+        // Se obtiene el nuevo tamaño de las tablas de hash
+        val newSize = incr(this.hashSize())
+
+        // Se crea un nuevo cuckoo hash con el nuevo tamaño
+        this.tabla1 = Array(newSize) { CuckooHashTableEntry(null, null) }
+        this.tabla2 = Array(newSize) { CuckooHashTableEntry(null, null) }
+
+        // Reiniciamos el número de elementos que hay en la tabla
         this.numElementos = 0
 
-        // Se insertan todos los elementos de la tabla original en las nuevas tablas de hash
-        for (i in 0 until this.conocidas.size / 2) {
-            val clave1 = this.tabla1[i].obtenerClave()
-            val clave2 = this.tabla2[i].obtenerClave()
-            // Si la clave no es nula, se inserta en la tabla de hash
-            if (clave1 != null) {
-                this.insertar(clave1)
-            }
-            // Si la clave no es nula, se inserta en la tabla de hash
-            if (clave2 != null) {
-                this.insertar(clave2)
-            }
+        // Se obtiene la primera clave de la lista de claves conocidas
+        var claveConocida = this.conocidas.obtenerPrimero()
+
+        // Se recorre la lista de claves conocidas
+        while (claveConocida != this.conocidas.sentinel) {
+            // Se obtiene la clave y el valor de la clave conocida
+            val clave = claveConocida?.obtenerClave()!!
+            val valor = claveConocida.obtenerValor()!!
+
+            // Se agrega la clave conocida al nuevo cuckoo hash y se especifica que no se vuelva a agregar la clave conocida a conocidas
+            this.agregar(clave, valor, false)
+
+            // Se obtiene la siguiente clave de la lista de claves conocidas
+            claveConocida = claveConocida.next
         }
     }
 
-    // insertar(clave: Int, valor: String): Unit -> Función que inserta una clave en la tabla de hash.
-    fun insertar(clave: Int, valor: String): Unit {
+    // agregar(clave: Int, valor: String, agregarAConocidas: Boolean): Unit -> Función que agrega una clave al cuckoo hash
+    fun agregar(clave: Int, valor: String, agregarAConocidas: Boolean): Unit {
+        // Si la clave ya está en la tabla de hash, no se agrega y se retorna false
         if(this.existe(clave)) return
 
         // Si el factor de carga es mayor o igual a 0.7, se hace rehash
-        if(this.obtenerFactorCarga() >= 0.7) {
-            this.rehash()
+        if(this.obtenerFactorCarga() >= 0.7) this.rehash()
+
+        // Se calcula la posible posición donde se vaya a agregar el nuevo nodo
+        var indice = this.h1(clave)
+
+        var viejoNodo: CuckooHashTableEntry
+        var claveAInsertar = clave
+        var valorAInsertar = valor
+
+        for (i in 0 until 30) {
+            // Intentamos agregar el nodo a la primera tabla de hash
+            viejoNodo = swap(claveAInsertar, valorAInsertar, tabla1, indice)
+            // Verificamos si el nodo que estaba anteriormente en la posición donde intercambiamos el nodo que queremos agregar está vacío o no
+            if (viejoNodo.esVacio()) {
+                // Si está vacío, quiere decir que pudimos agregar adecuadamente el nodo
+                if (agregarAConocidas) this.conocidas.agregarAlFinal(clave, valor)
+                numElementos++
+                return
+            }
+            // En caso de que no esté vacío
+            // Actualizamos la información del nodo que queremos agregar ahora
+            claveAInsertar = viejoNodo.obtenerClave()!!
+            valorAInsertar = viejoNodo.obtenerValor()!!
+            indice = this.h2(claveAInsertar)
+
+            // Y entonces intentamos agregar el nodo actualizado a la segunda tabla de hash
+            viejoNodo = swap(claveAInsertar, valorAInsertar, tabla2, indice)
+            // Verificamos si el nodo que estaba anteriormente en la posición donde intercambiamos el nodo que queremos agregar está vacío o no
+            if (viejoNodo.esVacio()) {
+                // Si está vacío, quiere decir que pudimos agregar adecuadamente el nodo
+                // Si se pidió agregar la clave del nuevo nodo a this.conocidas, se agrega. En caso contrario se omite
+                if (agregarAConocidas) this.conocidas.agregarAlFinal(clave, valor)
+                numElementos++
+                return
+            }
+            // En caso de que no esté vacío
+            // Actualizamos la información del nodo que queremos agregar ahora
+            claveAInsertar = viejoNodo.obtenerClave()!!
+            valorAInsertar = viejoNodo.obtenerValor()!!
+            indice = this.h1(claveAInsertar)
+            // Y volvemos a repetir el bucle hasta que se pueda agregar adecuadamente el nodo o se llegue al número máximo de intentos
         }
 
-        // Se calculan los hashes de la clave
-        val hash1 = h1(clave)
-        val hash2 = h2(clave)
+        // Si no se pudo agregar el nodo al cuckoo hash después del número máximo de intentos, hacemos rehash
+        this.rehash()
 
-        // Se inserta la clave en la tabla de hash
-        if (this.tabla1[hash1].obtenerClave() == null) {
-            this.tabla1[hash1].cambiarClave(clave)
-            this.tabla1[hash1].cambiarValor(valor)
-        } else if (this.tabla2[hash2].obtenerClave() == null) {
-            this.tabla2[hash2].cambiarClave(clave)
-            this.tabla2[hash2].cambiarValor(valor)
-        } else {
-            // Se obtiene la clave que se va a mover
-            val claveMover = this.tabla1[hash1].obtenerClave()
-            val valorMover = this.tabla1[hash1].obtenerValor()
-
-            // Se inserta la clave en la tabla de hash
-            this.tabla1[hash1].cambiarClave(clave)
-            this.tabla1[hash1].cambiarValor(valor)
-
-            // Se inserta la clave que se movió en la otra tabla de hash
-            this.insertar(claveMover!!, valorMover!!)
-        }
-
-        // Se aumenta el número de elementos de la tabla de hash
-        this.numElementos++
+        // Finalmente, luego del rehash, volvemos a intentar agregar el nodo al cuckoo hash
+        this.agregar(clave, valor, agregarAConocidas)
     }
 
     // buscar(clave: Int): String? -> Función que busca una clave en la tabla de hash. Retorna el valor asociado a la clave si la encuentra y null en caso contrario
@@ -158,29 +197,27 @@ class CuckooHashTable() {
 
     // hashSize(): Int -> Función que devuelve el tamaño individual de las tablas de hash
     fun hashSize(): Int {
-        return this.tabla1.legth
+        return this.tabla1.size
     }
 
     // totalHashSize(): Int -> Función que devuelve el tamaño combinado de las tablas de hash
     fun totalHashSize(): Int {
-        return this.tabla1.legth + this.tabla2.legth
+        return this.tabla1.size + this.tabla2.size
+    }
+
+    // obtenerNumClavesConocidas(): Int -> Función que retorna cuántas claves conocidas por el diccionario hay
+    fun obtenerNumClavesConocidas(): Int {
+        return this.conocidas.getSize()
     }
 
     // override fun toString(): String -> Función que devuelve una representación en String de la tabla de hash
     override fun toString(): String {
         var str = ""
         for (i in 0 until this.hashSize()) {
-            if (this.tabla1[i].obtenerClave() != null) {
-                str += "T1: [${this.tabla1[i]}]"
-            } else {
-                str += "T1: []"
-            }
-            if (this.tabla2[i].obtenerClave() != null) {
-                str += "T2: [${this.tabla2[i]}]\n"
-            } else {
-                str += "T2: []\n"
-            }
+            str += "T1  ---  T2"
+            str += "${this.tabla1[i]}  ---  ${this.tabla2[i]}"
         }
+        return str
     }
 }
 

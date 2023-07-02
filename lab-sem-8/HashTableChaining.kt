@@ -41,6 +41,9 @@ class HashTableChaining() {
         // Se crea una nueva tabla de hash más grande que reemplazará a la anterior
         this.tabla = Array(hashSize()) { CircularList() }
 
+        // Reiniciamos el número de elementos que hay en la tabla
+        this.numElementos = 0
+
         // Se obtiene la primera clave conocida
         var claveConocida = this.conocidas.obtenerPrimero()
 
@@ -49,12 +52,9 @@ class HashTableChaining() {
             // Se obtiene la clave y el valor de la clave conocida
             val clave = claveConocida?.obtenerClave()!!
             val valor = claveConocida.obtenerValor()!!
-            // Se agrega la clave conocida a la nueva tabla de hash
-            if (!this.agregar(clave, valor)) {
-                // Si no se pudo agregar la clave conocida, entonces se elimina de la lista de claves conocidas
-                this.conocidas.eliminar(clave)
-                numElementos--
-            }
+
+            // Se agrega la clave conocida a la nueva tabla de hash y se especifica que no se vuelva a agregar la clave conocida a conocidas
+            this.agregar(clave, valor, false)
 
             // Se obtiene la siguiente clave conocida
             claveConocida = claveConocida.next
@@ -66,12 +66,12 @@ class HashTableChaining() {
         return (this.numElementos.toDouble() / this.hashSize().toDouble())
     }
 
-    // agregar(clave: Int, valor: String): Boolean -> Función que agrega un elemento a la tabla de hash, retorna true si se agrega y false si no
-    fun agregar(clave: Int, valor: String): Boolean {
-        // Si la clave ya está en la tabla de hash, entonces no se agrega. Se retorna false
-        if (this.existe(clave)) return false
+    // agregar(clave: Int, valor: String, agregarAConocidas: Boolean): Unit -> Función que agrega un elemento a la tabla de hash
+    fun agregar(clave: Int, valor: String, agregarAConocidas: Boolean): Unit {
+        // Si la clave ya está en la tabla de hash, entonces no se agrega
+        if (this.existe(clave)) return
 
-        // Si la tabla de hash está llena, entonces se hace rehash
+        // Si el factor de carga es mayor o igual a 0.7, entonces se hace rehash
         if (this.obtenerFactorCarga() >= 0.7) this.rehash()
 
         // Se obtiene el índice de la tabla de hash donde se debe insertar el elemento
@@ -80,14 +80,11 @@ class HashTableChaining() {
         // Se inserta el elemento en la tabla de hash
         this.tabla[indice].agregarAlFrente(clave, valor)
 
-        // Se agrega la clave a la lista de claves conocidas
-        this.conocidas.agregarAlFinal(clave, valor)
+        // Si se pidió agregar la clave del nuevo elemento a this.conocidas, se agrega. En caso contrario se omite
+        if (agregarAConocidas) this.conocidas.agregarAlFinal(clave, valor)
 
         // Se aumenta el número de elementos en la tabla de hash
         this.numElementos++
-
-        // Se retorna true porque se agregó el elemento
-        return true
     }
 
     // eliminar(clave: Int): Unit -> Función que elimina un elemento de la tabla de hash
@@ -135,6 +132,7 @@ class HashTableChaining() {
         return this.size
     }
 
+    // obtenerNumClavesConocidas(): Int -> Función que retorna cuántas claves conocidas por el diccionario hay
     fun obtenerNumClavesConocidas(): Int {
         return this.conocidas.getSize()
     }
