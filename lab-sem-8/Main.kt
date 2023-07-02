@@ -53,7 +53,7 @@ fun main(args: Array<String>) {
             dictChaining.eliminar(A[i].first)
         } else {
             // Si la clave no existe, se agrega el par (clave, valor) en el diccionario.
-            dictChaining.agregar(A[i].first, A[i].second, true)
+            dictChaining.agregar(A[i].first, A[i].second)
         }
     }
 
@@ -89,7 +89,7 @@ fun main(args: Array<String>) {
             dictCuckoo.eliminar(A[i].first)
         } else {
             // Si la clave no existe, se agrega el par (clave, valor) en el diccionario.
-            dictCuckoo.agregar(A[i].first, A[i].second, true)
+            dictCuckoo.agregar(A[i].first, A[i].second)
         }
     }
 

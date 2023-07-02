@@ -66,8 +66,9 @@ class HashTableChaining() {
         return (this.numElementos.toDouble() / this.hashSize().toDouble())
     }
 
-    // agregar(clave: Int, valor: String, agregarAConocidas: Boolean): Unit -> Función que agrega un elemento a la tabla de hash
-    fun agregar(clave: Int, valor: String, agregarAConocidas: Boolean): Unit {
+    // agregar(clave: Int, valor: String, agregarAConocidas: Boolean = true): Unit -> Función que agrega un elemento a la tabla de hash
+    // agregarAConocidas: Boolean = true, asigna el valor por defecto en caso de no ser especificado
+    fun agregar(clave: Int, valor: String, agregarAConocidas: Boolean = true): Unit {
         // Si la clave ya está en la tabla de hash, entonces no se agrega
         if (this.existe(clave)) return
 

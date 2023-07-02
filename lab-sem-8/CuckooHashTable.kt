@@ -92,8 +92,9 @@ class CuckooHashTable() {
         }
     }
 
-    // agregar(clave: Int, valor: String, agregarAConocidas: Boolean): Unit -> Función que agrega una clave al cuckoo hash
-    fun agregar(clave: Int, valor: String, agregarAConocidas: Boolean): Unit {
+    // agregar(clave: Int, valor: String, agregarAConocidas: Boolean = true): Unit -> Función que agrega una clave al cuckoo hash
+    // agregarAConocidas: Boolean = true, asigna el valor por defecto en caso de no ser especificado
+    fun agregar(clave: Int, valor: String, agregarAConocidas: Boolean = true): Unit {
         // Si la clave ya está en la tabla de hash, no se agrega y se retorna false
         if(this.existe(clave)) return
 
@@ -103,11 +104,13 @@ class CuckooHashTable() {
         // Se calcula la posible posición donde se vaya a agregar el nuevo nodo
         var indice = this.h1(clave)
 
+        // Se declaran las variables necesarias
         var viejoNodo: CuckooHashTableEntry
         var claveAInsertar = clave
         var valorAInsertar = valor
 
-        for (i in 0 until 30) {
+        // Se establece 1000 como el número máximo de intentos para evitar un bucle infinito
+        for (i in 0 until 1000) {
             // Intentamos agregar el nodo a la primera tabla de hash
             viejoNodo = swap(claveAInsertar, valorAInsertar, tabla1, indice)
             // Verificamos si el nodo que estaba anteriormente en la posición donde intercambiamos el nodo que queremos agregar está vacío o no
