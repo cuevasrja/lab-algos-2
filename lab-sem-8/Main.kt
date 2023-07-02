@@ -1,6 +1,24 @@
 // Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
 // Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 
+// calcularMedia(tiempos: Array<Long>): Double -> Función que calcula el tiempo promedio dado una arreglo que contenga los tiempos de ejecución de cada preba
+fun calcularMedia(tiempos: Array<Long>): Double {
+    var suma: Double = 0.0
+    for (i in 0 until tiempos.size) {
+        suma += tiempos[i]
+    }
+    return (suma / tiempos.size)
+}
+
+// calcularDesviacionEstandar(tiempos: Array<Long>, media: Double): Double -> Función que calcula la desviación estándar de los tiempos de ejecución de cada prueba
+fun calcularDesviacionEstandar(tiempos: Array<Long>, media: Double): Double {
+    var suma: Double = 0.0
+    for (i in 0 until tiempos.size) {
+        suma += Math.pow((tiempos[i] - media), 2.0)
+    }
+    return (Math.sqrt(suma / (tiempos.size)))
+}
+
 fun main(args: Array<String>) {
     // El primer argumento representa el tamaño del arreglo de prueba a crear.
     val n = args[0].toInt()
@@ -39,33 +57,49 @@ fun main(args: Array<String>) {
     println("----------------------------------------------------------------")
 
     // Se crea un diccionario vacío, basado en una tabla de hash de encadenamiento.
-    val dictChaining: HashTableChaining = createDictionaryChaining()
+    var dictChaining: HashTableChaining = createDictionaryChaining()
 
-    // Empezamos a medir el tiempo de ejecución.
-    var startTime = System.nanoTime()
+    // Se crea un arreglo para guardar el tiempo de las 5 pruebas que se hagam
+    val tiempoDictChaining = Array<Long> (5, {0})
 
-    // Se realizan las pruebas de las operaciones buscar, agregar y eliminar del diccionario.
-    // Se recorre el arreglo A elemento por elemento.
-    for (i in 0 until n) {
-        // Se busca si la clave del elemento ya existe en el diccionario.
-        if (dictChaining.existe(A[i].first)) {
-            // Si la clave ya existe, se elimina el par (clave, valor) del diccionario.
-            dictChaining.eliminar(A[i].first)
-        } else {
-            // Si la clave no existe, se agrega el par (clave, valor) en el diccionario.
-            dictChaining.agregar(A[i].first, A[i].second)
+    // Se realiza la prueba 5 veces
+    for (k in 0 until 5) {
+        // Empezamos a medir el tiempo de ejecución.
+        val startTime = System.nanoTime()
+
+        // Se realizan las pruebas de las operaciones buscar, agregar y eliminar del diccionario.
+        // Se recorre el arreglo A elemento por elemento.
+        for (i in 0 until n) {
+            // Se busca si la clave del elemento ya existe en el diccionario.
+            if (dictChaining.existe(A[i].first)) {
+                // Si la clave ya existe, se elimina el par (clave, valor) del diccionario.
+                dictChaining.eliminar(A[i].first)
+            } else {
+                // Si la clave no existe, se agrega el par (clave, valor) en el diccionario.
+                dictChaining.agregar(A[i].first, A[i].second)
+            }
         }
+
+        // Se termina de medir el tiempo de ejecución.
+        val endTime = System.nanoTime()
+
+        // Se calcula el tiempo de ejecución de las inserciones, búsquedas y eliminaciones.
+        tiempoDictChaining[k] = (endTime - startTime)
+
+        // Si no es la última prueba, se vacía el diccionario para que se pueda hacerla siguiente prueba.
+        if (k != 4) dictChaining = createDictionaryChaining()
     }
 
-    // Se termina de medir el tiempo de ejecución.
-    var endTime = System.nanoTime()
+    // Se calcula el tiempo promedio de las ejecuciones de las pruebas.
+    val mediaDictChaining = calcularMedia(tiempoDictChaining)
 
-    // Se calcula el tiempo de ejecución de las inserciones, búsquedas y eliminaciones.
-    val tiempoDictChaining = endTime - startTime
+    // Se clacula la desviación estándar de las ejecuciones de las pruebas.
+    val desvEstDictChaining = calcularDesviacionEstandar(tiempoDictChaining, mediaDictChaining)
 
     // Se imprime la información del rendimiento del diccionario.
     println("\u001b[32mSe insertaron, buscaron y eliminaron exitosamente los elementos del arreglo A en el diccionario.\u001b[0m")
-    println("El tiempo de ejecución de las operaciones fue de: \u001b[33m${tiempoDictChaining/1000000000.0} segundos.\u001b[0m")
+    println("El tiempo promedio de ejecución de las operaciones fue de: \u001b[33m${mediaDictChaining/1000000000.0} segundos.\u001b[0m")
+    println("La desviación estándar de la ejecución de las operaciones: \u001b[33m${desvEstDictChaining/1000000000.0} segundos.\u001b[0m")
     println("El diccionario tiene \u001b[33m${dictChaining.obtenerNumElementos()}\u001b[0m elementos.")
     println("El número de claves conocidas por el diccionario es \u001b[33m${dictChaining.obtenerNumClavesConocidas()}.\u001b[0m")
     println("El factor de carga del diccionario es \u001b[33m${dictChaining.obtenerFactorCarga()}.\u001b[0m\n")
@@ -75,33 +109,49 @@ fun main(args: Array<String>) {
     println("----------------------------------------------------------------")
 
     // Se crea un diccionario vacío, basado en una tabla de hash con cuckoo hash.
-    val dictCuckoo: CuckooHashTable = createDictionaryCuckoo()
+    var dictCuckoo: CuckooHashTable = createDictionaryCuckoo()
 
-    // Empezamos a medir el tiempo de ejecución.
-    startTime = System.nanoTime()
+    // Se crea un arreglo para guardar el tiempo de las 5 pruebas que se hagam
+    val tiempoDictCuckoo = Array<Long> (5, {0})
 
-    // Se realizan las pruebas de las operaciones buscar, agregar y eliminar del diccionario.
-    // Se recorre el arreglo A elemento por elemento.
-    for (i in 0 until n) {
-        // Se busca si la clave del elemento ya existe en el diccionario.
-        if (dictCuckoo.existe(A[i].first)) {
-            // Si la clave ya existe, se elimina el par (clave, valor) del diccionario.
-            dictCuckoo.eliminar(A[i].first)
-        } else {
-            // Si la clave no existe, se agrega el par (clave, valor) en el diccionario.
-            dictCuckoo.agregar(A[i].first, A[i].second)
+    // Se realiza la prueba 5 veces
+    for (k in 0 until 5) {
+        // Empezamos a medir el tiempo de ejecución.
+        val startTime = System.nanoTime()
+
+        // Se realizan las pruebas de las operaciones buscar, agregar y eliminar del diccionario.
+        // Se recorre el arreglo A elemento por elemento.
+        for (i in 0 until n) {
+            // Se busca si la clave del elemento ya existe en el diccionario.
+            if (dictCuckoo.existe(A[i].first)) {
+                // Si la clave ya existe, se elimina el par (clave, valor) del diccionario.
+                dictCuckoo.eliminar(A[i].first)
+            } else {
+                // Si la clave no existe, se agrega el par (clave, valor) en el diccionario.
+                dictCuckoo.agregar(A[i].first, A[i].second)
+            }
         }
+
+        // Se termina de medir el tiempo de ejecución.
+        val endTime = System.nanoTime()
+
+        // Se calcula el tiempo de ejecución de las inserciones, búsquedas y eliminaciones.
+        tiempoDictCuckoo[k] = (endTime - startTime)
+
+        // Si no es la última prueba, se vacía el diccionario para que se pueda hacerla siguiente prueba.
+        if (k != 4) dictCuckoo = createDictionaryCuckoo()
     }
 
-    // Se termina de medir el tiempo de ejecución.
-    endTime = System.nanoTime()
+    // Se calcula el tiempo promedio de las ejecuciones de las pruebas.
+    val mediaDictCuckoo = calcularMedia(tiempoDictCuckoo)
 
-    // Se calcula el tiempo de ejecución de las inserciones, búsquedas y eliminaciones.
-    val tiempoDictCuckoo = endTime - startTime
+    // Se clacula la desviación estándar de las ejecuciones de las pruebas.
+    val desvEstDictCuckoo = calcularDesviacionEstandar(tiempoDictCuckoo, mediaDictCuckoo)
 
     // Se imprime la información del rendimiento del diccionario.
     println("\u001b[32mSe insertaron, buscaron y eliminaron exitosamente los elementos del arreglo A en el diccionario.\u001b[0m")
-    println("El tiempo de ejecución de las operaciones fue de: \u001b[33m${tiempoDictCuckoo/1000000000.0} segundos.\u001b[0m")
+    println("El tiempo de ejecución de las operaciones fue de: \u001b[33m${mediaDictCuckoo/1000000000.0} segundos.\u001b[0m")
+    println("La desviación estándar de la ejecución de las operaciones: \u001b[33m${desvEstDictCuckoo/1000000000.0} segundos.\u001b[0m")
     println("El diccionario tiene \u001b[33m${dictCuckoo.obtenerNumElementos()}\u001b[0m elementos.")
     println("El número de claves conocidas por el diccionario es \u001b[33m${dictCuckoo.obtenerNumClavesConocidas()}.\u001b[0m")
     println("El factor de carga del diccionario es \u001b[33m${dictCuckoo.obtenerFactorCarga()}.\u001b[33m")
