@@ -3,17 +3,19 @@
 
 /**
 * Clase CuckooHashTable, que representa una tabla de hash con resolución de colisiones por el método de Cuckoo Hashing
-* @property conocidas: Array<Int> -> Arreglo que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
-* @property tabla1: Array<CircularList> -> Arreglo que contiene las listas enlazadas que representan la primera tabla de hash
-* @property tabla2: Array<CircularList> -> Arreglo que contiene las listas enlazadas que representan la segunda tabla de hash
+* @property conocidas: CircularList -> Lista enlazada que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
+* @property tabla1: Array<CuckooHashTableEntry> -> Arreglo que contiene los nodos que representan la primera tabla de hash
+* @property tabla2: Array<CuckooHashTableEntry> -> Arreglo que contiene los nodos que representan la segunda tabla de hash
 */
 class CuckooHashTable() {
-    // conocidas: Array<Int> -> Arreglo que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
-    private var conocidas: Array<Int?> = Array(7) { null }
-    // tabla1: Array<CircularList> -> Arreglo que contiene las listas enlazadas que representan la tabla de hash
-    private var tabla1: Array<CircularList> = Array(7) { CircularList() }
-    // tabla2: Array<CircularList> -> Arreglo que contiene las listas enlazadas que representan la tabla de hash
-    private var tabla2: Array<CircularList> = Array(7) { CircularList() }
+    // conocidas: CircularList -> Lista enlazada que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
+    private var conocidas: CircularList = CircularList()
+
+    // tabla1: Array<CuckooHashTableEntry> -> Arreglo que contiene los nodos que representan la primera tabla de hash
+    private var tabla1: Array<CuckooHashTableEntry> = Array(7) { CuckooHashTableEntry(null, null) }
+
+    // tabla2: Array<CuckooHashTableEntry> -> Arreglo que contiene los nodos que representan la segunda tabla de hash
+    private var tabla2: Array<CuckooHashTableEntry> = Array(7) { CuckooHashTableEntry(null, null) }
 
     // numElementos: Int -> Número de elementos que hay en la tabla de hash
     private var numElementos: Int = 0
@@ -23,6 +25,7 @@ class CuckooHashTable() {
     private val A: Double = 0.6180339887
 
     // Métodos de la clase CuckooHashTable
+
     // h1(clave: Int): Int -> Función hash que se usa para la primera tabla de hash
     private fun h1(clave: Int): Int {
         // Se usa el método de la división
@@ -35,9 +38,14 @@ class CuckooHashTable() {
         return (((clave * this.A) % 1) * this.conocidas.size).toInt()
     }
 
-    // incr(size: Int): Int -> Función que devuelve el nuevo tamaño de la tabla de hash
+    // incr(size: Int): Int -> Función que devuelve el nuevo tamaño de cada tabla de hash
     private fun incr(size: Int): Int {
         return ((size + 16) * 3/2).toInt()
+    }
+
+    // obtenerFactorCarga(): Double -> Función que devuelve el factor de carga del cuckoo hash
+    fun obtenerFactorCarga(): Double {
+        return (this.obtenerNumElementos().toDouble() / this.totalHashSize().toDouble())
     }
 
     // rehash(): Unit -> Función que hace rehash de la tabla de hash
@@ -62,11 +70,6 @@ class CuckooHashTable() {
                 this.insertar(clave2)
             }
         }
-    }
-
-    // obtenerFactorCarga(): Double -> Función que devuelve el factor de carga de la tabla de hash
-    fun obtenerFactorCarga(): Double {
-        return this.numElementos.toDouble() / this.conocidas.size.toDouble()
     }
 
     // insertar(clave: Int, valor: String): Unit -> Función que inserta una clave en la tabla de hash.
@@ -113,10 +116,10 @@ class CuckooHashTable() {
         val indice2 = h2(clave)
 
         // Se busca la clave en la tabla de hash
-        if (this.tabla1[indice1].obtenerPrimero()?.obtenerClave() == clave) {
-            return this.tabla1[indice1].obtenerPrimero()?.obtenerValor()
-        } else if (this.tabla2[indice2].obtenerPrimero()?.obtenerClave() == clave) {
-            return this.tabla2[indice2].obtenerPrimero()?.obtenerValor()
+        if (this.tabla1[indice1].obtenerClave() == clave) {
+            return this.tabla1[indice1].obtenerValor()
+        } else if (this.tabla2[indice2].obtenerClave() == clave) {
+            return this.tabla2[indice2].obtenerValor()
         } else return null
     }
 
@@ -127,14 +130,14 @@ class CuckooHashTable() {
         val indice2 = h2(clave)
 
         // Se elimina la clave de la tabla de hash, si existe en ella
-        if (this.tabla1[indice1].obtenerPrimero()?.obtenerClave() == clave) {
-            this.tabla1[indice1].eliminarPrimero()
+        if (this.tabla1[indice1].obtenerClave() == clave) {
+            this.tabla1[indice1].cambiarClave(null)
+            this.tabla1[indice1].cambiarValor(null)
             numElementos--
-            claveConocida[clave] = null
-        } else if (this.tabla2[indice2].obtenerPrimero()?.obtenerClave() == clave) {
-            this.tabla2[indice2].eliminarPrimero()
+        } else if (this.tabla2[indice2].obtenerClave() == clave) {
+            this.tabla2[indice2].cambiarClave(null)
+            this.tabla2[indice2].cambiarValor(null)
             numElementos--
-            claveConocida[clave] = null
         }
     }
 
@@ -145,26 +148,39 @@ class CuckooHashTable() {
         val indice2 = h2(clave)
 
         // Se verifica si la clave existe en la tabla de hash
-        return (this.tabla1[indice1].obtenerPrimero()?.obtenerClave() == clave) || (this.tabla2[indice2].obtenerPrimero()?.obtenerClave() == clave)
+        return (this.tabla1[indice1].obtenerClave() == clave || this.tabla2[indice2].obtenerClave() == clave)
     }
 
+    // obtenerNumElementos(): Int -> Función que devuelve el número de elementos de la tabla de hash
     fun obtenerNumElementos(): Int {
         return this.numElementos
     }
 
-    fun getSize(): Int {
-        return this.conocidas.size
+    // hashSize(): Int -> Función que devuelve el tamaño individual de las tablas de hash
+    fun hashSize(): Int {
+        return this.tabla1.legth
     }
 
+    // totalHashSize(): Int -> Función que devuelve el tamaño combinado de las tablas de hash
+    fun totalHashSize(): Int {
+        return this.tabla1.legth + this.tabla2.legth
+    }
+
+    // override fun toString(): String -> Función que devuelve una representación en String de la tabla de hash
     override fun toString(): String {
         var str = ""
-        for (i in 0 until this.getSize()) {
-            var claveConocida = this.conocidas[i]
-            if (claveConocida != null) {
-                str += "[${claveConocida}] -> ${this.buscar(claveConocida)}\n"
-            } else str += "[] -> []\n"
+        for (i in 0 until this.hashSize()) {
+            if (this.tabla1[i].obtenerClave() != null) {
+                str += "T1: [${this.tabla1[i]}]"
+            } else {
+                str += "T1: []"
+            }
+            if (this.tabla2[i].obtenerClave() != null) {
+                str += "T2: [${this.tabla2[i]}]\n"
+            } else {
+                str += "T2: []\n"
+            }
         }
-        return str
     }
 }
 
