@@ -29,13 +29,13 @@ class CuckooHashTable() {
     // h1(clave: Int): Int -> Función hash que se usa para la primera tabla de hash
     private fun h1(clave: Int): Int {
         // Se usa el método de la división
-        return (clave % this.totalHashSize()).toInt()
+        return (clave % this.hashSize()).toInt()
     }
 
     // h2(clave: Int): Int -> Función hash que se usa para la segunda tabla de hash
     private fun h2(clave: Int): Int {
         // Se usa el método de la multiplicación
-        return (((clave * this.A) % 1) * this.totalHashSize()).toInt()
+        return (((clave * this.A) % 1) * this.hashSize()).toInt()
     }
 
     // incr(size: Int): Int -> Función que devuelve el nuevo tamaño de cada tabla de hash
@@ -172,10 +172,12 @@ class CuckooHashTable() {
         if (this.tabla1[indice1].obtenerClave() == clave) {
             this.tabla1[indice1].cambiarClave(null)
             this.tabla1[indice1].cambiarValor(null)
+            this.conocidas.eliminar(clave)
             numElementos--
         } else if (this.tabla2[indice2].obtenerClave() == clave) {
             this.tabla2[indice2].cambiarClave(null)
             this.tabla2[indice2].cambiarValor(null)
+            this.conocidas.eliminar(clave)
             numElementos--
         }
     }
@@ -212,10 +214,10 @@ class CuckooHashTable() {
 
     // override fun toString(): String -> Función que devuelve una representación en String de la tabla de hash
     override fun toString(): String {
-        var str = ""
+        var str = "Claves conocidas: ${this.conocidas}\n"
+        str += "T1  ---  T2\n"
         for (i in 0 until this.hashSize()) {
-            str += "T1  ---  T2"
-            str += "${this.tabla1[i]}  ---  ${this.tabla2[i]}"
+            str += "${this.tabla1[i]}  ---  ${this.tabla2[i]}\n"
         }
         return str
     }
