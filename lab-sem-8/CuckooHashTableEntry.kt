@@ -1,7 +1,7 @@
 // Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
 // Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 
-class CuckooHashTableEntry(val key: Int?, var value: String?){
+class CuckooHashTableEntry(val key: Int?, var value: String?) {
     // prev: CuckooHashTableEntry? -> El nodo anterior al nodo actual
     // next: CuckooHashTableEntry? -> El nodo siguiente al nodo actual
     var prev: CuckooHashTableEntry? = null
@@ -28,6 +28,7 @@ class CuckooHashTableEntry(val key: Int?, var value: String?){
         return this.value
     }
 
+    // cambiarValor(valor: String): Unit -> Funcion que cambia el valor que contiene el nodo
     fun cambiarValor(valor: String): Unit {
         this.value = valor
     }

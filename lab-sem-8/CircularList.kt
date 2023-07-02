@@ -164,8 +164,3 @@ class CircularList() {
         return string
     }
 }
-
-// createCircularList(): CircularList -> Devuelve una nueva lista circular vacia
-fun createCircularList(): CircularList {
-    return CircularList()
-}
