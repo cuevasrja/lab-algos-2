@@ -153,6 +153,5 @@ fun main(args: Array<String>) {
     println("El tiempo de ejecución de las operaciones fue de: \u001b[33m${mediaDictCuckoo/1000000000.0} segundos.\u001b[0m")
     println("La desviación estándar de la ejecución de las operaciones: \u001b[33m${desvEstDictCuckoo/1000000000.0} segundos.\u001b[0m")
     println("El diccionario tiene \u001b[33m${dictCuckoo.obtenerNumElementos()}\u001b[0m elementos.")
-    println("El número de claves conocidas por el diccionario es \u001b[33m${dictCuckoo.obtenerNumClavesConocidas()}.\u001b[0m")
     println("El factor de carga del diccionario es \u001b[33m${dictCuckoo.obtenerFactorCarga()}.\u001b[33m")
 }

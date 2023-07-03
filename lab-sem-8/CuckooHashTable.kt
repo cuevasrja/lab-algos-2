@@ -8,8 +8,8 @@
 * @property tabla2: Array<CuckooHashTableEntry> -> Arreglo que contiene los nodos que representan la segunda tabla de hash
 */
 class CuckooHashTable() {
-    // conocidas: CircularList -> Lista enlazada que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
-    private var conocidas: CircularList = CircularList()
+    // conocidas: Array<Int?> -> Arreglo que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
+    private var conocidas: Array<Int?> = Array(14) { null }
 
     // tabla1: Array<CuckooHashTableEntry> -> Arreglo que contiene los nodos que representan la primera tabla de hash
     private var tabla1: Array<CuckooHashTableEntry> = Array(7) { CuckooHashTableEntry(null, null) }
@@ -68,33 +68,30 @@ class CuckooHashTable() {
         // Se obtiene el nuevo tamaño de las tablas de hash
         val newSize = incr(this.hashSize())
 
-        // Se crea un nuevo cuckoo hash con el nuevo tamaño
+        // Se actualiza el tamaño de las tablas de hash
         this.tabla1 = Array(newSize) { CuckooHashTableEntry(null, null) }
         this.tabla2 = Array(newSize) { CuckooHashTableEntry(null, null) }
+
+        // Se crea un registro de las claves que ya estaban en la tabla de hash
+        val viejasConocidas = this.conocidas
+
+        // Se crea un nuevo arreglo vacío de claves conocidas
+        this.conocidas = Array(newSize*2) { null }
 
         // Reiniciamos el número de elementos que hay en la tabla
         this.numElementos = 0
 
-        // Se obtiene la primera clave de la lista de claves conocidas
-        var claveConocida = this.conocidas.obtenerPrimero()
-
-        // Se recorre la lista de claves conocidas
-        while (claveConocida != this.conocidas.sentinel) {
-            // Se obtiene la clave y el valor de la clave conocida
-            val clave = claveConocida?.obtenerClave()!!
-            val valor = claveConocida.obtenerValor()!!
-
-            // Se agrega la clave conocida al nuevo cuckoo hash y se especifica que no se vuelva a agregar la clave conocida a conocidas
-            this.agregar(clave, valor, false)
-
-            // Se obtiene la siguiente clave de la lista de claves conocidas
-            claveConocida = claveConocida.next
+        // Se recorren las viejas claves conocidas y se agregan al nuevo cuckoo hash
+        for (i in 0 until viejasConocidas.size) {
+            // Si la clave no es nula, se agrega al cuckoo hash
+            if (viejasConocidas[i] != null) {
+                this.agregar(viejasConocidas[i]!!, viejasConocidas[i]!!.toString())
+            }
         }
     }
 
-    // agregar(clave: Int, valor: String, agregarAConocidas: Boolean = true): Unit -> Función que agrega una clave al cuckoo hash
-    // agregarAConocidas: Boolean = true, asigna el valor por defecto en caso de no ser especificado
-    fun agregar(clave: Int, valor: String, agregarAConocidas: Boolean = true): Unit {
+    // agregar(clave: Int, valor: String): Unit -> Función que agrega una clave al cuckoo hash
+    fun agregar(clave: Int, valor: String): Unit {
         // Si la clave ya está en la tabla de hash, no se agrega y se retorna false
         if(this.existe(clave)) return
 
@@ -113,10 +110,10 @@ class CuckooHashTable() {
         for (i in 0 until 1000) {
             // Intentamos agregar el nodo a la primera tabla de hash
             viejoNodo = swap(claveAInsertar, valorAInsertar, tabla1, indice)
+            conocidas[indice] = claveAInsertar
             // Verificamos si el nodo que estaba anteriormente en la posición donde intercambiamos el nodo que queremos agregar está vacío o no
             if (viejoNodo.esVacio()) {
                 // Si está vacío, quiere decir que pudimos agregar adecuadamente el nodo
-                if (agregarAConocidas) this.conocidas.agregarAlFinal(clave, valor)
                 numElementos++
                 return
             }
@@ -128,11 +125,10 @@ class CuckooHashTable() {
 
             // Y entonces intentamos agregar el nodo actualizado a la segunda tabla de hash
             viejoNodo = swap(claveAInsertar, valorAInsertar, tabla2, indice)
+            conocidas[indice+hashSize()] = claveAInsertar
             // Verificamos si el nodo que estaba anteriormente en la posición donde intercambiamos el nodo que queremos agregar está vacío o no
             if (viejoNodo.esVacio()) {
                 // Si está vacío, quiere decir que pudimos agregar adecuadamente el nodo
-                // Si se pidió agregar la clave del nuevo nodo a this.conocidas, se agrega. En caso contrario se omite
-                if (agregarAConocidas) this.conocidas.agregarAlFinal(clave, valor)
                 numElementos++
                 return
             }
@@ -148,7 +144,7 @@ class CuckooHashTable() {
         this.rehash()
 
         // Finalmente, luego del rehash, volvemos a intentar agregar el nodo al cuckoo hash
-        this.agregar(clave, valor, agregarAConocidas)
+        this.agregar(claveAInsertar, valorAInsertar)
     }
 
     // buscar(clave: Int): String? -> Función que busca una clave en la tabla de hash. Retorna el valor asociado a la clave si la encuentra y null en caso contrario
@@ -175,12 +171,12 @@ class CuckooHashTable() {
         if (this.tabla1[indice1].obtenerClave() == clave) {
             this.tabla1[indice1].cambiarClave(null)
             this.tabla1[indice1].cambiarValor(null)
-            this.conocidas.eliminar(clave)
+            conocidas[indice1] = null
             numElementos--
         } else if (this.tabla2[indice2].obtenerClave() == clave) {
             this.tabla2[indice2].cambiarClave(null)
             this.tabla2[indice2].cambiarValor(null)
-            this.conocidas.eliminar(clave)
+            conocidas[indice2+hashSize()] = null
             numElementos--
         }
     }
@@ -208,11 +204,6 @@ class CuckooHashTable() {
     // totalHashSize(): Int -> Función que devuelve el tamaño combinado de las tablas de hash
     fun totalHashSize(): Int {
         return this.tabla1.size + this.tabla2.size
-    }
-
-    // obtenerNumClavesConocidas(): Int -> Función que retorna cuántas claves conocidas por el diccionario hay
-    fun obtenerNumClavesConocidas(): Int {
-        return this.conocidas.getSize()
     }
 
     // override fun toString(): String -> Función que devuelve una representación en String de la tabla de hash
