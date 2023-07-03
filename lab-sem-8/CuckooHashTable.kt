@@ -208,8 +208,7 @@ class CuckooHashTable() {
 
     // override fun toString(): String -> Función que devuelve una representación en String de la tabla de hash
     override fun toString(): String {
-        var str = "Claves conocidas: ${this.conocidas}\n"
-        str += "T1  ---  T2\n"
+        var str: String = "T1  ---  T2\n"
         for (i in 0 until this.hashSize()) {
             str += "${this.tabla1[i]}  ---  ${this.tabla2[i]}\n"
         }

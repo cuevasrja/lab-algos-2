@@ -9,8 +9,8 @@
 * @property numElementos: Int -> Número de elementos que hay en la tabla de hash
 */
 class HashTableChaining() {
-    // conocidas: CircularList -> Lista enlazada que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
-    private var conocidas: CircularList = CircularList()
+    // conocidas: Array<CircularList> -> Arreglo que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
+    private var conocidas: Array<CircularList> = Array(7) { CircularList() }
 
     // tabla: Array<CircularList> -> Arreglo que contiene las listas enlazadas que representan la tabla de hash
     private var tabla: Array<CircularList> = Array(7) { CircularList() }
@@ -44,20 +44,24 @@ class HashTableChaining() {
         // Reiniciamos el número de elementos que hay en la tabla
         this.numElementos = 0
 
-        // Se obtiene la primera clave conocida
-        var claveConocida = this.conocidas.obtenerPrimero()
+        // Se crea un registro de las claves que ya fueron insertadas en la tabla de hash anterior
+        val anterioresConocidas = this.conocidas
 
-        // Se recorren las claves conocidas
-        while (claveConocida != this.conocidas.sentinel) {
-            // Se obtiene la clave y el valor de la clave conocida
-            val clave = claveConocida?.obtenerClave()!!
-            val valor = claveConocida.obtenerValor()!!
+        // Se reinicia el registro de las claves que ya fueron insertadas en la tabla de hash
+        this.conocidas = Array(hashSize()) { CircularList() }
 
-            // Se agrega la clave conocida a la nueva tabla de hash y se especifica que no se vuelva a agregar la clave conocida a conocidas
-            this.agregar(clave, valor, false)
-
-            // Se obtiene la siguiente clave conocida
-            claveConocida = claveConocida.next
+        // Se recorre la tabla de hash anterior
+        for (i in 0 until anterioresConocidas.size) {
+            var nodo = anterioresConocidas[i].obtenerPrimero()
+            // Se verifica si la lista de la posición i de la tabla de hash anterior está vacía
+            if (nodo != null) {
+                // Si no está vacía, entonces se insertan los elementos de la lista en la nueva tabla de hash
+                while (nodo != anterioresConocidas[i].sentinel) {
+                    this.agregar(nodo?.obtenerClave()!!, nodo.obtenerValor()!!)
+                    // Se avanza al siguiente nodo
+                    nodo = nodo.next!!
+                }
+            }
         }
     }
 
@@ -66,9 +70,8 @@ class HashTableChaining() {
         return (this.numElementos.toDouble() / this.hashSize().toDouble())
     }
 
-    // agregar(clave: Int, valor: String, agregarAConocidas: Boolean = true): Unit -> Función que agrega un elemento a la tabla de hash
-    // agregarAConocidas: Boolean = true, asigna el valor por defecto en caso de no ser especificado
-    fun agregar(clave: Int, valor: String, agregarAConocidas: Boolean = true): Unit {
+    // agregar(clave: Int, valor: String): Unit -> Función que agrega un elemento a la tabla de hash
+    fun agregar(clave: Int, valor: String,): Unit {
         // Si la clave ya está en la tabla de hash, entonces no se agrega
         if (this.existe(clave)) return
 
@@ -81,8 +84,8 @@ class HashTableChaining() {
         // Se inserta el elemento en la tabla de hash
         this.tabla[indice].agregarAlFrente(clave, valor)
 
-        // Si se pidió agregar la clave del nuevo elemento a this.conocidas, se agrega. En caso contrario se omite
-        if (agregarAConocidas) this.conocidas.agregarAlFinal(clave, valor)
+        // Se agrega la clave a conocidas
+        this.conocidas[indice].agregarAlFrente(clave, valor)
 
         // Se aumenta el número de elementos en la tabla de hash
         this.numElementos++
@@ -101,7 +104,7 @@ class HashTableChaining() {
             // Se disminuye el número de elementos en la tabla de hash
             this.numElementos--
             // Se elimina la clave de conocidas
-            this.conocidas.eliminar(clave)
+            this.conocidas[indice].eliminar(clave)
         }
     }
 
@@ -133,14 +136,9 @@ class HashTableChaining() {
         return this.size
     }
 
-    // obtenerNumClavesConocidas(): Int -> Función que retorna cuántas claves conocidas por el diccionario hay
-    fun obtenerNumClavesConocidas(): Int {
-        return this.conocidas.getSize()
-    }
-
     // override fun toString(): String -> Función que devuelve una representación en String de la tabla de hash
     override fun toString(): String {
-        var str = "Claves conocidas: ${this.conocidas}\n"
+        var str = ""
         for (i in 0 until this.hashSize()) {
             if (this.tabla[i].obtenerPrimero() != null) str += "[$i] -> ${this.tabla[i]}\n"
             else str += "[] -> ${this.tabla[i]}\n"

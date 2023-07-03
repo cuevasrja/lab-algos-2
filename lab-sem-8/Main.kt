@@ -101,7 +101,6 @@ fun main(args: Array<String>) {
     println("El tiempo promedio de ejecución de las operaciones fue de: \u001b[33m${mediaDictChaining/1000000000.0} segundos.\u001b[0m")
     println("La desviación estándar de la ejecución de las operaciones: \u001b[33m${desvEstDictChaining/1000000000.0} segundos.\u001b[0m")
     println("El diccionario tiene \u001b[33m${dictChaining.obtenerNumElementos()}\u001b[0m elementos.")
-    println("El número de claves conocidas por el diccionario es \u001b[33m${dictChaining.obtenerNumClavesConocidas()}.\u001b[0m")
     println("El factor de carga del diccionario es \u001b[33m${dictChaining.obtenerFactorCarga()}.\u001b[0m\n")
 
     // Probamos el diccionario basado en una tabla de hash con cuckoo hash.
