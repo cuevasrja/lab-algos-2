@@ -64,6 +64,9 @@ fun main(args: Array<String>) {
 
     // Se realiza la prueba 5 veces
     for (k in 0 until 5) {
+        // Se imprime el número de la prueba que se está realizando.
+        print("\u001b[36mPrueba ${(k+1)} de 5.\u001b[0m\r")
+
         // Empezamos a medir el tiempo de ejecución.
         val startTime = System.nanoTime()
 
@@ -115,6 +118,9 @@ fun main(args: Array<String>) {
 
     // Se realiza la prueba 5 veces
     for (k in 0 until 5) {
+        // Se imprime el número de la prueba que se está realizando.
+        print("\u001b[36mPrueba ${(k+1)} de 5.\u001b[0m\r")
+
         // Empezamos a medir el tiempo de ejecución.
         val startTime = System.nanoTime()
 

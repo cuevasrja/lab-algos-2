@@ -22,6 +22,7 @@ class HashTableChaining() {
     private var size: Int = 7
 
     // Métodos de la clase HashTableChaining
+
     // hashFunction(clave: Int): Int -> Función hash que devuelve el índice de la lista en la tabla de hash donde se debe insertar el elemento o donde se encuentra el elemento
     private fun hashFunction(clave: Int): Int {
         // Esta función hash devuelve el residuo de la división de la clave entre el tamaño de la tabla de hash

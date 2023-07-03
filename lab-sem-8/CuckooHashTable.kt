@@ -110,7 +110,10 @@ class CuckooHashTable() {
         for (i in 0 until 1000) {
             // Intentamos agregar el nodo a la primera tabla de hash
             viejoNodo = swap(claveAInsertar, valorAInsertar, tabla1, indice)
+
+            // Actualizamos la clave conocida de la posición donde se intentó agregar el nodo
             conocidas[indice] = claveAInsertar
+
             // Verificamos si el nodo que estaba anteriormente en la posición donde intercambiamos el nodo que queremos agregar está vacío o no
             if (viejoNodo.esVacio()) {
                 // Si está vacío, quiere decir que pudimos agregar adecuadamente el nodo
@@ -125,7 +128,10 @@ class CuckooHashTable() {
 
             // Y entonces intentamos agregar el nodo actualizado a la segunda tabla de hash
             viejoNodo = swap(claveAInsertar, valorAInsertar, tabla2, indice)
+
+            // Actualizamos la clave conocida de la posición donde se intentó agregar el nodo
             conocidas[indice+hashSize()] = claveAInsertar
+
             // Verificamos si el nodo que estaba anteriormente en la posición donde intercambiamos el nodo que queremos agregar está vacío o no
             if (viejoNodo.esVacio()) {
                 // Si está vacío, quiere decir que pudimos agregar adecuadamente el nodo
@@ -167,13 +173,15 @@ class CuckooHashTable() {
         val indice1 = h1(clave)
         val indice2 = h2(clave)
 
-        // Se elimina la clave de la tabla de hash, si existe en ella
+        // Se elimina la clave del cuckoo hash, si es que existe
+        // Se verifica en la primera tabla de hash
         if (this.tabla1[indice1].obtenerClave() == clave) {
             this.tabla1[indice1].cambiarClave(null)
             this.tabla1[indice1].cambiarValor(null)
             conocidas[indice1] = null
             numElementos--
-        } else if (this.tabla2[indice2].obtenerClave() == clave) {
+        } // Se verifica en la segunda tabla de hash
+        else if (this.tabla2[indice2].obtenerClave() == clave) {
             this.tabla2[indice2].cambiarClave(null)
             this.tabla2[indice2].cambiarValor(null)
             conocidas[indice2+hashSize()] = null
