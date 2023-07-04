@@ -3,7 +3,66 @@
  * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
  */
 
-class PMLI() {
+class PMLI(Character: Char) {
+    private var character: Char = Character
+    private var text: Array<String> = Array(10) { "" }
+    private var textIndex: Int = 0
+    private val letrasValidas: Array<Char> = arrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+                                                     'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's',
+                                                     't', 'u', 'v', 'w', 'x', 'y', 'z')
+
+    init {
+        if (!letrasValidas.contains(character)) {
+            throw IllegalArgumentException("El caracter debe ser una letra minúscula del alfabeto español.")
+        }
+    }
+
+    fun esPalabraValida(palabra: String): Boolean {
+        return palabra.all { it in letrasValidas }
+    }
+
+    fun agregarPalabra(palabra: String) {
+        if (!esPalabraValida(palabra)) {
+            throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+        }
+
+        if (textIndex == text.size) {
+            text = text.copyOf(text.size * 2)
+        }
+
+        text[textIndex] = palabra
+        textIndex++
+    }
+
+    fun buscarPalabra(palabra: String): String {
+        if (!esPalabraValida(palabra)) {
+            throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+        }
+
+        var palabraBuscada = this.text.firstOrNull { it == palabra }
+
+        return if(palabraBuscada != null) palabraBuscada else ""
+    }
+
+    fun eliminarPalabra(palabra: String) {
+        if (!esPalabraValida(palabra)) {
+            throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+        }
+
+        var palabraBuscada = this.text.firstOrNull { it == palabra }
+
+        if(palabraBuscada != null) {
+            this.text = this.text.filter { it != palabra }.toTypedArray()
+            this.textIndex--
+        }
+    }
+
+    override fun toString(): String {
+        // Muestra los elementos del arreglo de palabras separados por un espacio y en orden lexicográfico
+        val palabrasNoVacias = this.text.filter { it != "" }
+        return palabrasNoVacias.sorted().joinToString(" ")
+    }
+
 
     fun damerauLevenshteinDistance(str1: String, str2: String): Int {
         val len1 = str1.length
