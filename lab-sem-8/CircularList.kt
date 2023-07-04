@@ -1,12 +1,14 @@
-// Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
-// Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+/*
+ * Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
+ * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+ */
 
 /**
-* Clase CircularList, que representa una lista circular doblemente enlazada
-* Los nodos de la lista son de la clase HashTableEntry
-* @property sentinel: Nodo -> El nodo sentinela de la lista
-* @property size: Int -> El tamaño de la lista
-*/
+ * Clase CircularList, que representa una lista circular doblemente enlazada
+ * Los nodos de la lista son de la clase HashTableEntry
+ * @property sentinel: Nodo -> El nodo sentinela de la lista
+ * @property size: Int -> El tamaño de la lista
+ */
 class CircularList() {
     // sentinel: HashTableEntry -> El nodo sentinela de la lista
     var sentinel: HashTableEntry = HashTableEntry(null, null)
@@ -34,7 +36,7 @@ class CircularList() {
     }
 
     // agregarAlFrente(clave:Int, valor: String): Unit -> Agrega un nodo con la clave y valor dados al frente de la lista
-    fun agregarAlFrente(clave: Int, valor: String): Unit {
+    fun agregarAlFrente(clave: Int, valor: String) {
         // Creamos el nuevo nodo
         val nuevoNodo = HashTableEntry(clave, valor)
         nuevoNodo.cambiarPrev(sentinel) // Cambiamos el nodo anterior del nuevo nodo para que apunte al nodo sentinela
@@ -45,7 +47,7 @@ class CircularList() {
     }
 
     // agregarAlFinal(clave: Int, valor: String): Unit -> Agrega un nodo con la clave y valor dados al final de la lista
-    fun agregarAlFinal(clave: Int, valor: String): Unit {
+    fun agregarAlFinal(clave: Int, valor: String) {
         // Creamos el nuevo nodo
         val nuevoNodo = HashTableEntry(clave, valor)
         nuevoNodo.cambiarPrev(sentinel.prev!!) // Cambiamos el nodo anterior del nuevo nodo para que apunte al nodo anterior al nodo sentinela
@@ -78,7 +80,7 @@ class CircularList() {
     }
 
     // eliminarPrimero(): Unit -> Elimina el primer nodo de la lista
-    fun eliminarPrimero(): Unit {
+    fun eliminarPrimero() {
         // Si la lista esta vacia, no hacemos nada
         if (estaVacia()) return
 
@@ -89,7 +91,7 @@ class CircularList() {
     }
 
     // eliminarUltimo(): Unit -> Elimina el ultimo nodo de la lista
-    fun eliminarUltimo(): Unit {
+    fun eliminarUltimo() {
         // Si la lista esta vacia, no hacemos nada
         if (estaVacia()) return
 
@@ -121,7 +123,7 @@ class CircularList() {
 
     // existe(clave: Int): Boolean -> Devuelve true si existe un nodo con la clave dada, false en caso contrario
     fun existe(clave: Int): Boolean {
-         // Si la lista esta vacia, retornamos false
+        // Si la lista esta vacia, retornamos false
         if (estaVacia()) return false
 
         // Declaramos el nodo actual como el nodo siguiente al nodo sentinela

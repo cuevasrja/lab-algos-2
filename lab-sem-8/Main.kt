@@ -1,5 +1,7 @@
-// Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
-// Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+/*
+ * Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
+ * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+ */
 
 // calcularMedia(tiempos: Array<Long>): Double -> Función que calcula el tiempo promedio dado una arreglo que contenga los tiempos de ejecución de cada preba
 fun calcularMedia(tiempos: Array<Long>): Double {
@@ -26,7 +28,7 @@ fun main(args: Array<String>) {
     // Se crea un arreglo de tamaño n con pares (clave, valor) donde la clave es un entero aleatorio entre 0 y n/3 y el valor es la clave convertida a String.
     val A = Array<Pair<Int, String>>(n) { Pair(0, "") }
     for (i in 0 until n) {
-        val clave = (0..n/3).random()
+        val clave = (0..n / 3).random()
         A[i] = Pair(clave, clave.toString())
     }
 
@@ -39,15 +41,15 @@ fun main(args: Array<String>) {
     println("----------------------------------------------------------------")
 
     // Se crea un diccionario vacío, basado en una tabla de hash de encadenamiento.
-    var dictChaining: HashTableChaining = createDictionaryChaining()
+    var dictChaining: HashTableChaining = HashTableChaining()
 
     // Se crea un arreglo para guardar el tiempo de las 5 pruebas que se hagam
-    val tiempoDictChaining = Array<Long> (5, {0})
+    val tiempoDictChaining = Array<Long> (5, { 0 })
 
     // Se realiza la prueba 5 veces
     for (k in 0 until 5) {
         // Se imprime el número de la prueba que se está realizando.
-        print("\u001b[36mPrueba ${(k+1)} de 5.\u001b[0m\r")
+        print("\u001b[36mPrueba ${(k + 1)} de 5.\u001b[0m\r")
 
         // Empezamos a medir el tiempo de ejecución.
         val startTime = System.nanoTime()
@@ -72,7 +74,7 @@ fun main(args: Array<String>) {
         tiempoDictChaining[k] = (endTime - startTime)
 
         // Si no es la última prueba, se vacía el diccionario para que se pueda hacerla siguiente prueba.
-        if (k != 4) dictChaining = createDictionaryChaining()
+        if (k != 4) dictChaining = HashTableChaining()
     }
 
     // Se calcula el tiempo promedio de las ejecuciones de las pruebas.
@@ -82,22 +84,22 @@ fun main(args: Array<String>) {
     val desvEstDictChaining = calcularDesviacionEstandar(tiempoDictChaining, mediaDictChaining)
 
     // Se imprime la información del rendimiento del diccionario.
-    println("El tiempo promedio de ejecución de las operaciones fue de: \u001b[33m${mediaDictChaining/1000000000.0}s \u00B1 ${desvEstDictChaining/1000000000.0}s.\u001b[0m\n")
+    println("El tiempo promedio de ejecución de las operaciones fue de: \u001b[33m${mediaDictChaining / 1000000000.0}s ± ${desvEstDictChaining / 1000000000.0}s.\u001b[0m\n")
 
     // Probamos el diccionario basado en una tabla de hash con cuckoo hash.
     println("\u001b[36mPrueba del diccionario basado en una tabla de hash con cuckoo hash:\u001b[0m")
     println("----------------------------------------------------------------")
 
     // Se crea un diccionario vacío, basado en una tabla de hash con cuckoo hash.
-    var dictCuckoo: CuckooHashTable = createDictionaryCuckoo()
+    var dictCuckoo: CuckooHashTable = CuckooHashTable()
 
     // Se crea un arreglo para guardar el tiempo de las 5 pruebas que se hagam
-    val tiempoDictCuckoo = Array<Long> (5, {0})
+    val tiempoDictCuckoo = Array<Long> (5, { 0 })
 
     // Se realiza la prueba 5 veces
     for (k in 0 until 5) {
         // Se imprime el número de la prueba que se está realizando.
-        print("\u001b[36mPrueba ${(k+1)} de 5.\u001b[0m\r")
+        print("\u001b[36mPrueba ${(k + 1)} de 5.\u001b[0m\r")
 
         // Empezamos a medir el tiempo de ejecución.
         val startTime = System.nanoTime()
@@ -122,7 +124,7 @@ fun main(args: Array<String>) {
         tiempoDictCuckoo[k] = (endTime - startTime)
 
         // Si no es la última prueba, se vacía el diccionario para que se pueda hacerla siguiente prueba.
-        if (k != 4) dictCuckoo = createDictionaryCuckoo()
+        if (k != 4) dictCuckoo = CuckooHashTable()
     }
 
     // Se calcula el tiempo promedio de las ejecuciones de las pruebas.
@@ -132,5 +134,5 @@ fun main(args: Array<String>) {
     val desvEstDictCuckoo = calcularDesviacionEstandar(tiempoDictCuckoo, mediaDictCuckoo)
 
     // Se imprime la información del rendimiento del diccionario.
-    println("El tiempo promedio de ejecución de las operaciones fue de: \u001b[33m${mediaDictCuckoo/1000000000.0}s \u00B1 ${desvEstDictCuckoo/1000000000.0}s.\u001b[0m")
+    println("El tiempo promedio de ejecución de las operaciones fue de: \u001b[33m${mediaDictCuckoo / 1000000000.0}s ± ${desvEstDictCuckoo / 1000000000.0}s.\u001b[0m")
 }

@@ -1,13 +1,15 @@
-// Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
-// Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+/*
+ * Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
+ * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+ */
 
 /**
-* Creacion de la clase HashTableChaining usando tablas de hash con encadenamiento
-* Por defecto, la tabla de hash tiene 7 elementos. Pero su tamaño es dinámico.
-* @property conocidas: Array<Int> -> Arreglo que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
-* @property tabla: Array<CircularList> -> Arreglo que contiene las listas enlazadas que representan la tabla de hash
-* @property numElementos: Int -> Número de elementos que hay en la tabla de hash
-*/
+ * Creacion de la clase HashTableChaining usando tablas de hash con encadenamiento
+ * Por defecto, la tabla de hash tiene 7 elementos. Pero su tamaño es dinámico.
+ * @property conocidas: Array<Int> -> Arreglo que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
+ * @property tabla: Array<CircularList> -> Arreglo que contiene las listas enlazadas que representan la tabla de hash
+ * @property numElementos: Int -> Número de elementos que hay en la tabla de hash
+ */
 class HashTableChaining() {
     // conocidas: Array<CircularList> -> Arreglo que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
     private var conocidas: Array<CircularList> = Array(7) { CircularList() }
@@ -31,11 +33,11 @@ class HashTableChaining() {
 
     // incr(size: Int): Int -> Función que devuelve el nuevo tamaño de la tabla de hash
     private fun incr(size: Int): Int {
-        return ((size + 16) * 3/2).toInt()
+        return ((size + 16) * 3 / 2).toInt()
     }
 
     // rehash(): Unit -> Función que hace rehash de la tabla de hash
-    private fun rehash(): Unit {
+    private fun rehash() {
         // Se incrementa el tamaño de la tabla de hash
         this.size = this.incr(this.hashSize())
 
@@ -72,7 +74,7 @@ class HashTableChaining() {
     }
 
     // agregar(clave: Int, valor: String): Unit -> Función que agrega un elemento a la tabla de hash
-    fun agregar(clave: Int, valor: String,): Unit {
+    fun agregar(clave: Int, valor: String) {
         // Si la clave ya está en la tabla de hash, entonces no se agrega
         if (this.existe(clave)) return
 
@@ -93,7 +95,7 @@ class HashTableChaining() {
     }
 
     // eliminar(clave: Int): Unit -> Función que elimina un elemento de la tabla de hash
-    fun eliminar(clave: Int): Unit {
+    fun eliminar(clave: Int) {
         // Si la tabla de hash está vacía, entonces no se elimina nada
         if (this.obtenerNumElementos() == 0) return
 
@@ -141,14 +143,12 @@ class HashTableChaining() {
     override fun toString(): String {
         var str = ""
         for (i in 0 until this.hashSize()) {
-            if (this.tabla[i].obtenerPrimero() != null) str += "[$i] -> ${this.tabla[i]}\n"
-            else str += "[] -> ${this.tabla[i]}\n"
+            if (this.tabla[i].obtenerPrimero() != null) {
+                str += "[$i] -> ${this.tabla[i]}\n"
+            } else {
+                str += "[] -> ${this.tabla[i]}\n"
+            }
         }
         return str
     }
-}
-
-// createDictionaryChaining(): HashTableChaining -> Función que crea un dictionatio que es un objeto de la clase HashTableChaining
-fun createDictionaryChaining(): HashTableChaining {
-    return HashTableChaining()
 }

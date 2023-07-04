@@ -1,12 +1,14 @@
-// Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
-// Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+/*
+ * Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
+ * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+ */
 
 /**
-* Clase CuckooHashTable, que representa una tabla de hash con resolución de colisiones por el método de Cuckoo Hashing
-* @property conocidas: CircularList -> Lista enlazada que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
-* @property tabla1: Array<CuckooHashTableEntry> -> Arreglo que contiene los nodos que representan la primera tabla de hash
-* @property tabla2: Array<CuckooHashTableEntry> -> Arreglo que contiene los nodos que representan la segunda tabla de hash
-*/
+ * Clase CuckooHashTable, que representa una tabla de hash con resolución de colisiones por el método de Cuckoo Hashing
+ * @property conocidas: CircularList -> Lista enlazada que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
+ * @property tabla1: Array<CuckooHashTableEntry> -> Arreglo que contiene los nodos que representan la primera tabla de hash
+ * @property tabla2: Array<CuckooHashTableEntry> -> Arreglo que contiene los nodos que representan la segunda tabla de hash
+ */
 class CuckooHashTable() {
     // conocidas: Array<Int?> -> Arreglo que contiene las claves de los elementos que ya fueron insertados en la tabla de hash
     private var conocidas: Array<Int?> = Array(14) { null }
@@ -40,7 +42,7 @@ class CuckooHashTable() {
 
     // incr(size: Int): Int -> Función que devuelve el nuevo tamaño de cada tabla de hash
     private fun incr(size: Int): Int {
-        return ((size + 16) * 3/2).toInt()
+        return ((size + 16) * 3 / 2).toInt()
     }
 
     // swap(clave: Int?, valor: String?, tabla: Array<CuckooHashTableEntry>, indice: Int): CuckooHashTableEntry -> Función que intercambia la clave y el valor especificados en la tabla posición dada de la tabla de hash, y devuelve la clave y el valor que se reemplazaron
@@ -57,14 +59,13 @@ class CuckooHashTable() {
         return CuckooHashTableEntry(claveVieja, valorViejo)
     }
 
-
     // obtenerFactorCarga(): Double -> Función que devuelve el factor de carga del cuckoo hash
     fun obtenerFactorCarga(): Double {
         return (this.obtenerNumElementos().toDouble() / this.totalHashSize().toDouble())
     }
 
     // rehash(): Unit -> Función que hace rehash del cuckoo hash
-    private fun rehash(): Unit {
+    private fun rehash() {
         // Se obtiene el nuevo tamaño de las tablas de hash
         val newSize = incr(this.hashSize())
 
@@ -76,7 +77,7 @@ class CuckooHashTable() {
         val viejasConocidas = this.conocidas
 
         // Se crea un nuevo arreglo vacío de claves conocidas
-        this.conocidas = Array(newSize*2) { null }
+        this.conocidas = Array(newSize * 2) { null }
 
         // Reiniciamos el número de elementos que hay en la tabla
         this.numElementos = 0
@@ -91,12 +92,12 @@ class CuckooHashTable() {
     }
 
     // agregar(clave: Int, valor: String): Unit -> Función que agrega una clave al cuckoo hash
-    fun agregar(clave: Int, valor: String): Unit {
+    fun agregar(clave: Int, valor: String) {
         // Si la clave ya está en la tabla de hash, no se agrega y se retorna false
-        if(this.existe(clave)) return
+        if (this.existe(clave)) return
 
         // Si el factor de carga es mayor o igual a 0.7, se hace rehash
-        if(this.obtenerFactorCarga() >= 0.7) this.rehash()
+        if (this.obtenerFactorCarga() >= 0.7) this.rehash()
 
         // Se calcula la posible posición donde se vaya a agregar el nuevo nodo
         var indice = this.h1(clave)
@@ -130,7 +131,7 @@ class CuckooHashTable() {
             viejoNodo = swap(claveAInsertar, valorAInsertar, tabla2, indice)
 
             // Actualizamos la clave conocida de la posición donde se intentó agregar el nodo
-            conocidas[indice+hashSize()] = claveAInsertar
+            conocidas[indice + hashSize()] = claveAInsertar
 
             // Verificamos si el nodo que estaba anteriormente en la posición donde intercambiamos el nodo que queremos agregar está vacío o no
             if (viejoNodo.esVacio()) {
@@ -164,11 +165,13 @@ class CuckooHashTable() {
             return this.tabla1[indice1].obtenerValor()
         } else if (this.tabla2[indice2].obtenerClave() == clave) {
             return this.tabla2[indice2].obtenerValor()
-        } else return null
+        } else {
+            return null
+        }
     }
 
     // eliminar(clave: Int): Unit -> Función que elimina una clave de la tabla de hash
-    fun eliminar(clave: Int): Unit {
+    fun eliminar(clave: Int) {
         // Se calculan las posibles posiciones de la clave
         val indice1 = h1(clave)
         val indice2 = h2(clave)
@@ -184,7 +187,7 @@ class CuckooHashTable() {
         else if (this.tabla2[indice2].obtenerClave() == clave) {
             this.tabla2[indice2].cambiarClave(null)
             this.tabla2[indice2].cambiarValor(null)
-            conocidas[indice2+hashSize()] = null
+            conocidas[indice2 + hashSize()] = null
             numElementos--
         }
     }
@@ -222,9 +225,4 @@ class CuckooHashTable() {
         }
         return str
     }
-}
-
-// createDictionaryCuckoo(): CuckooHashTable -> Función que crea un diccionario vacío basado en cuckoo hashing
-fun createDictionaryCuckoo(): CuckooHashTable {
-    return CuckooHashTable()
 }

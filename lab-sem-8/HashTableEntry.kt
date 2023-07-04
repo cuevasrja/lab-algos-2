@@ -1,13 +1,15 @@
-// Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
-// Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+/*
+ * Laboratorio de la semana 8 de Algoritmos y Estructuras de Datos II (CI-2692).
+ * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
+ */
 
 /**
-* Creacion de la clase HashTableEntry a usar en la implementacion de la tabla de hash
-* @param clave: Int -> La clave del elemento a insertar en la tabla de hash
-* @param valor: String -> El valor del elemento a insertar en la tabla de hash
-* @property prev: HashTableEntry? -> El nodo anterior al nodo actual
-* @property next: HashTableEntry? -> El nodo siguiente al nodo actual
-*/
+ * Creacion de la clase HashTableEntry a usar en la implementacion de la tabla de hash
+ * @param clave: Int -> La clave del elemento a insertar en la tabla de hash
+ * @param valor: String -> El valor del elemento a insertar en la tabla de hash
+ * @property prev: HashTableEntry? -> El nodo anterior al nodo actual
+ * @property next: HashTableEntry? -> El nodo siguiente al nodo actual
+ */
 class HashTableEntry(val clave: Int?, val valor: String?) {
     // prev: HashTableEntry? -> El nodo anterior al nodo actual
     // next: HashTableEntry? -> El nodo siguiente al nodo actual
@@ -16,12 +18,12 @@ class HashTableEntry(val clave: Int?, val valor: String?) {
 
     // Metodos de la clase HashTableEntry
     // cambiarNext(nodo: HashTableEntry?): Unit -> Cambia el nodo siguiente al nodo actual
-    fun cambiarNext(nodo: HashTableEntry?): Unit {
+    fun cambiarNext(nodo: HashTableEntry?) {
         this.next = nodo
     }
 
     // cambiarPrev(nodo: HashTableEntry?): Unit -> Cambia el nodo anterior al nodo actual
-    fun cambiarPrev(nodo: HashTableEntry?): Unit {
+    fun cambiarPrev(nodo: HashTableEntry?) {
         this.prev = nodo
     }
 
