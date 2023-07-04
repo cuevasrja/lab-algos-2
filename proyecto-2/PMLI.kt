@@ -3,8 +3,15 @@
  * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
  */
 
-class PMLI(Character: Char) {
-    private var character: Char = Character
+/**
+* Clase de la estructura de datos PMLI (Palabras Con la Misma Letra Inicial).
+* @param character: Caracter que representa la letra inicial de las palabras que se almacenarán en la estructura.
+* @property text: Arreglo de Strings que almacena las palabras que se agregan a la estructura.
+* @property textIndex: Entero que representa el índice del arreglo text en el que se almacenará la siguiente palabra.
+* @property letrasValidas: Arreglo de caracteres que contiene las letras del alfabeto español.
+* @constructor Crea un objeto de la clase PMLI.
+*/
+class PMLI(var character: Char) {
     private var text: Array<String> = Array(10) { "" }
     private var textIndex: Int = 0
     private val letrasValidas: Array<Char> = arrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
