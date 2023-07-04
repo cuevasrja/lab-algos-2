@@ -11,7 +11,7 @@
 * @property letrasValidas: Arreglo de caracteres que contiene las letras del alfabeto español.
 * @constructor Crea un objeto de la clase PMLI.
 */
-class PMLI(var character: Char) {
+class PMLI(val character: Char) {
     private var text: Array<String> = Array(10) { "" }
     private var textIndex: Int = 0
     private val letrasValidas: Array<Char> = arrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
@@ -24,43 +24,57 @@ class PMLI(var character: Char) {
         }
     }
 
+    // Métodos de la clase PMLI
+
+    // esPalabraValida: String -> Boolean
+    // Determina si una palabra es válida para ser almacenada en la estructura.
     fun esPalabraValida(palabra: String): Boolean {
-        return palabra.all { it in letrasValidas }
+        return palabra.all { it in letrasValidas } && palabra.isNotEmpty() && palabra[0] == character
     }
 
+    // agregarPalabra: String -> Unit
+    // Agrega una palabra a la estructura.
     fun agregarPalabra(palabra: String) {
+        // Si la palabra no es válida, se lanza una excepción
         if (!esPalabraValida(palabra)) {
             throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
         }
-
+        // Si el arreglo text está lleno, se duplica su tamaño
         if (textIndex == text.size) {
             text = text.copyOf(text.size * 2)
         }
-
+        // Se agrega la palabra al arreglo text y se aumenta el índice
         text[textIndex] = palabra
         textIndex++
     }
 
-    fun buscarPalabra(palabra: String): String {
+    // buscarPalabra: String -> String
+    // Busca una palabra en la estructura y devuelve la palabra si la encuentra, o una cadena vacía si no.
+    fun buscarPalabra(palabra: String): Boolean {
+        // Si la palabra no es válida, se lanza una excepción
         if (!esPalabraValida(palabra)) {
             throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
         }
-
+        // Se busca la palabra en el arreglo text
         var palabraBuscada = this.text.firstOrNull { it == palabra }
-
-        return if(palabraBuscada != null) palabraBuscada else ""
+        // Se devuelve true si la palabra se encontró, o false si no
+        return palabraBuscada != null
     }
 
+    // eliminarPalabra: String -> Unit
     fun eliminarPalabra(palabra: String) {
+        // Si la palabra no es válida, se lanza una excepción
         if (!esPalabraValida(palabra)) {
             throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
         }
-
-        var palabraBuscada = this.text.firstOrNull { it == palabra }
-
-        if(palabraBuscada != null) {
+        // Si la palabra se encuentra en la estructura, se elimina
+        if(buscarPalabra(palabra)) {
             this.text = this.text.filter { it != palabra }.toTypedArray()
             this.textIndex--
+        }
+        // Si no, se lanza una excepción
+        else {
+            throw IllegalArgumentException("La palabra no se encuentra en la estructura.")
         }
     }
 
