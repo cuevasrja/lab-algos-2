@@ -146,6 +146,7 @@ fun esPalabraValida(palabra: String): Boolean {
             return false
         }
     }
+    return true
 }
 
 fun damerauLevenshteinDistance(str1: String, str2: String): Int {
