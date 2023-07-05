@@ -11,6 +11,176 @@
  * Nodo y CircularList, que se usan en la implementación de las tablas de hash.
  */
 
+import kotlin.math.abs
+
+/**
+ * Clase ConjuntoPalabras, que representa una tabla de hash que resuelve colisiones
+ * con encadenamiento, que almacena las palabras que se agregan a la estructura.
+ * @property size: Int -> El tamaño de la tabla de hash.
+ * @property palabras: Array<CircularList> -> El conjunto de palabras representado como una tabla de hash.
+ */
+class ConjuntoPalabras() {
+    // Atributos de la clase ConjuntoPalabras
+
+    // size: Int -> El tamaño de la tabla de hash.
+    private var size = 7
+
+    // numPalabras: Int -> El número de palabras que hay en la tabla de hash.
+    private var numPalabras = 0
+
+    // palabras: Array<CircularList> -> El conjunto de palabras representado como una tabla de hash.
+    private var palabras: Array<CircularList> = Array(size) { CircularList() }
+
+    // Métodos de la clase ConjuntoPalabras
+
+    /**
+     * hash(palabra: String): Int
+     * Método que devuelve el índice en el que debería estar insertada la palabra en la tabla de hash.
+     * @param palabra: String -> La palabra que se va a insertar en la tabla de hash.
+     * Precondición: true.
+     * Postcondición: Se devuelve el índice en el que debería estar insertada la palabra en la tabla de hash.
+     */
+    private fun hash(palabra: String): Int {
+        return abs(palabra.hashCode() % this.getSize())
+    }
+
+    /**
+     * obtenerFactorCarga(): Double
+     * Método que devuelve el factor de carga de la tabla de hash.
+     * Precondición: true.
+     * Postcondición: Se devuelve el factor de carga de la tabla de hash.
+     */
+    private fun obtenerFactorCarga(): Double {
+        return (this.getNumPalabras().toDouble() / this.getSize().toDouble())
+    }
+
+    /**
+     * rehash(): Unit
+     * Método que aumenta el tamaño de la tabla de hash y reinserta las palabras en la nueva tabla de hash.
+     * Precondición: true.
+     * Postcondición: Se aumenta el tamaño de la tabla de hash y se reinsertan las palabras en la nueva tabla de hash.
+     */
+    private fun rehash() {
+        // Se crea un registro de las palabras que hay en la tabla de hash.
+        val anterioresPalabras = this.palabras.copyOf()
+
+        // Se duplica el tamaño de la tabla de hash.
+        this.size *= 2
+
+        // Se reinicia el número de palabras en la tabla de hash.
+        this.numPalabras = 0
+
+        // Se crea una nueva tabla de hash con el doble de tamaño.
+        this.palabras = Array(size) { CircularList() }
+
+        // Se reinsertan las palabras en la nueva tabla de hash.
+        for (i in 0 until anterioresPalabras.size) {
+            // Si la lista enlazada está vacía, se pasa a la siguiente.
+            if (anterioresPalabras[i].estaVacia()) continue
+
+            // Si no, se obtiene el primer nodo de la lista enlazada.
+            var nodo = anterioresPalabras[i].obtenerPrimero()
+
+            // Y se recorre la lista enlazada insertando las palabras en la nueva tabla de hash.
+            while (nodo != anterioresPalabras[i].sentinel) {
+                this.agregar(nodo?.obtenerDato()!!)
+                nodo = nodo.next!!
+            }
+        }
+    }
+
+    /**
+     * agregar(palabra: String): Unit
+     * Método que agrega una palabra a la tabla de hash.
+     * @param palabra: String -> La palabra que se va a insertar en la tabla de hash.
+     * Precondición: La palabra es válida y no está en la tabla de hash.
+     * Postcondición: Se inserta la palabra en la tabla de hash.
+     */
+    fun agregar(palabra: String) {
+        // Se verifica si la palabra ya está en la tabla de hash.
+        if (this.pertenece(palabra)) return
+
+        // Se verifica si se debe aumentar el tamaño de la tabla de hash.
+        if (this.obtenerFactorCarga() >= 0.7) this.rehash()
+
+        // Se obtiene el índice en el que se debe insertar la palabra.
+        val indice = this.hash(palabra)
+
+        // Se inserta la palabra en la lista enlazada correspondiente.
+        palabras[indice].agregarAlFinal(palabra)
+
+        // Se actualiza el número de palabras en la tabla de hash.
+        this.numPalabras++
+    }
+
+    /**
+     * eliminar(palabra: String): Unit
+     * Método que elimina una palabra de la tabla de hash.
+     * @param palabra: String -> La palabra que se va a eliminar de la tabla de hash.
+     * Precondición: La palabra es válida.
+     * Postcondición: Se elimina la palabra de la tabla de hash.
+     */
+    fun eliminar(palabra: String) {
+        // Se verifica si la palabra está en la tabla de hash.
+        if (!this.pertenece(palabra)) return
+
+        // Se obtiene el índice en el que se debe eliminar la palabra.
+        val indice = this.hash(palabra)
+
+        // Se elimina la palabra de la lista enlazada correspondiente.
+        palabras[indice].eliminar(palabra)
+
+        // Se actualiza el número de palabras en la tabla de hash.
+        this.numPalabras--
+    }
+
+    /**
+     * pertenece(palabra: String): Boolean
+     * Método que devuelve si una palabra pertenece o no al conjunto de palabras.
+     * @param palabra: String -> La palabra que se va a buscar en la tabla de hash.
+     * Precondición: true.
+     * Postcondición: Se devuelve si la palabra pertenece o no al conjunto de palabras.
+     */
+    fun pertenece(palabra: String): Boolean {
+        val indice = this.hash(palabra)
+        return palabras[indice].existe(palabra)
+    }
+
+    /**
+     * getSize(): Int
+     * Método que devuelve el número de palabras que hay en el conjunto de palabras.
+     * Precondición: true.
+     * Postcondición: Se devuelve el número de palabras que hay en el conjunto de palabras.
+     */
+    fun getSize(): Int {
+        return this.size
+    }
+
+    /**
+     * getNumPalabras(): Int
+     * Método que devuelve el número de palabras que hay en el conjunto de palabras.
+     * Precondición: true.
+     * Postcondición: Se devuelve el número de palabras que hay en el conjunto de palabras.
+     */
+    fun getNumPalabras(): Int {
+        return this.numPalabras
+    }
+
+    /**
+     * toString(): String
+     * Método que devuelve una representación en String del conjunto de palabras.
+     * Precondición: true.
+     * Postcondición: Se devuelve una representación en String del conjunto de palabras.
+     */
+    override fun toString(): String {
+        var str = ""
+        for (i in 0 until this.getSize()) {
+            str += "${palabras[i]}\n"
+        }
+        return str
+    }
+}
+
 /**
  * Clase AlfabetHashTable, que representa una tabla de hash para buscar si los caracteres
  * de una posible palabra están o no en el alfabeto español.
@@ -47,7 +217,7 @@ class AlfabetHashTable() {
      * Postcondición: Se inserta el dato en la tabla de hash.
      */
     fun insertar(dato: Char) {
-        val indice = hash(dato)
+        val indice = this.hash(dato)
         alfabeto[indice].agregarAlFinal(String.format("%c", dato))
     }
 
@@ -70,7 +240,7 @@ class AlfabetHashTable() {
      * Postcondición: Se devuelve si el dato pertenece o no al alfabeto.
      */
     fun perteneceAlAlfabeto(dato: Char): Boolean {
-        val indice = hash(dato)
+        val indice = this.hash(dato)
         return alfabeto[indice].existe(String.format("%c", dato))
     }
 
@@ -264,7 +434,7 @@ class CircularList() {
      */
     fun eliminar(dato: String) {
         // Si la lista esta vacia, no hacemos nada
-        if (estaVacia()) return
+        if (this.estaVacia()) return
 
         // Obtenemos el primer nodo de la lista
         var nodoActual = sentinel.next
@@ -295,7 +465,7 @@ class CircularList() {
      */
     fun existe(dato: String): Boolean {
         // Si la lista esta vacia, retornamos false
-        if (estaVacia()) return false
+        if (this.estaVacia()) return false
 
         // Obtenemos el primer nodo de la lista
         var nodoActual = sentinel.next
@@ -315,6 +485,17 @@ class CircularList() {
     }
 
     /**
+     * obtenerPrimero(): Nodo?
+     * Método que devuelve el primer nodo de la lista.
+     * Precondición: true.
+     * Postcondición: Si la lista esta vacia, se devuelve null. Si no, se devuelve el primer nodo de la lista.
+     */
+    fun obtenerPrimero(): Nodo? {
+        if (this.estaVacia()) return null
+        return sentinel.next
+    }
+
+    /**
      * toString(): String
      * Método que devuelve una representación en String de la lista.
      * Precondición: true.
@@ -322,7 +503,7 @@ class CircularList() {
      */
     override fun toString(): String {
         // Si la lista esta vacia, retornamos "[]"
-        if (estaVacia()) return "[]"
+        if (this.estaVacia()) return "[]"
 
         var string = "["
 

@@ -17,4 +17,4 @@ all:
 .PHONY : clean
 
 clean :
-	rm -rf $(PROG) && rm -rf $(TEMP)
+	rm -rf $(PROG) $(TEMP)
