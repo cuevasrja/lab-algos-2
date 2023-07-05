@@ -3,6 +3,8 @@
  * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
  */
 
+import kotlin.system.exitProcess
+
 fun main() {
     println("¡Bienvenido al Ayudante Ortográfico!")
     var ayudante = AyudanteOrtografico()
@@ -20,6 +22,7 @@ fun main() {
         when (opcion) {
             1 -> {
                 ayudante = AyudanteOrtografico()
+                println("¡Se ha creado un nuevo Ayudante Ortográfico!")
             }
             2 -> {
                 println("Ingrese el nombre del archivo que contiene el diccionario:")
@@ -29,26 +32,26 @@ fun main() {
             3 -> {
                 println("Ingrese la palabra que desea eliminar:")
                 val palabra = readLine()!!
-                ayudante.eliminarPalabra(palabra)
+                ayudante.borrarPalabra(palabra)
             }
             4 -> {
                 println("Ingrese el nombre del archivo que contiene el texto:")
                 val fname = readLine()!!
                 println("Ingrese el nombre del archivo donde desea guardar el texto corregido:")
                 val fname2 = readLine()!!
-                ayudante.corregirTexto(fname, fname2)
+                // ayudante.corregirTexto(fname, fname2)
             }
             5 -> {
-                ayudante.mostrarDiccionario()
+                ayudante.imprimirDiccionario()
             }
             6 -> {
+                println("¡Hasta luego!")
                 salir = true
-                // TODO: Se muestra si alguna precondicion de los procedimientos del TAD no se cumplio 
             }
             else -> {
                 println("Opción inválida.")
             }
         }
     }
-
+    exitProcess(0)
 }

@@ -6,12 +6,10 @@
  * Letra Inicial). También se agregan las funciones auxiliares del proyecto.
  */
 
-/*
+/**
  * Clase de la estructura de datos PMLI (Palabras Con la Misma Letra Inicial).
  * @param character: Caracter que representa la letra inicial de las palabras que se almacenarán en la estructura.
- * @property text: Arreglo de Strings que almacena las palabras que se agregan a la estructura.
- * @property textIndex: Entero que representa el índice del arreglo text en el que se almacenará la siguiente palabra.
- * @property letrasValidas: Arreglo de caracteres que contiene las letras del alfabeto español.
+ * @property palabras: ConjuntoPalabras -> Conjunto de palabras que se almacenan en la estructura.
  */
 class PMLI(val character: Char) {
     // Atributos de la clase PMLI
@@ -19,24 +17,21 @@ class PMLI(val character: Char) {
     // palabras: Conjunto de palabras que se almacenan en la estructura.
     private var palabras: ConjuntoPalabras = ConjuntoPalabras()
 
-    // numPalabras: Entero que representa el índice del conjunto palabras en el que se almacenará la siguiente palabra.
-    private var numPalabras: Int = 0
-
     // Métodos de la clase PMLI
 
-    /*
+    /**
      * Constructor de la clase PMLI.
      * @param character: Caracter que representa la letra inicial de las palabras que se almacenarán en la estructura.
      * Precondición: el caracter debe ser una letra minúscula del alfabeto español.
      * Postcondición: se crea una estructura PMLI con el caracter dado.
      */
     init {
-        if (alfabet.perteneceAlAlfabeto(character)) {
+        if (!alfabet.perteneceAlAlfabeto(character)) {
             throw IllegalArgumentException("El caracter debe ser una letra minúscula del alfabeto español.")
         }
     }
 
-    /*
+    /**
      * agregarPalabra(palabra: String): Unit
      * Método que agrega una palabra a la estructura.
      * @param palabra: String -> Palabra que se desea agregar.
@@ -47,6 +42,7 @@ class PMLI(val character: Char) {
         // Si la palabra no es válida o no empieza con el caracter de la estructura, se lanza una excepción
         if (!esPalabraValida(palabra) || palabra[0] != this.character) {
             println("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+            println("La palabra debe empezar con el caracter de la estructura: ${this.character}.")
             return
         }
         // Si la palabra ya se encuentra en la estructura, se muestra un mensaje
@@ -54,11 +50,11 @@ class PMLI(val character: Char) {
             println("La palabra ya se encuentra en la estructura.")
             return
         }
+        // Se agrega la palabra a palabras
         palabras.agregar(palabra)
-        this.numPalabras++
     }
 
-    /*
+    /**
      * buscarPalabra(palabra: String): Boolean
      * Método que busca una palabra en la estructura.
      * @param palabra: String -> Palabra que se desea buscar.
@@ -76,7 +72,7 @@ class PMLI(val character: Char) {
         return this.palabras.pertenece(palabra)
     }
 
-    /*
+    /**
      * eliminarPalabra(palabra: String): Unit
      * Método que elimina una palabra de la estructura.
      * @param palabra: String -> Palabra que se desea eliminar.
@@ -92,7 +88,6 @@ class PMLI(val character: Char) {
         // Si la palabra se encuentra en la estructura, se elimina
         if (buscarPalabra(palabra)) {
             this.palabras.eliminar(palabra)
-            this.numPalabras--
         }
         // Si no, se lanza una excepción
         else {
@@ -100,17 +95,17 @@ class PMLI(val character: Char) {
         }
     }
 
-    /*
-    * getNumPalabras(): Int
-    * Método que devuelve el número de palabras que se encuentran en la estructura.
-    * Precondición: true.
-    * Postcondición: se devuelve el número de palabras que se encuentran en la estructura.
-    */
+    /**
+     * getNumPalabras(): Int
+     * Método que devuelve el número de palabras que se encuentran en la estructura.
+     * Precondición: true.
+     * Postcondición: se devuelve el número de palabras que se encuentran en la estructura.
+     */
     fun getNumPalabras(): Int {
-        return this.numPalabras
+        return this.palabras.getNumPalabras()
     }
 
-    /*
+    /**
      * toString(): String
      * Método que devuelve una representación en String de la estructura.
      * Precondición: true.
