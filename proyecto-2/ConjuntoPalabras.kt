@@ -11,8 +11,82 @@
  * Nodo y CircularList, que se usan en la implementación de las tablas de hash.
  */
 
+/**
+ * Clase AlfabetHashTable, que representa una tabla de hash para buscar si los caracteres
+ * de una posible palabra están o no en el alfabeto español.
+ * @property size: Int -> El tamaño de la tabla de hash.
+ * @property alfabeto: Array<CircularList> -> El alfabeto representado como una tabla de hash.
+ */
 class AlfabetHashTable() {
-    private val alfabeto: Array<CircularList> = Array(27) { CircularList() }
+    // Atributos de la clase AlfabetHashTable
+
+    // size: Int -> El tamaño de la tabla de hash.
+    private val size = 26
+
+    // alfabeto: Array<CircularList> -> El alfabeto representado como una tabla de hash.
+    private val alfabeto: Array<CircularList> = Array(size) { CircularList() }
+
+    // Metodos de la clase AlfabetHashTable
+
+    /**
+     * hash(dato: Char): Int
+     * Método que devuelve el índice en el que debería estar insertando el dato en la tabla de hash.
+     * @param dato: Char -> El dato que se va a insertar en la tabla de hash.
+     * Precondición: true.
+     * Postcondición: Se devuelve el índice en el que se debería estar insertando el dato en la tabla de hash.
+     */
+    private fun hash(dato: Char): Int {
+        return String.format("%c", dato).hashCode() % size
+    }
+
+    /**
+     * insertar(dato: Char): Unit
+     * Método que inserta un dato en la tabla de hash.
+     * @param dato: Char -> El dato que se va a insertar en la tabla de hash.
+     * Precondición: true.
+     * Postcondición: Se inserta el dato en la tabla de hash.
+     */
+    fun insertar(dato: Char) {
+        val indice = hash(dato)
+        alfabeto[indice].agregarAlFinal(String.format("%c", dato))
+    }
+
+    /**
+     * init
+     * Método constructor que se ejecuta al crear un objeto de la clase AlfabetHashTable.
+     * Precondición: true.
+     * Postcondición: Se inicializa la tabla de hash con el alfabeto español.
+     */
+    init {
+        for (i in 'a'..'z') insertar(i)
+        insertar('ñ')
+    }
+
+    /**
+     * perteneceAlAlfabeto(dato: Char): Boolean
+     * Método que devuelve si un dato pertenece o no al alfabeto.
+     * @param dato: Char -> El dato que se va a buscar en la tabla de hash.
+     * Precondición: true.
+     * Postcondición: Se devuelve si el dato pertenece o no al alfabeto.
+     */
+    fun perteneceAlAlfabeto(dato: Char): Boolean {
+        val indice = hash(dato)
+        return alfabeto[indice].existe(String.format("%c", dato))
+    }
+
+    /**
+     * toString(): String
+     * Método que imprime una representación en String de la tabla de hash.
+     * Precondición: true.
+     * Postcondición: Se devuelve una representación en String de la tabla de hash.
+     */
+    override fun toString(): String {
+        var str = ""
+        for (i in 0 until size) {
+            str += "${alfabeto[i]}\n"
+        }
+        return str
+    }
 }
 
 /**
@@ -21,7 +95,7 @@ class AlfabetHashTable() {
  * @property next: Nodo? -> El nodo siguiente al nodo actual.
  * @property prev: Nodo? -> El nodo anterior al nodo actual.
  */
-class Nodo(val dato: String?) {
+class Nodo(var dato: String?) {
     // Atributos de la clase Nodo
 
     // next: Nodo? -> El nodo siguiente al nodo actual.
@@ -229,7 +303,7 @@ class CircularList() {
         // Recorremos la lista
         while (nodoActual != sentinel) {
             // Si el dato del nodo actual es el dato dado, retornamos true
-            if (nodoActual!!.obtenerDatos() == dato) {
+            if (nodoActual!!.obtenerDato() == dato) {
                 return true
             }
             // Si no, cambiamos el nodo actual al nodo siguiente al nodo actual

@@ -127,23 +127,12 @@ class PMLI(val character: Char) {
     }
 }
 
-// Funciones auxiliares del proyecto
+// Variables globales del proyecto
 
-/**
- * letraValida(caracter: Char): Boolean
- * Función que determina si un caracter es una letra minúscula del alfabeto español.
- * @param caracter: Char -> Caracter que se desea verificar.
- * Precondición: true.
- * Postcondición: devuelve true si el caracter es una letra minúscula del alfabeto español, false en caso contrario.
- */
-fun letraValida(caracter: Char): Boolean {
-    val letrasValidas: Array<Char> = arrayOf(
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-        'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's',
-        't', 'u', 'v', 'w', 'x', 'y', 'z'
-    )
-    return letrasValidas.contains(caracter)
-}
+// alfabet: AlfabetHashTable que contiene las letras del alfabeto español.
+val alfabet = AlfabetHashTable()
+
+// Funciones auxiliares del proyecto
 
 /**
  * esPalabraValida(palabra: String): Boolean
@@ -153,7 +142,11 @@ fun letraValida(caracter: Char): Boolean {
  * Postcondición: devuelve true si la palabra está formada únicamente por letras minúsculas del alfabeto español, false en caso contrario.
  */
 fun esPalabraValida(palabra: String): Boolean {
-    return palabra.all { letraValida(it) }
+    for (i in 0 until palabra.length) {
+        if (!alfabet.perteneceAlAlfabeto(palabra[i])) {
+            return false
+        }
+    }
 }
 
 fun damerauLevenshteinDistance(str1: String, str2: String): Int {
