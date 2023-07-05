@@ -110,8 +110,16 @@ class PMLI(val character: Char) {
     */
     override fun toString(): String {
         // Muestra los elementos del arreglo de palabras separados por un espacio y en orden lexicográfico
-        val palabrasNoVacias = this.text.filter { it != "" }
-        return palabrasNoVacias.sorted().joinToString(" ")
+        val palabrasNoVacias = this.text.filter { it != "" }.sorted()
+        var str = "${this.character}: \n"
+        for (i in 0 until palabrasNoVacias.size) {
+            if (i == palabrasNoVacias.size - 1) {
+                str += "  * ${palabrasNoVacias[i]}"
+            } else {
+                str += "  * ${palabrasNoVacias[i]}\n"
+            }
+        }
+        return str
     }
 }
 
@@ -128,7 +136,7 @@ fun letraValida(caracter: Char): Boolean {
     val letrasValidas: Array<Char> = arrayOf(
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
         'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's',
-        't', 'u', 'v', 'w', 'x', 'y', 'z',
+        't', 'u', 'v', 'w', 'x', 'y', 'z'
     )
     return letrasValidas.contains(caracter)
 }
