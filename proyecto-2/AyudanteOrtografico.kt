@@ -1,8 +1,18 @@
-/**
+/*
  * Proyecto 2 de Algoritmos y Estructuras de Datos II (CI-2692).
  * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
 */
 
+import java.io.File
+import java.lang.IllegalArgumentException
+import java.lang.StringBuilder
+import PMLI.esPalabraValida
+
+/*
+* Clase de la estructura de Datos Ayudante Ortográfico.
+* @property MAX: Entero que representa el tamaño máximo del arreglo diccionario.
+* @property diccionario: Arreglo de PMLI que almacena las estructuras PMLI.
+*/
 class AyudanteOrtografico(){
     // Atributos de la clase AyudanteOrtografico
     val MAX = 27
@@ -13,7 +23,7 @@ class AyudanteOrtografico(){
         println("¡Bienvenido al Ayudante Ortográfico!")
     }
 
-    /**
+    /*
     * cargarDiccionario(fname: String)
     * Método que carga el diccionario en la estructura.
     * @param fname: String -> Nombre del archivo que contiene el diccionario.
@@ -38,7 +48,7 @@ class AyudanteOrtografico(){
         }
     }
 
-    /**
+    /*
     * eliminarPalabra(palabra: String)
     * Método que elimina la palabra de la estructura.
     * @param palabra: String -> Palabra que se desea eliminar.
@@ -64,7 +74,7 @@ class AyudanteOrtografico(){
         }
     }
 
-    /**
+    /*
     * corregirTexto(fin: String, fout: String)
     * Método que corrige el texto de entrada y lo escribe en el archivo de salida.
     * @param fin: String -> Nombre del archivo de entrada.
@@ -77,7 +87,7 @@ class AyudanteOrtografico(){
         // TODO: Implementar
     }
 
-    /**
+    /*
     * toString()
     * Método que imprime la estructura.
     * @return str: String -> Representación de la estructura en forma de String.
