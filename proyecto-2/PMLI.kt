@@ -6,7 +6,7 @@
  * Letra Inicial). También se agregan las funciones auxiliares del proyecto.
  */
 
-/**
+/*
  * Clase de la estructura de datos PMLI (Palabras Con la Misma Letra Inicial).
  * @param character: Caracter que representa la letra inicial de las palabras que se almacenarán en la estructura.
  * @property text: Arreglo de Strings que almacena las palabras que se agregan a la estructura.
@@ -24,7 +24,7 @@ class PMLI(val character: Char) {
 
     // Métodos de la clase PMLI
 
-    /**
+    /*
      * Constructor de la clase PMLI.
      * @param character: Caracter que representa la letra inicial de las palabras que se almacenarán en la estructura.
      * Precondición: el caracter debe ser una letra minúscula del alfabeto español.
@@ -36,7 +36,7 @@ class PMLI(val character: Char) {
         }
     }
 
-    /**
+    /*
      * agregarPalabra(palabra: String): Unit
      * Método que agrega una palabra a la estructura.
      * @param palabra: String -> Palabra que se desea agregar.
@@ -62,7 +62,7 @@ class PMLI(val character: Char) {
         textIndex++
     }
 
-    /**
+    /*
      * buscarPalabra(palabra: String): Boolean
      * Método que busca una palabra en la estructura.
      * @param palabra: String -> Palabra que se desea buscar.
@@ -82,8 +82,7 @@ class PMLI(val character: Char) {
         return palabraBuscada != null
     }
 
-    // eliminarPalabra: String -> Unit
-    /**
+    /*
      * eliminarPalabra(palabra: String): Unit
      * Método que elimina una palabra de la estructura.
      * @param palabra: String -> Palabra que se desea eliminar.
@@ -106,7 +105,7 @@ class PMLI(val character: Char) {
         }
     }
 
-    /**
+    /*
      * toString(): String
      * Método que devuelve una representación en String de la estructura.
      * Precondición: true.
