@@ -31,7 +31,7 @@ class PMLI(val character: Char) {
      * Postcondición: se crea una estructura PMLI con el caracter dado.
      */
     init {
-        if (!letraValida(character)) {
+        if (alfabet.perteneceAlAlfabeto(character)) {
             throw IllegalArgumentException("El caracter debe ser una letra minúscula del alfabeto español.")
         }
     }
@@ -46,7 +46,8 @@ class PMLI(val character: Char) {
     fun agregarPalabra(palabra: String) {
         // Si la palabra no es válida o no empieza con el caracter de la estructura, se lanza una excepción
         if (!esPalabraValida(palabra) || palabra[0] != this.character) {
-            throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+            println("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+            return
         }
         // Si la palabra ya se encuentra en la estructura, se muestra un mensaje
         if (buscarPalabra(palabra)) {
@@ -67,7 +68,8 @@ class PMLI(val character: Char) {
     fun buscarPalabra(palabra: String): Boolean {
         // Si la palabra no es válida, se lanza una excepción
         if (!esPalabraValida(palabra)) {
-            throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+            println("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+            return false
         }
 
         // Se busca la palabra en palabras
@@ -84,7 +86,8 @@ class PMLI(val character: Char) {
     fun eliminarPalabra(palabra: String) {
         // Si la palabra no es válida, se lanza una excepción
         if (!esPalabraValida(palabra)) {
-            throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+            println("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+            return
         }
         // Si la palabra se encuentra en la estructura, se elimina
         if (buscarPalabra(palabra)) {
@@ -93,10 +96,16 @@ class PMLI(val character: Char) {
         }
         // Si no, se lanza una excepción
         else {
-            throw IllegalArgumentException("La palabra no se encuentra en la estructura.")
+            println("La palabra no se encuentra en la estructura.")
         }
     }
 
+    /*
+    * getNumPalabras(): Int
+    * Método que devuelve el número de palabras que se encuentran en la estructura.
+    * Precondición: true.
+    * Postcondición: se devuelve el número de palabras que se encuentran en la estructura.
+    */
     fun getNumPalabras(): Int {
         return this.numPalabras
     }
@@ -130,12 +139,7 @@ val alfabet = AlfabetHashTable()
  * Postcondición: devuelve true si la palabra está formada únicamente por letras minúsculas del alfabeto español, false en caso contrario.
  */
 fun esPalabraValida(palabra: String): Boolean {
-    for (i in 0 until palabra.length) {
-        if (!alfabet.perteneceAlAlfabeto(palabra[i])) {
-            return false
-        }
-    }
-    return true
+    return palabra.all { alfabet.perteneceAlAlfabeto(it) }
 }
 
 fun damerauLevenshteinDistance(str1: String, str2: String): Int {
