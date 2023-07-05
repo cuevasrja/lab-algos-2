@@ -1,7 +1,10 @@
-/**
+/*
  * Proyecto 2 de Algoritmos y Estructuras de Datos II (CI-2692).
  * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
-*/
+ *
+ * PMLI.kt -> Este archivo contiene la implementación del TAD PMLI (Palabras Con la Misma
+ * Letra Inicial). También se agregan las funciones auxiliares del proyecto.
+ */
 
 /**
  * Clase de la estructura de datos PMLI (Palabras Con la Misma Letra Inicial).
@@ -9,12 +12,13 @@
  * @property text: Arreglo de Strings que almacena las palabras que se agregan a la estructura.
  * @property textIndex: Entero que representa el índice del arreglo text en el que se almacenará la siguiente palabra.
  * @property letrasValidas: Arreglo de caracteres que contiene las letras del alfabeto español.
-*/
+ */
 class PMLI(val character: Char) {
     // Atributos de la clase PMLI
 
     // text: Arreglo de Strings que almacena las palabras que se agregan a la estructura.
     private var text: Array<String> = Array(10) { "" }
+
     // textIndex: Entero que representa el índice del arreglo text en el que se almacenará la siguiente palabra.
     private var textIndex: Int = 0
 
@@ -25,7 +29,7 @@ class PMLI(val character: Char) {
      * @param character: Caracter que representa la letra inicial de las palabras que se almacenarán en la estructura.
      * Precondición: el caracter debe ser una letra minúscula del alfabeto español.
      * Postcondición: se crea una estructura PMLI con el caracter dado.
-    */
+     */
     init {
         if (!letraValida(character)) {
             throw IllegalArgumentException("El caracter debe ser una letra minúscula del alfabeto español.")
@@ -38,14 +42,14 @@ class PMLI(val character: Char) {
      * @param palabra: String -> Palabra que se desea agregar.
      * Precondición: la palabra debe ser palabra válida y debe empezar con el caracter de la estructura.
      * Postcondición: se agrega la palabra a la estructura.
-    */
+     */
     fun agregarPalabra(palabra: String) {
         // Si la palabra no es válida o no empieza con el caracter de la estructura, se lanza una excepción
         if (!esPalabraValida(palabra) || palabra[0] != this.character) {
             throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
         }
         // Si la palabra ya se encuentra en la estructura, se muestra un mensaje
-        if(buscarPalabra(palabra)){
+        if (buscarPalabra(palabra)) {
             println("La palabra ya se encuentra en la estructura.")
             return
         }
@@ -64,7 +68,7 @@ class PMLI(val character: Char) {
      * @param palabra: String -> Palabra que se desea buscar.
      * Precondición: la palabra debe ser palabra válida y debe empezar con el caracter de la estructura.
      * Postcondición: devuelve true si la palabra se encuentra en la estructura, false en caso contrario.
-    */
+     */
     fun buscarPalabra(palabra: String): Boolean {
         // Si la palabra no es válida, se lanza una excepción
         if (!esPalabraValida(palabra)) {
@@ -85,7 +89,7 @@ class PMLI(val character: Char) {
      * @param palabra: String -> Palabra que se desea eliminar.
      * Precondición: la palabra debe pertenecer a la estructura.
      * Postcondición: se elimina la palabra de la estructura.
-    */
+     */
     fun eliminarPalabra(palabra: String) {
         // Si la palabra no es válida, se lanza una excepción
         if (!esPalabraValida(palabra)) {
@@ -107,7 +111,7 @@ class PMLI(val character: Char) {
      * Método que devuelve una representación en String de la estructura.
      * Precondición: true.
      * Postcondición: se devuelve una representación en String de la estructura.
-    */
+     */
     override fun toString(): String {
         // Muestra los elementos del arreglo de palabras separados por un espacio y en orden lexicográfico
         val palabrasNoVacias = this.text.filter { it != "" }
@@ -123,7 +127,7 @@ class PMLI(val character: Char) {
  * @param caracter: Char -> Caracter que se desea verificar.
  * Precondición: true.
  * Postcondición: devuelve true si el caracter es una letra minúscula del alfabeto español, false en caso contrario.
-*/
+ */
 fun letraValida(caracter: Char): Boolean {
     val letrasValidas: Array<Char> = arrayOf(
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
@@ -139,7 +143,7 @@ fun letraValida(caracter: Char): Boolean {
  * @param palabra: String -> Palabra que se desea verificar.
  * Precondición: true.
  * Postcondición: devuelve true si la palabra está formada únicamente por letras minúsculas del alfabeto español, false en caso contrario.
-*/
+ */
 fun esPalabraValida(palabra: String): Boolean {
     return palabra.all { letraValida(it) }
 }
