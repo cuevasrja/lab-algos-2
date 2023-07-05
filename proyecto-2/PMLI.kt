@@ -15,7 +15,6 @@ class PMLI(val character: Char) {
 
     // text: Arreglo de Strings que almacena las palabras que se agregan a la estructura.
     private var text: Array<String> = Array(10) { "" }
-
     // textIndex: Entero que representa el índice del arreglo text en el que se almacenará la siguiente palabra.
     private var textIndex: Int = 0
 
@@ -28,7 +27,7 @@ class PMLI(val character: Char) {
      * Postcondición: se crea una estructura PMLI con el caracter dado.
      */
     init {
-        if (!letrasValidas.contains(character)) {
+        if (!letraValida(character)) {
             throw IllegalArgumentException("El caracter debe ser una letra minúscula del alfabeto español.")
         }
     }
@@ -116,6 +115,22 @@ class PMLI(val character: Char) {
 // Funciones auxiliares del proyecto
 
 /**
+ * letraValida(caracter: Char): Boolean
+ * Función que determina si un caracter es una letra minúscula del alfabeto español.
+ * @param caracter: Char -> Caracter que se desea verificar.
+ * Precondición: true.
+ * Postcondición: devuelve true si el caracter es una letra minúscula del alfabeto español, false en caso contrario.
+*/
+fun letraValida(caracter: Char): Boolean {
+    val letrasValidas: Array<Char> = arrayOf(
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+        'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's',
+        't', 'u', 'v', 'w', 'x', 'y', 'z',
+    )
+    return letrasValidas.contains(caracter)
+}
+
+/**
  * esPalabraValida(palabra: String): Boolean
  * Función que determina si una palabra es válida en el idioma español.
  * @param palabra: String -> Palabra que se desea verificar.
@@ -123,18 +138,7 @@ class PMLI(val character: Char) {
  * Postcondición: devuelve true si la palabra está formada únicamente por letras minúsculas del alfabeto español, false en caso contrario.
  */
 fun esPalabraValida(palabra: String): Boolean {
-    val letrasValidas: Array<Char> = arrayOf(
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-        'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's',
-        't', 'u', 'v', 'w', 'x', 'y', 'z',
-    )
-
-    for (i in 0 until palabra.size) {
-        if (!letrasValidas.contains(palabra[i])) {
-            return false
-        }
-    }
-    return true
+    return palabra.all { letraValida(it) }
 }
 
 fun damerauLevenshteinDistance(str1: String, str2: String): Int {
