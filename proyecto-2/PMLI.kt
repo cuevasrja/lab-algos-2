@@ -16,11 +16,11 @@
 class PMLI(val character: Char) {
     // Atributos de la clase PMLI
 
-    // text: Arreglo de Strings que almacena las palabras que se agregan a la estructura.
-    private var text: Array<String> = Array(10) { "" }
+    // palabras: Conjunto de palabras que se almacenan en la estructura.
+    private var palabras: ConjuntoPalabras = ConjuntoPalabras()
 
-    // textIndex: Entero que representa el índice del arreglo text en el que se almacenará la siguiente palabra.
-    private var textIndex: Int = 0
+    // numPalabras: Entero que representa el índice del conjunto palabras en el que se almacenará la siguiente palabra.
+    private var numPalabras: Int = 0
 
     // Métodos de la clase PMLI
 
@@ -53,13 +53,8 @@ class PMLI(val character: Char) {
             println("La palabra ya se encuentra en la estructura.")
             return
         }
-        // Si el arreglo text está lleno, se duplica su tamaño
-        if (textIndex == text.size) {
-            text = text.copyOf(text.size * 2)
-        }
-        // Se agrega la palabra al arreglo text y se aumenta el índice
-        text[textIndex] = palabra
-        textIndex++
+        palabras.agregar(palabra)
+        this.numPalabras++
     }
 
     /*
@@ -75,11 +70,8 @@ class PMLI(val character: Char) {
             throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
         }
 
-        // Se busca la palabra en el arreglo text
-        var palabraBuscada = this.text.firstOrNull { it == palabra }
-
-        // Se devuelve true si la palabra se encontró, o false si no
-        return palabraBuscada != null
+        // Se busca la palabra en palabras
+        return this.palabras.pertenece(palabra)
     }
 
     /*
@@ -96,13 +88,17 @@ class PMLI(val character: Char) {
         }
         // Si la palabra se encuentra en la estructura, se elimina
         if (buscarPalabra(palabra)) {
-            this.text = this.text.filter { it != palabra }.toTypedArray()
-            this.textIndex--
+            this.palabras.eliminar(palabra)
+            this.numPalabras--
         }
         // Si no, se lanza una excepción
         else {
             throw IllegalArgumentException("La palabra no se encuentra en la estructura.")
         }
+    }
+
+    fun getNumPalabras(): Int {
+        return this.numPalabras
     }
 
     /*
@@ -113,15 +109,8 @@ class PMLI(val character: Char) {
      */
     override fun toString(): String {
         // Muestra los elementos del arreglo de palabras separados por un espacio y en orden lexicográfico
-        val palabrasNoVacias = this.text.filter { it != "" }.sorted()
         var str = "${this.character}: \n"
-        for (i in 0 until palabrasNoVacias.size) {
-            if (i == palabrasNoVacias.size - 1) {
-                str += "  * ${palabrasNoVacias[i]}"
-            } else {
-                str += "  * ${palabrasNoVacias[i]}\n"
-            }
-        }
+        str += this.palabras.toString()
         return str
     }
 }

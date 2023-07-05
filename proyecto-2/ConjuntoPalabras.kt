@@ -175,7 +175,11 @@ class ConjuntoPalabras() {
     override fun toString(): String {
         var str = ""
         for (i in 0 until this.getSize()) {
-            str += "${palabras[i]}\n"
+            if (palabras[i].estaVacia()) continue
+            if ( i == this.getSize() - 1)
+                str += "${palabras[i]}"
+            else
+                str += "${palabras[i]}\n"
         }
         return str
     }
