@@ -48,9 +48,8 @@ class PMLI(character: Char) {
             println("La palabra debe empezar con el caracter de la estructura: ${this.character}.")
             return
         }
-        // Si la palabra ya se encuentra en la estructura, se informa al usuario y se detiene la ejecución del método.
+        // Si la palabra ya se encuentra en la estructura, no se agrega
         if (buscarPalabra(palabra)) {
-            println("La palabra ya se encuentra en la estructura.")
             return
         }
         // Se agrega la palabra a palabras
@@ -116,7 +115,7 @@ class PMLI(character: Char) {
      */
     override fun toString(): String {
         // Muestra los elementos del arreglo de palabras separados por un espacio y en orden lexicográfico
-        var str = "${this.character}:\n"
+        var str = "${this.character}: "
         str += this.palabras.toString()
         return str
     }

@@ -2,7 +2,7 @@
  * Proyecto 2 de Algoritmos y Estructuras de Datos II (CI-2692).
  * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
  *
- * PruebaOrtografia.kt -> Este archivo contiene la implementación de la interfaz de usuario
+ * PruebaOrtografia.kt -> Este archivo contiene la implementación del cliente
  * del proyecto.
  */
 
@@ -58,6 +58,7 @@ fun main() {
             }
             2 -> {
                 println("El diccionario debe ser un archivo de texto con una palabra por línea.")
+                println("Las palabras deben estar en minúsculas y sin acentos.")
                 println("Ingrese el nombre del archivo que contiene el diccionario:")
                 val fname = readLine()!!
                 ayudante.cargarDiccionario(fname)
@@ -71,7 +72,7 @@ fun main() {
                 println("Ingrese el nombre del archivo que contiene el texto:")
                 val fname = readLine()!!
                 println("Ingrese el nombre del archivo donde desea guardar las sugerecias de corrección:")
-                println("(Este archivo se creará si no existe)")
+                println("(El archivo de salida se creará si no existe)")
                 val fname2 = readLine()!!
                 // ayudante.corregirTexto(fname, fname2)
             }

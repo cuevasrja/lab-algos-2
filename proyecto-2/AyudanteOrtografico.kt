@@ -43,30 +43,52 @@ class AyudanteOrtografico() {
         }
 
         // Se crea un objeto BufferedReader para leer el archivo.
-        val bufferedReader = file.bufferedReader()
+        var bufferedReader = file.bufferedReader()
 
-        // Se lee el archivo línea por línea.
+        // Se lee el archivo línea por línea, verficando el formato del mismo.
+        bufferedReader.useLines { lines ->
+            lines.forEach {
+                // Se verifica que haya una sola palabra por línea.
+                if (it.split(" ").size > 1) {
+                    println("No se pudo cargar el diccionario.")
+                    println("El archivo no tiene el formato correcto.")
+                    println("Debe haber una sola palabra por línea.\n")
+                    return
+                }
+
+                // Se convierte la palabra a minúsculas y se elimina los espacios en blanco.
+                val palabra = it.trim()
+
+                // Si la palabra no es válida, se lanza detiene la ejecución del método.
+                if (!esPalabraValida(palabra)) {
+                    println("No se pudo cargar el diccionario.")
+                    println("El archivo no tiene el formato correcto.")
+                    println("La palabra $palabra no es válida.\n")
+                    return
+                }
+            }
+        }
+
+        // Se vuelve a crear un objeto BufferedReader para leer el archivo.
+        bufferedReader = file.bufferedReader()
+
+        // Una vez verificado el formato del archivo, se procede a cargar el diccionario en la estructura.
         bufferedReader.useLines { lines ->
             lines.forEach {
                 // Se convierte la palabra a minúsculas y se elimina los espacios en blanco.
                 val palabra = it.trim()
 
-                // Si la palabra es válida, se agrega a la estructura.
-                if (esPalabraValida(palabra)) {
-                    // Se obtiene la primera letra de la palabra.
-                    val primeraLetra = palabra[0]
+                // Se obtiene la primera letra de la palabra
+                val primeraLetra = palabra[0]
 
-                    // Se obtiene el índice de la primera letra de la palabra en el arreglo dicc.
-                    val indice = dicc.indexOfFirst { it.character == primeraLetra }
+                // Se obtiene el índice de la primera letra en el arreglo
+                val indice = dicc.indexOfFirst { it.character == primeraLetra }
 
-                    // Se agrega la palabra a la estructura.
-                    dicc[indice].agregarPalabra(palabra)
-                } else {
-                    // Si la palabra no es válida, se lanza una excepción
-                    println("La palabra $palabra no es válida. Saltando palabra.")
-                }
+                // Se inserta la palabra en la estructura
+                dicc[indice].agregarPalabra(palabra)
             }
         }
+
         println("¡Diccionario cargado con éxito!\n")
     }
 

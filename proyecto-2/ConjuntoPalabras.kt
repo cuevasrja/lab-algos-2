@@ -173,11 +173,38 @@ class ConjuntoPalabras() {
      * Postcondición: Se devuelve una representación en String del conjunto de palabras.
      */
     override fun toString(): String {
-        var str = ""
+        if (this.getNumPalabras() == 0) return "[]\n"
+        // Se crea un String con la representación del conjunto de palabras.
+        var str = "["
+        // Se crea un contador de palabras impresas.
+        var palabImps = 0
+
+        // Se recorre la tabla de hash.
         for (i in 0 until this.getSize()) {
+            // Si la lista enlazada está vacía, se pasa a la siguiente.
             if (palabras[i].estaVacia()) continue
-            str += "${palabras[i]}\n"
+
+            // Si no, se cuenta el número de palabras en la lista enlazada.
+            var palabEnLista = palabras[i].getSize()
+
+            // Si se está imprimiendo la última palabra, se imprime sin coma.
+            if (palabImps + palabEnLista == this.getNumPalabras()) {
+                str += palabras[i].imprimirLista(palabImps)
+            }
+            // Si se imprime la última palabra de una línea, se imprime con coma y salto de línea.
+            else if ((palabImps + palabEnLista) % 5 == 0) {
+                str += palabras[i].imprimirLista(palabImps) + ",\n"
+            }
+            // Si no, se imprime con coma.
+            else {
+                str += palabras[i].imprimirLista(palabImps) + ", "
+            }
+
+            // Se actualiza el número de palabras impresas.
+            palabImps += palabEnLista
         }
+
+        str += "]\n"
         return str
     }
 }
@@ -505,7 +532,6 @@ class CircularList() {
     override fun toString(): String {
         // Si la lista esta vacia, retornamos "[]"
         if (this.estaVacia()) return "[]"
-
         var string = "["
 
         // Obtenemos el primer elemento de la lista
@@ -519,7 +545,43 @@ class CircularList() {
 
         // El último elemento de la lista
         string += "${nodoActual!!}]"
+        return string
+    }
 
+    /**
+     * imprimirLista(palabImps: Int = 0): String
+     * Método que imprime la lista en base al número de palabras que se han impreso.
+     * @param palabImps: Int -> El número de palabras que se han impreso. (Por defecto 0)
+     * Precondición: true.
+     * Postcondición: Se imprime la lista en base al número de palabras que se han impreso.
+     */
+    fun imprimirLista(palabImps: Int = 0): String {
+        // Si la lista esta vacia, retornamos "[]"
+        if (this.estaVacia()) return "[]"
+
+        // Obtenemos el número de palabras que se han impreso
+        var palabImpresas = palabImps
+
+        var string = ""
+
+        // Obtenemos el primer elemento de la lista
+        var nodoActual = sentinel.next
+
+        // Recorremos cada uno de los elementos de la lista
+        while (nodoActual != sentinel.prev) {
+            // La idea es solo imprimir 5 palabras por línea
+            if (palabImpresas % 5 == 4) {
+                string += "${nodoActual!!},\n"
+                palabImpresas++
+            } else {
+                string += "${nodoActual!!}, "
+                palabImpresas++
+            }
+            nodoActual = nodoActual.next
+        }
+
+        // El último elemento de la lista
+        string += "${nodoActual!!}"
         return string
     }
 }
