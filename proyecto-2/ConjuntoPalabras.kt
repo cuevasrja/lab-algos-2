@@ -176,10 +176,7 @@ class ConjuntoPalabras() {
         var str = ""
         for (i in 0 until this.getSize()) {
             if (palabras[i].estaVacia()) continue
-            if ( i == this.getSize() - 1)
-                str += "${palabras[i]}"
-            else
-                str += "${palabras[i]}\n"
+            str += "${palabras[i]}\n"
         }
         return str
     }

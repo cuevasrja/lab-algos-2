@@ -11,8 +11,11 @@
  * @param character: Caracter que representa la letra inicial de las palabras que se almacenarán en la estructura.
  * @property palabras: ConjuntoPalabras -> Conjunto de palabras que se almacenan en la estructura.
  */
-class PMLI(val character: Char) {
+class PMLI(character: Char) {
     // Atributos de la clase PMLI
+
+    // character: Caracter que representa la letra inicial de las palabras que se almacenarán en la estructura.
+    val character: Char
 
     // palabras: Conjunto de palabras que se almacenan en la estructura.
     private var palabras: ConjuntoPalabras = ConjuntoPalabras()
@@ -26,9 +29,9 @@ class PMLI(val character: Char) {
      * Postcondición: se crea una estructura PMLI con el caracter dado.
      */
     init {
-        if (!alfabet.perteneceAlAlfabeto(character)) {
-            throw IllegalArgumentException("El caracter debe ser una letra minúscula del alfabeto español.")
-        }
+        // Se verifica que el caracter sea una letra minúscula del alfabeto español.
+        require(alfabet.perteneceAlAlfabeto(character)) { "Carácter inválido: Debe ser una letra minúscula del alfabeto español." }
+        this.character = character
     }
 
     /**
@@ -39,13 +42,13 @@ class PMLI(val character: Char) {
      * Postcondición: se agrega la palabra a la estructura.
      */
     fun agregarPalabra(palabra: String) {
-        // Si la palabra no es válida o no empieza con el caracter de la estructura, se lanza una excepción
+        // Si la palabra no cumple con las precondiciones, se informa al usuario y se detiene la ejecución del método.
         if (!esPalabraValida(palabra) || palabra[0] != this.character) {
             println("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
             println("La palabra debe empezar con el caracter de la estructura: ${this.character}.")
             return
         }
-        // Si la palabra ya se encuentra en la estructura, se muestra un mensaje
+        // Si la palabra ya se encuentra en la estructura, se informa al usuario y se detiene la ejecución del método.
         if (buscarPalabra(palabra)) {
             println("La palabra ya se encuentra en la estructura.")
             return
@@ -62,7 +65,7 @@ class PMLI(val character: Char) {
      * Postcondición: devuelve true si la palabra se encuentra en la estructura, false en caso contrario.
      */
     fun buscarPalabra(palabra: String): Boolean {
-        // Si la palabra no es válida, se lanza una excepción
+        // Si la palabra no es válida, se informa al usuario y se detiene la ejecución del método.
         if (!esPalabraValida(palabra)) {
             println("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
             return false
@@ -80,7 +83,7 @@ class PMLI(val character: Char) {
      * Postcondición: se elimina la palabra de la estructura.
      */
     fun eliminarPalabra(palabra: String) {
-        // Si la palabra no es válida, se lanza una excepción
+        // Si la palabra no es válida, se informa al usuario y se detiene la ejecución del método.
         if (!esPalabraValida(palabra)) {
             println("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
             return
@@ -89,9 +92,9 @@ class PMLI(val character: Char) {
         if (buscarPalabra(palabra)) {
             this.palabras.eliminar(palabra)
         }
-        // Si no, se lanza una excepción
+        // Si no, se informa al usuario
         else {
-            println("La palabra no se encuentra en la estructura.")
+            println("La palabra $palabra no se encuentra en la estructura.")
         }
     }
 
@@ -113,7 +116,7 @@ class PMLI(val character: Char) {
      */
     override fun toString(): String {
         // Muestra los elementos del arreglo de palabras separados por un espacio y en orden lexicográfico
-        var str = "${this.character}: \n"
+        var str = "${this.character}:\n"
         str += this.palabras.toString()
         return str
     }

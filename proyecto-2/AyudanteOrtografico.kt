@@ -6,7 +6,6 @@
  */
 
 import java.io.File
-import java.lang.IllegalArgumentException
 
 /**
 * Clase AyudanteOrtografico, que representa el TAD Ayudante Ortográfico.
@@ -37,6 +36,12 @@ class AyudanteOrtografico() {
         // Se crea un objeto File con el nombre del archivo
         val file = File(fname)
 
+        // Si el archivo no existe, se informa al usuario y se detiene la ejecución del método.
+        if (!file.exists()) {
+            println("El archivo $fname no existe.\n")
+            return
+        }
+
         // Se crea un objeto BufferedReader para leer el archivo.
         val bufferedReader = file.bufferedReader()
 
@@ -58,10 +63,11 @@ class AyudanteOrtografico() {
                     dicc[indice].agregarPalabra(palabra)
                 } else {
                     // Si la palabra no es válida, se lanza una excepción
-                    throw IllegalArgumentException("La palabra $palabra no es válida.")
+                    println("La palabra $palabra no es válida. Saltando palabra.")
                 }
             }
         }
+        println("¡Diccionario cargado con éxito!\n")
     }
 
     /**
@@ -72,9 +78,10 @@ class AyudanteOrtografico() {
      * Postcondición: se elimina la palabra de la estructura.
      */
     fun borrarPalabra(palabra: String) {
-        // Si la palabra no es válida, se lanza una excepción
+        // Si la palabra no es válida, se informa al usuario y se detiene la ejecución del método.
         if (!esPalabraValida(palabra)) {
-            throw IllegalArgumentException("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+            println("La palabra debe contener únicamente letras minúsculas del alfabeto español.\n")
+            return
         }
 
         // Se obtiene la primera letra de la palabra
@@ -86,25 +93,26 @@ class AyudanteOrtografico() {
         // Si la palabra se encuentra en la estructura, se elimina
         if (dicc[indice].buscarPalabra(palabra)) {
             dicc[indice].eliminarPalabra(palabra)
+            println("La palabra $palabra ha sido eliminada del diccionario.\n")
         }
-        // Si la palabra no se encuentra en la estructura, se lanza una excepción
+        // Si la palabra no se encuentra en la estructura, se informa al usuario
         else {
-            throw IllegalArgumentException("La palabra no se encuentra en el diccionario.")
+            println("La palabra $palabra no se encuentra en el diccionario.\n")
         }
     }
 
     /**
-    * buscarPalabra(palabra: String)
-    * Método que busca la palabra en el diccionario.
-    * @param palabra: String -> Palabra que se desea buscar.
-    * @return Boolean -> true si la palabra se encuentra en el diccionario, false en caso contrario.
-    * Precondición: la palabra debe ser válida.
-    * Postcondición: se retorna true si la palabra se encuentra en el diccionario, false en caso contrario.
-    */
+     * buscarPalabra(palabra: String)
+     * Método que busca la palabra en el diccionario.
+     * @param palabra: String -> Palabra que se desea buscar.
+     * @return Boolean -> true si la palabra se encuentra en el diccionario, false en caso contrario.
+     * Precondición: la palabra debe ser válida.
+     * Postcondición: se retorna true si la palabra se encuentra en el diccionario, false en caso contrario.
+     */
     fun buscarPalabra(palabra: String): Boolean {
-        // Si la palabra no es válida, se lanza una excepción
+        // Si la palabra no es válida, se devuelve false
         if (!esPalabraValida(palabra)) {
-            println("La palabra debe contener únicamente letras minúsculas del alfabeto español.")
+            println("La palabra debe contener únicamente letras minúsculas del alfabeto español.\n")
             return false
         }
 
@@ -133,6 +141,12 @@ class AyudanteOrtografico() {
         // Se crea un objeto File con el nombre del archivo de entrada
         val file = File(finput)
 
+        // Si el archivo no existe, se informa al usuario y se detiene la ejecución del método.
+        if (!file.exists()) {
+            println("El archivo $finput no existe.")
+            return
+        }
+
         // Se crea un objeto BufferedReader para leer el archivo.
         val bufferedReader = file.bufferedReader()
 
@@ -143,10 +157,10 @@ class AyudanteOrtografico() {
         val arregloPalabras = procesarTexto(inputString)
 
         // Buscamos las palabras que se encuentran en el diccionario. Las que no se encuentran, se buscan las 4 palabras con menor distancia
-        for (i in 0 until arregloPalabras.size){
+        for (i in 0 until arregloPalabras.size) {
             val palabra = arregloPalabras[i].trim()
             // Si la palabra se encuentra en el diccionario, se imprime en el archivo de salida
-            if(buscarPalabra(palabra)){
+            if (buscarPalabra(palabra)) {
                 arregloPalabras[i] = palabra
                 continue
             }
@@ -157,6 +171,11 @@ class AyudanteOrtografico() {
 
         // Se crea un objeto File con el nombre del archivo de salida
         val fileOut = File(foutput)
+
+        // Si el archivo no existe, se crea
+        if (!fileOut.exists()) {
+            fileOut.createNewFile()
+        }
 
         // Se crea un objeto BufferedWriter para escribir en el archivo.
         val bufferedWriter = fileOut.bufferedWriter()
@@ -170,17 +189,16 @@ class AyudanteOrtografico() {
             }
         }
     }
-    
 
     /**
-    * procesarTexto(texto: String)
-    * Método que procesa el texto y devuelve un arreglo con las palabras válidas sin puntos,
-    * comas, signos de interrogación, signos de exclamación, espacios en blanco, etc.
-    * @param texto: String -> Texto que se desea procesar.
-    * @return arregloPalabras: Array<String> -> Arreglo con las palabras válidas.
-    * Precondición: texto debe ser un String distinto de vacío.
-    * Postcondición: se devuelve un arreglo con las palabras válidas.
-    */
+     * procesarTexto(texto: String)
+     * Método que procesa el texto y devuelve un arreglo con las palabras válidas sin puntos,
+     * comas, signos de interrogación, signos de exclamación, espacios en blanco, etc.
+     * @param texto: String -> Texto que se desea procesar.
+     * @return arregloPalabras: Array<String> -> Arreglo con las palabras válidas.
+     * Precondición: texto debe ser un String distinto de vacío.
+     * Postcondición: se devuelve un arreglo con las palabras válidas.
+     */
     private fun procesarTexto(texto: String): Array<String> {
         val palabras = texto.replace(".", " ").replace(",", " ").replace("?", " ").replace("!", " ").replace(";", " ").replace(":", " ").replace("(", " ").replace(")", " ").replace("[", " ").replace("]", " ").replace("{", " ").replace("}", " ").replace("¿", " ").replace("¡", " ").replace("\n", " ").replace("\t", " ").replace("\r", " ")
         val arregloPalabras = palabras.split(" ").toTypedArray()
@@ -188,23 +206,23 @@ class AyudanteOrtografico() {
     }
 
     /**
-    * buscarPalabrasConMenorDistancia(arregloPalabras: Array<String>)
-    * Método que busca las 4 palabras con menor distancia en el diccionario.
-    * @param arregloPalabras: Array<String> -> Arreglo ordenado con las palabras válidas.
-    * @return palabrasConMenorDistancia: Array<String> -> Arreglo con las 4 palabras con menor distancia.
-    */
+     * buscarPalabrasConMenorDistancia(arregloPalabras: Array<String>)
+     * Método que busca las 4 palabras con menor distancia en el diccionario.
+     * @param arregloPalabras: Array<String> -> Arreglo ordenado con las palabras válidas.
+     * @return palabrasConMenorDistancia: Array<String> -> Arreglo con las 4 palabras con menor distancia.
+     */
     private fun buscarPalabrasConMenorDistancia(palabras: String): Array<String> {
         // TODO: Implementar
-        return arrayOf("","","","")
+        return arrayOf("", "", "", "")
     }
 
     /**
-    * dameruLevenshteinDistance(str1: String, str2: String)
-    * Método que calcula la distancia de Damerau-Levenshtein entre dos cadenas.
-    * @param str1: String -> Primera cadena.
-    * @param str2: String -> Segunda cadena.
-    * @return distance: Int -> Distancia de Damerau-Levenshtein entre las dos cadenas.
-    */
+     * dameruLevenshteinDistance(str1: String, str2: String)
+     * Método que calcula la distancia de Damerau-Levenshtein entre dos cadenas.
+     * @param str1: String -> Primera cadena.
+     * @param str2: String -> Segunda cadena.
+     * @return distance: Int -> Distancia de Damerau-Levenshtein entre las dos cadenas.
+     */
     private fun damerauLevenshteinDistance(str1: String, str2: String): Int {
         val len1 = str1.length
         val len2 = str2.length
@@ -230,12 +248,12 @@ class AyudanteOrtografico() {
     }
 
     /**
-    * levenshteinDistance(str1: String, str2: String)
-    * Método que calcula la distancia de Levenshtein entre dos cadenas.
-    * @param str1: String -> Primera cadena.
-    * @param str2: String -> Segunda cadena.
-    * @return distance: Int -> Distancia de Levenshtein entre las dos cadenas.
-    */
+     * levenshteinDistance(str1: String, str2: String)
+     * Método que calcula la distancia de Levenshtein entre dos cadenas.
+     * @param str1: String -> Primera cadena.
+     * @param str2: String -> Segunda cadena.
+     * @return distance: Int -> Distancia de Levenshtein entre las dos cadenas.
+     */
     private fun levenshteinDistance(str1: String, str2: String): Int {
         val len1 = str1.length
         val len2 = str2.length
