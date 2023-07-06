@@ -108,6 +108,16 @@ class PMLI(character: Char) {
     }
 
     /**
+     * crearArregloPalabras(): Array<String>
+     * Método que devuelve un arreglo con las palabras que se encuentran en la estructura.
+     * Precondición: true.
+     * Postcondición: se devuelve un arreglo con las palabras que se encuentran en la estructura.
+     */
+    fun crearArregloPalabras(): Array<String> {
+        return this.palabras.crearArregloPalabras()
+    }
+
+    /**
      * toString(): String
      * Método que devuelve una representación en String de la estructura.
      * Precondición: true.

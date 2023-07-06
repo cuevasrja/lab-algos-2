@@ -167,6 +167,27 @@ class ConjuntoPalabras() {
     }
 
     /**
+     * crearArregloPalabras(): Array<String>
+     * Método que crea un arreglo con las palabras que hay en el conjunto de palabras.
+     * Precondición: true.
+     * Postcondición: Se devuelve un arreglo con las palabras que hay en el conjunto de palabras.
+     */
+    fun crearArregloPalabras(): Array<String> {
+        var arregloPalabras = Array(this.numPalabras) { "" }
+        var indice = 0
+        for (i in 0 until this.getSize()) {
+            if (palabras[i].estaVacia()) continue
+            var nodo = palabras[i].obtenerPrimero()
+            while (nodo != palabras[i].sentinel) {
+                arregloPalabras[indice] = nodo?.obtenerDato()!!
+                nodo = nodo.next!!
+                indice++
+            }
+        }
+        return arregloPalabras
+    }
+
+    /**
      * toString(): String
      * Método que devuelve una representación en String del conjunto de palabras.
      * Precondición: true.
