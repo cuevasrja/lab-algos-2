@@ -242,10 +242,16 @@ class AyudanteOrtografico() {
         val palabras = dicc[indice].crearArregloPalabras()
         // Se crea un arreglo con las 4 palabras con menor distancia
         val palabrasConMenorDistancia = Array(4) { "" }
+        // Iteramos sobre las 4 palabras con menor distancia
         for (i in 0 until 4) {
+            // Se inicializa la menor distancia con un valor muy grande
             var menorDistancia = Int.MAX_VALUE
+            // Iteramos sobre las palabras del diccionario
             for (j in 0 until palabras.size){
+                // Se calcula la distancia de Damerau-Levenshtein entre la palabra y la palabra del diccionario
                 val distancia = damerauLevenshteinDistance(palabra, palabras[j])
+                // Si la distancia es menor que la menor distancia y la palabra no se encuentra en el arreglo de palabras con menor distancia, 
+                // se actualiza la menor distancia y se agrega la palabra al arreglo de palabras con menor distancia
                 if (distancia < menorDistancia && palabras[j] !in palabrasConMenorDistancia) {
                     menorDistancia = distancia
                     palabrasConMenorDistancia[i] = palabras[j]
@@ -263,6 +269,7 @@ class AyudanteOrtografico() {
      * @return distance: Int -> Distancia de Damerau-Levenshtein entre las dos cadenas.
      */
     private fun damerauLevenshteinDistance(str1: String, str2: String): Int {
+        // Se obtiene la longitud de las cadenas
         val len1 = str1.length
         val len2 = str2.length
 
@@ -294,6 +301,7 @@ class AyudanteOrtografico() {
      * @return distance: Int -> Distancia de Levenshtein entre las dos cadenas.
      */
     private fun levenshteinDistance(str1: String, str2: String): Int {
+        // Se obtiene la longitud de las cadenas
         val len1 = str1.length
         val len2 = str2.length
 
@@ -312,7 +320,9 @@ class AyudanteOrtografico() {
         // Calculamos las distancias parciales
         for (i in 1..len1) {
             for (j in 1..len2) {
+                // El costo es 0 si los caracteres son iguales, 1 si son diferentes
                 val cost = if (str1[i - 1] == str2[j - 1]) 0 else 1
+                // La distancia parcial es el mínimo entre la distancia de la celda de arriba, la celda de la izquierda y la celda de arriba a la izquierda
                 distances[i][j] = minOf(
                     distances[i - 1][j] + 1,
                     distances[i][j - 1] + 1,
