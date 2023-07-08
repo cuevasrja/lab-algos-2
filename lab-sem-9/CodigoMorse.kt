@@ -9,6 +9,33 @@ class CodigoMorse() {
     // El alfabeto en morse se encuentra en un arbol binario de busqueda.
     private val alfabeto = ArbolBinario()
 
+    // Arbol de busqueda binario del alfabeto en morse.
+    /*
+                         raiz
+                         /  \
+                        /    \
+                       /      \
+                      /        \
+                 .   /          \ -
+                    /            \
+                   /              \
+                  /                \
+                 /                  \
+                /                    \
+               /                      \
+              E                        T
+             / \                      / \
+         .  /   \  -               . /   \ -
+           /     \                  /     \
+          /       \                /       \
+         I         A              N         M
+      . / \ -   . / \ -        . / \ -   . / \ -
+       /   \     /   \          /   \     /   \
+       S    U   R     W        D     K    G     O
+     ./ \- ./ ./   . / \-    ./ \- ./ \- .| \-
+     H   V F  L     P  J     B   X C   Y  Z  Q
+    */
+
     // Se inicializa el arbol binario con el alfabeto en morse.
     init {
         alfabeto.agregar(Nodo('E', "."))
@@ -47,7 +74,8 @@ class CodigoMorse() {
      * Precondicion: El codigo morse debe ser valido.
      * Postcondicion: Se devuelve la letra correspondiente al codigo morse.
      */
-    fun decodificarLetra(codigo: String): Char {
+    fun decodificarLetra(codigo: String): Char? {
+        // Se busca el codigo morse en el arbol binario.
         return alfabeto.buscar(codigo)
     }
 
@@ -60,15 +88,32 @@ class CodigoMorse() {
      * Postcondicion: Se devuelve el mensaje en texto correspondiente al mensaje en codigo morse.
      */
     fun decodificarMensaje(mensaje: String): String {
-        val palabras = mensaje.toUpperCase().split("/")
+        // Se separan las palabras del mensaje, el mensaje se separa por espacios y las palabras por "/".
+        val palabras = mensaje.uppercase().split("/")
+        // Se inicializa el mensaje decodificado.
         var mensajeDecodificado = ""
+        // Se recorren las palabras del mensaje.
         for (palabra in palabras) {
+            // Se separan las letras de la palabra, la palabra se separa por espacios.
             val letras = palabra.trim().split(" ")
+            // Se recorren las letras de la palabra.
             for (letra in letras) {
-                mensajeDecodificado += decodificarLetra(letra)
+                // Se decodifica la letra.
+                val letraDecodificada: Char? = decodificarLetra(letra.trim())
+                // Si la letra no se encuentra en el alfabeto, se devuelve un mensaje vacio.
+                if (letraDecodificada == null) {
+                    return ""
+                }
+                // En caso contrario, se agrega la letra decodificada al mensaje decodificado.
+                mensajeDecodificado += letraDecodificada
             }
+            // Se agrega un espacio al mensaje decodificado para separar las palabras.
             mensajeDecodificado += " "
         }
-        return mensajeDecodificado.trim().toLowerCase()
+        return mensajeDecodificado.trim().lowercase()
+    }
+
+    override fun toString(): String {
+        return alfabeto.toString()
     }
 }
