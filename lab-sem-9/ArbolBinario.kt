@@ -14,8 +14,6 @@ class ArbolBinario() {
     * Precondicion: El nodo que se desea agregar no existe en el arbol binario de busqueda.
     * Postcondicion: El nodo se agrega al arbol binario de busqueda.
     */
-    // ! Tiene un problema con los caracteres que no existen en el alfabeto en morse. Los convierte a uno de los caracteres que si existen en el alfabeto en morse.
-    // TODO: Resolver el problema con los caracteres que no existen en el alfabeto en morse.
     fun agregar(nuevo: Nodo) {
         // Se recorre el arbol binario de busqueda hasta encontrar el lugar donde se debe agregar el nuevo nodo.
         var x: Nodo? = raiz
@@ -61,6 +59,8 @@ class ArbolBinario() {
     * Precondicion: El codigo del nodo que se desea buscar en el arbol binario de busqueda es valido.
     * Postcondicion: Se retorna el valor del nodo que se desea buscar en el arbol binario de busqueda.
     */
+    // ? CORREGIDO: Tiene un problema con los caracteres que no existen en el alfabeto en morse. Los convierte a uno de los caracteres que si existen en el alfabeto en morse.
+    // TODO: Resolver el problema con los caracteres que no existen en el alfabeto en morse.
     fun buscar(codigo: String): Char? {
         var x: Nodo? = raiz
         var y: Nodo? = null
@@ -75,7 +75,7 @@ class ArbolBinario() {
             i++
         }
         if (x != null) y = x
-        return if (y == raiz || y == null) {
+        return if (y == raiz || y == null || codigo.length != y.codigo.length) {
             null
         } else {
             y.valor
