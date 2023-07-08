@@ -34,7 +34,7 @@ class CodigoMorse() {
        S    U   R     W        D     K    G     O
      ./ \- ./ ./   . / \-    ./ \- ./ \- .| \-
      H   V F  L     P  J     B   X C   Y  Z  Q
-    */
+     */
 
     // Se inicializa el arbol binario con el alfabeto en morse.
     init {
@@ -92,6 +92,14 @@ class CodigoMorse() {
         val palabras = mensaje.uppercase().split("/")
         // Se inicializa el mensaje decodificado.
         var mensajeDecodificado = ""
+        // Si hay un caracter que no sea '.', '-' o espacio, se devuelve un mensaje vacio.
+        for (palabra in palabras) {
+            for (letra in palabra) {
+                if (letra != '.' && letra != '-' && letra != ' ') {
+                    return ""
+                }
+            }
+        }
         // Se recorren las palabras del mensaje.
         for (palabra in palabras) {
             // Se separan las letras de la palabra, la palabra se separa por espacios.
