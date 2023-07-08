@@ -7,7 +7,7 @@ KFLAGS=	-include-runtime
 
 PROG=	CodigoMorse.jar
 
-SRC=	ArbolBinario.kt CodigoMorse.kt PruebaCodigoMorse.kt
+SRC=	ArbolDeDecision.kt CodigoMorse.kt PruebaCodigoMorse.kt
 
 TEMP=	*.class META-INF
 

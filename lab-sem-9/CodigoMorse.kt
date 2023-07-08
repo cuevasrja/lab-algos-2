@@ -2,41 +2,56 @@
  * Laboratorio semana 9 de Algoritmos y Estructuras de Datos II (CI-2692).
  * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
  *
- * CodigoMorse.kt -> Este archivo descifra el codigo morse que recibe mediante el archivo PruebaCodigoMorse.kt.
+ * CodigoMorse.kt -> Este archivo contiene la clase que representa el TAD CodigoMorse,
+ * que sirve para descifrar el codigo morse.
  */
 
-class CodigoMorse() {
-    // El alfabeto en morse se encuentra en un arbol binario de busqueda.
-    private val alfabeto = ArbolBinario()
+/**
+ * Clase CodigoMorse -> Representa el TAD Código Morse que sirve para descifrar el codigo morse.
+ * @property alfabeto: Arbol de decision binario que representa el alfabeto en morse.
+ */
+public class CodigoMorse() {
+    // Atributos de la clase CodigoMorse.
 
-    // Arbol de busqueda binario del alfabeto en morse.
+    // alfabeto: ArbolDeDecision -> Arbol de decision binario que representa el alfabeto en morse.
+    private val alfabeto = ArbolDeDecision()
+
     /*
-                         raiz
-                         /  \
-                        /    \
-                       /      \
-                      /        \
-                 .   /          \ -
-                    /            \
-                   /              \
-                  /                \
-                 /                  \
-                /                    \
-               /                      \
-              E                        T
-             / \                      / \
-         .  /   \  -               . /   \ -
-           /     \                  /     \
-          /       \                /       \
-         I         A              N         M
-      . / \ -   . / \ -        . / \ -   . / \ -
-       /   \     /   \          /   \     /   \
-       S    U   R     W        D     K    G     O
-     ./ \- ./ ./   . / \-    ./ \- ./ \- .| \-
-     H   V F  L     P  J     B   X C   Y  Z  Q
+     * Representacion del arbol de decision binario que almacenara el alfabeto en morse.
+     *
+     *                        raiz
+     *                        /  \
+     *                       /    \
+     *                      /      \
+     *                     /        \
+     *                .   /          \ -
+     *                   /            \
+     *                  /              \
+     *                 /                \
+     *                /                  \
+     *               /                    \
+     *              /                      \
+     *             E                        T
+     *            / \                      / \
+     *        .  /   \  -               . /   \ -
+     *          /     \                  /     \
+     *         /       \                /       \
+     *        I         A              N         M
+     *     . / \ -   . / \ -        . / \ -   . / \ -
+     *      /   \     /   \          /   \     /   \
+     *     S    U   R     W        D     K    G     O
+     *   ./ \- ./ ./   . / \-    ./ \- ./ \- .| \-
+     *   H   V F  L     P  J     B   X C   Y  Z  Q
      */
 
-    // Se inicializa el arbol binario con el alfabeto en morse.
+    // Métodos de la clase CodigoMorse.
+
+    /**
+     * init
+     * Método constructor que crea un arbol de decision binario con todas las letras del alfabeto en morse.
+     * Precondicion: true.
+     * Postcondicion: Se crea un arbol de decision binario con todas las letras del alfabeto en morse.
+     */
     init {
         alfabeto.agregar(Nodo('E', "."))
         alfabeto.agregar(Nodo('T', "-"))
@@ -68,11 +83,13 @@ class CodigoMorse() {
 
     /**
      * fun decodificarLetra(codigo: String): Char
-     * Metodo que recibe un codigo morse y devuelve la letra correspondiente.
+     * Metodo que recibe un codigo morse y devuelve la letra correspondiente,
+     * o null si el codigo morse no es valido.
      * @param codigo: String -> Codigo morse a decodificar.
      * @return Char -> Letra correspondiente al codigo morse.
-     * Precondicion: El codigo morse debe ser valido.
-     * Postcondicion: Se devuelve la letra correspondiente al codigo morse.
+     * Precondicion: true.
+     * Postcondicion: Se devuelve la letra correspondiente al codigo morse,
+     * o null si el codigo morse no es valido.
      */
     fun decodificarLetra(codigo: String): Char? {
         // Se busca el codigo morse en el arbol binario.
@@ -81,11 +98,13 @@ class CodigoMorse() {
 
     /**
      * fun decodificarMensaje(mensaje: String): String
-     * Metodo que recibe un mensaje en codigo morse y devuelve el mensaje en texto.
+     * Metodo que recibe un mensaje en codigo morse y devuelve el mensaje en texto correspondiente,
+     * o un mensaje vacio si el mensaje en codigo morse no es valido.
      * @param mensaje: String -> Mensaje en codigo morse a decodificar.
      * @return String -> Mensaje en texto correspondiente al mensaje en codigo morse.
-     * Precondicion: El mensaje en codigo morse debe ser valido.
-     * Postcondicion: Se devuelve el mensaje en texto correspondiente al mensaje en codigo morse.
+     * Precondicion: true.
+     * Postcondicion: Se devuelve el mensaje en texto correspondiente al mensaje en codigo morse,
+     * o un mensaje vacio si el mensaje en codigo morse no es valido.
      */
     fun decodificarMensaje(mensaje: String): String {
         // Se separan las palabras del mensaje, el mensaje se separa por espacios y las palabras por "/".
@@ -121,6 +140,12 @@ class CodigoMorse() {
         return mensajeDecodificado.trim().lowercase()
     }
 
+    /**
+     * toString
+     * Metodo que devuelve la representacion en String del alfabeto en morse.
+     * Precondicion: true.
+     * Postcondicion: Se devuelve la representacion en String del alfabeto en morse.
+     */
     override fun toString(): String {
         return alfabeto.toString()
     }
