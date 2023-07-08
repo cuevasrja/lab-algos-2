@@ -22,5 +22,5 @@ fun main(args: Array<String>) {
         println("\u001b[31mError:\u001b[0m El codigo morse ingresado no es valido.")
         return
     }
-    println("El texto descifrado es: \u001b[34m'$mensajeDecodificado'\u001b[0m")
+    println("\u001b[34m'$mensajeDecodificado'\u001b[0m")
 }

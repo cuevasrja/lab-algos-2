@@ -2,7 +2,8 @@
  * Laboratorio semana 9 de Algoritmos y Estructuras de Datos II (CI-2692).
  * Autores: Juan Cuevas (19-10056) y Luis Isea (19-10175).
  *
- * ArbolDeDecision.kt -> Este archivo contiene la clase que representa un arbol de decision binario para la decodificacion de codigo morse.
+ * ArbolDeDecision.kt -> Este archivo contiene la clase ArbolDeDecision que representa
+ * un arbol de decision binario para la decodificacion de codigo morse.
  */
 
 /**
