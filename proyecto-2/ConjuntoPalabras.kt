@@ -188,6 +188,71 @@ class ConjuntoPalabras() {
     }
 
     /**
+     * swap(arregloPalabras: Array<String>, i: Int, j: Int): Unit
+     * Método que intercambia dos palabras en un arreglo de palabras.
+     * @param arregloPalabras: Array<String> -> El arreglo de palabras en el que se van a intercambiar las palabras.
+     * @param i: Int -> El índice de la primera palabra.
+     * @param j: Int -> El índice de la segunda palabra.
+     * Precondición: Los índices son válidos.
+     * Postcondición: Se intercambian las palabras en el arreglo de palabras.
+     */
+    fun swap(arregloPalabras: Array<String>, i: Int, j: Int) {
+        var temp = arregloPalabras[i]
+        arregloPalabras[i] = arregloPalabras[j]
+        arregloPalabras[j] = temp
+    }
+
+    /**
+     * partitionLex(arregloPalabras: Array<String>, low: Int, high: Int): Int
+     * Método que crea una partición en un arreglo de palabras.
+     * @param arregloPalabras: Array<String> -> El arreglo de palabras que se va a particionar.
+     * @param low: Int -> El índice más bajo de la sección del arreglo que se va a particionar.
+     * @param high: Int -> El índice más alto de la sección del arreglo que se va a particionar.
+     * Precondición: Los índices son válidos.
+     * Postcondición: Se devuelve el nuevo índice del pivote.
+     */
+    fun partitionLex(arregloPalabras: Array<String>, low: Int, high: Int): Int {
+        var pivot = arregloPalabras[high]
+        var i = low - 1
+        for (j in low until high) {
+            if (arregloPalabras[j].compareTo(pivot) <= 0) {
+                i++
+                this.swap(arregloPalabras, i, j)
+            }
+        }
+        this.swap(arregloPalabras, i + 1, high)
+        return i + 1
+    }
+
+    /**
+     * quicksortLex(arregloPalabras: Array<String>, low: Int, high: Int): Unit
+     * Método que ordena lexicográficamente un arreglo de palabras desde low hasta high usando el algoritmo quicksort.
+     * @param arregloPalabras: Array<String> -> El arreglo de palabras que se va a ordenar.
+     * @param low: Int -> El índice más bajo de la sección del arreglo que se va a ordenar.
+     * @param high: Int -> El índice más alto de la sección del arreglo que se va a ordenar.
+     * Precondición: Los índices son válidos.
+     * Postcondición: Se ordena lexicográficamente la sección del arreglo de palabras.
+     */
+    fun quicksortLex(arregloPalabras: Array<String>, low: Int, high: Int) {
+        if (low < high) {
+            var p = this.partitionLex(arregloPalabras, low, high)
+            this.quicksortLex(arregloPalabras, low, p - 1)
+            this.quicksortLex(arregloPalabras, p + 1, high)
+        }
+    }
+
+    /**
+     * quicksortLexicografico(arregloPalabras: Array<String>): Unit
+     * Método que ordena lexicográficamente un arreglo de palabras usando el algoritmo quicksort.
+     * @param arregloPalabras: Array<String> -> El arreglo de palabras que se va a ordenar.
+     * Precondición: true.
+     * Postcondición: Se ordena lexicográficamente el arreglo de palabras.
+     */
+    fun quicksortLexicografico(arregloPalabras: Array<String>) {
+        this.quicksortLex(arregloPalabras, 0, arregloPalabras.size - 1)
+    }
+
+    /**
      * toString(): String
      * Método que devuelve una representación en String del conjunto de palabras.
      * Precondición: true.
@@ -195,37 +260,29 @@ class ConjuntoPalabras() {
      */
     override fun toString(): String {
         if (this.getNumPalabras() == 0) return "[]\n"
+
         // Se crea un String con la representación del conjunto de palabras.
         var str = "["
-        // Se crea un contador de palabras impresas.
-        var palabImps = 0
 
-        // Se recorre la tabla de hash.
-        for (i in 0 until this.getSize()) {
-            // Si la lista enlazada está vacía, se pasa a la siguiente.
-            if (palabras[i].estaVacia()) continue
+        // Se crea un arreglo con las palabras que hay en el conjunto de palabras.
+        val palabras = this.crearArregloPalabras()
 
-            // Si no, se cuenta el número de palabras en la lista enlazada.
-            var palabEnLista = palabras[i].getSize()
+        // Se ordena lexicográficamente el arreglo de palabras.
+        this.quicksortLexicografico(palabras)
 
-            // Si se está imprimiendo la última palabra, se imprime sin coma.
-            if (palabImps + palabEnLista == this.getNumPalabras()) {
-                str += palabras[i].imprimirLista(palabImps)
+        // Se añaden las palabras al String.
+        for (i in 0 until palabras.size - 1) {
+            // Se quiere imprimir solo 5 palabras por línea.
+            if (i % 5 == 0 && i != 0) {
+                str += palabras[i] + ",\n"
+            } else {
+                str += palabras[i] + ", "
             }
-            // Si se imprime la última palabra de una línea, se imprime con coma y salto de línea.
-            else if ((palabImps + palabEnLista) % 5 == 0) {
-                str += palabras[i].imprimirLista(palabImps) + ",\n"
-            }
-            // Si no, se imprime con coma.
-            else {
-                str += palabras[i].imprimirLista(palabImps) + ", "
-            }
-
-            // Se actualiza el número de palabras impresas.
-            palabImps += palabEnLista
         }
 
-        str += "]\n"
+        // Se añade la última palabra al String.
+        str += palabras[palabras.size - 1] + "]\n"
+
         return str
     }
 }
@@ -566,43 +623,6 @@ class CircularList() {
 
         // El último elemento de la lista
         string += "${nodoActual!!}]"
-        return string
-    }
-
-    /**
-     * imprimirLista(palabImps: Int = 0): String
-     * Método que imprime la lista en base al número de palabras que se han impreso.
-     * @param palabImps: Int -> El número de palabras que se han impreso. (Por defecto 0)
-     * Precondición: true.
-     * Postcondición: Se imprime la lista en base al número de palabras que se han impreso.
-     */
-    fun imprimirLista(palabImps: Int = 0): String {
-        // Si la lista esta vacia, retornamos "[]"
-        if (this.estaVacia()) return "[]"
-
-        // Obtenemos el número de palabras que se han impreso
-        var palabImpresas = palabImps
-
-        var string = ""
-
-        // Obtenemos el primer elemento de la lista
-        var nodoActual = sentinel.next
-
-        // Recorremos cada uno de los elementos de la lista
-        while (nodoActual != sentinel.prev) {
-            // La idea es solo imprimir 5 palabras por línea
-            if (palabImpresas % 5 == 4) {
-                string += "${nodoActual!!},\n"
-                palabImpresas++
-            } else {
-                string += "${nodoActual!!}, "
-                palabImpresas++
-            }
-            nodoActual = nodoActual.next
-        }
-
-        // El último elemento de la lista
-        string += "${nodoActual!!}"
         return string
     }
 }

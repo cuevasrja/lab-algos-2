@@ -232,7 +232,7 @@ class AyudanteOrtografico() {
      * Método que busca las 4 palabras con menor distancia en el diccionario.
      * @param arregloPalabras: Array<String> -> Arreglo ordenado con las palabras válidas.
      * @return palabrasConMenorDistancia: Array<String> -> Arreglo con las 4 palabras con menor distancia.
-    */
+     */
     private fun buscarPalabrasConMenorDistancia(palabra: String): Array<String> {
         // Se obtiene la primera letra de la palabra
         val primeraLetra = palabra[0]
@@ -247,10 +247,10 @@ class AyudanteOrtografico() {
             // Se inicializa la menor distancia con un valor muy grande
             var menorDistancia = Int.MAX_VALUE
             // Iteramos sobre las palabras del diccionario
-            for (j in 0 until palabras.size){
+            for (j in 0 until palabras.size) {
                 // Se calcula la distancia de Damerau-Levenshtein entre la palabra y la palabra del diccionario
                 val distancia = damerauLevenshteinDistance(palabra, palabras[j])
-                // Si la distancia es menor que la menor distancia y la palabra no se encuentra en el arreglo de palabras con menor distancia, 
+                // Si la distancia es menor que la menor distancia y la palabra no se encuentra en el arreglo de palabras con menor distancia,
                 // se actualiza la menor distancia y se agrega la palabra al arreglo de palabras con menor distancia
                 if (distancia < menorDistancia && palabras[j] !in palabrasConMenorDistancia) {
                     menorDistancia = distancia
