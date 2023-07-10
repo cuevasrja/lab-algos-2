@@ -188,71 +188,6 @@ class ConjuntoPalabras() {
     }
 
     /**
-     * swap(arregloPalabras: Array<String>, i: Int, j: Int): Unit
-     * Método que intercambia dos palabras en un arreglo de palabras.
-     * @param arregloPalabras: Array<String> -> El arreglo de palabras en el que se van a intercambiar las palabras.
-     * @param i: Int -> El índice de la primera palabra.
-     * @param j: Int -> El índice de la segunda palabra.
-     * Precondición: Los índices son válidos.
-     * Postcondición: Se intercambian las palabras en el arreglo de palabras.
-     */
-    fun swap(arregloPalabras: Array<String>, i: Int, j: Int) {
-        var temp = arregloPalabras[i]
-        arregloPalabras[i] = arregloPalabras[j]
-        arregloPalabras[j] = temp
-    }
-
-    /**
-     * partitionLex(arregloPalabras: Array<String>, low: Int, high: Int): Int
-     * Método que crea una partición en un arreglo de palabras.
-     * @param arregloPalabras: Array<String> -> El arreglo de palabras que se va a particionar.
-     * @param low: Int -> El índice más bajo de la sección del arreglo que se va a particionar.
-     * @param high: Int -> El índice más alto de la sección del arreglo que se va a particionar.
-     * Precondición: Los índices son válidos.
-     * Postcondición: Se devuelve el nuevo índice del pivote.
-     */
-    fun partitionLex(arregloPalabras: Array<String>, low: Int, high: Int): Int {
-        var pivot = arregloPalabras[high]
-        var i = low - 1
-        for (j in low until high) {
-            if (arregloPalabras[j].compareTo(pivot) <= 0) {
-                i++
-                this.swap(arregloPalabras, i, j)
-            }
-        }
-        this.swap(arregloPalabras, i + 1, high)
-        return i + 1
-    }
-
-    /**
-     * quicksortLex(arregloPalabras: Array<String>, low: Int, high: Int): Unit
-     * Método que ordena lexicográficamente un arreglo de palabras desde low hasta high usando el algoritmo quicksort.
-     * @param arregloPalabras: Array<String> -> El arreglo de palabras que se va a ordenar.
-     * @param low: Int -> El índice más bajo de la sección del arreglo que se va a ordenar.
-     * @param high: Int -> El índice más alto de la sección del arreglo que se va a ordenar.
-     * Precondición: Los índices son válidos.
-     * Postcondición: Se ordena lexicográficamente la sección del arreglo de palabras.
-     */
-    fun quicksortLex(arregloPalabras: Array<String>, low: Int, high: Int) {
-        if (low < high) {
-            var p = this.partitionLex(arregloPalabras, low, high)
-            this.quicksortLex(arregloPalabras, low, p - 1)
-            this.quicksortLex(arregloPalabras, p + 1, high)
-        }
-    }
-
-    /**
-     * quicksortLexicografico(arregloPalabras: Array<String>): Unit
-     * Método que ordena lexicográficamente un arreglo de palabras usando el algoritmo quicksort.
-     * @param arregloPalabras: Array<String> -> El arreglo de palabras que se va a ordenar.
-     * Precondición: true.
-     * Postcondición: Se ordena lexicográficamente el arreglo de palabras.
-     */
-    fun quicksortLexicografico(arregloPalabras: Array<String>) {
-        this.quicksortLex(arregloPalabras, 0, arregloPalabras.size - 1)
-    }
-
-    /**
      * toString(): String
      * Método que devuelve una representación en String del conjunto de palabras.
      * Precondición: true.
@@ -268,7 +203,7 @@ class ConjuntoPalabras() {
         val palabras = this.crearArregloPalabras()
 
         // Se ordena lexicográficamente el arreglo de palabras.
-        this.quicksortLexicografico(palabras)
+        quicksortLexicografico(palabras)
 
         // Se añaden las palabras al String.
         for (i in 0 until palabras.size - 1) {
@@ -625,4 +560,69 @@ class CircularList() {
         string += "${nodoActual!!}]"
         return string
     }
+}
+
+/**
+* swap(arregloPalabras: Array<String>, i: Int, j: Int): Unit
+* Método que intercambia dos palabras en un arreglo de palabras.
+* @param arregloPalabras: Array<String> -> El arreglo de palabras en el que se van a intercambiar las palabras.
+* @param i: Int -> El índice de la primera palabra.
+* @param j: Int -> El índice de la segunda palabra.
+* Precondición: Los índices son válidos.
+* Postcondición: Se intercambian las palabras en el arreglo de palabras.
+*/
+fun swap(arregloPalabras: Array<String>, i: Int, j: Int) {
+    var temp = arregloPalabras[i]
+    arregloPalabras[i] = arregloPalabras[j]
+    arregloPalabras[j] = temp
+}
+
+/**
+* partitionLex(arregloPalabras: Array<String>, low: Int, high: Int): Int
+* Método que crea una partición en un arreglo de palabras.
+* @param arregloPalabras: Array<String> -> El arreglo de palabras que se va a particionar.
+* @param low: Int -> El índice más bajo de la sección del arreglo que se va a particionar.
+* @param high: Int -> El índice más alto de la sección del arreglo que se va a particionar.
+* Precondición: Los índices son válidos.
+* Postcondición: Se devuelve el nuevo índice del pivote.
+*/
+fun partitionLex(arregloPalabras: Array<String>, low: Int, high: Int): Int {
+    var pivot = arregloPalabras[high]
+    var i = low - 1
+    for (j in low until high) {
+        if (arregloPalabras[j].compareTo(pivot) <= 0) {
+            i++
+            swap(arregloPalabras, i, j)
+        }
+    }
+    swap(arregloPalabras, i + 1, high)
+    return i + 1
+}
+
+/**
+* quicksortLex(arregloPalabras: Array<String>, low: Int, high: Int): Unit
+* Método que ordena lexicográficamente un arreglo de palabras desde low hasta high usando el algoritmo quicksort.
+* @param arregloPalabras: Array<String> -> El arreglo de palabras que se va a ordenar.
+* @param low: Int -> El índice más bajo de la sección del arreglo que se va a ordenar.
+* @param high: Int -> El índice más alto de la sección del arreglo que se va a ordenar.
+* Precondición: Los índices son válidos.
+* Postcondición: Se ordena lexicográficamente la sección del arreglo de palabras.
+*/
+fun quicksortLex(arregloPalabras: Array<String>, low: Int, high: Int) {
+    if (low < high) {
+        var p = partitionLex(arregloPalabras, low, high)
+        quicksortLex(arregloPalabras, low, p - 1)
+        quicksortLex(arregloPalabras, p + 1, high)
+    }
+}
+
+/**
+* quicksortLexicografico(arregloPalabras: Array<String>): Unit
+* Método que ordena lexicográficamente un arreglo de palabras usando el algoritmo quicksort.
+* @param arregloPalabras: Array<String> -> El arreglo de palabras que se va a ordenar.
+* Precondición: true.
+* Postcondición: Se ordena lexicográficamente el arreglo de palabras.
+*/
+fun quicksortLexicografico(arregloPalabras: Array<String>) {
+    quicksortLex(arregloPalabras, 0, arregloPalabras.size - 1)
 }

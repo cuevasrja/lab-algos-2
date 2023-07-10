@@ -74,7 +74,7 @@ fun main() {
                 println("Ingrese el nombre del archivo donde desea guardar las sugerecias de corrección:")
                 println("(El archivo de salida se creará si no existe)")
                 val fname2 = readLine()!!
-                // ayudante.corregirTexto(fname, fname2)
+                ayudante.corregirTexto(fname, fname2)
             }
             5 -> {
                 ayudante.imprimirDiccionario()

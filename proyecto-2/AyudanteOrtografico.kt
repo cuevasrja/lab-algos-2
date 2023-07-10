@@ -177,6 +177,8 @@ class AyudanteOrtografico() {
 
         // Se procesa el texto y se almacena en un arreglo
         val arregloPalabras = procesarTexto(inputString)
+        // Ordenamos lexicográficamente el arreglo
+        quicksortLexicografico(arregloPalabras)
 
         // Buscamos las palabras que se encuentran en el diccionario. Las que no se encuentran, se buscan las 4 palabras con menor distancia
         for (i in 0 until arregloPalabras.size) {
@@ -210,6 +212,11 @@ class AyudanteOrtografico() {
                 out.newLine()
             }
         }
+        // Se cierra el archivo de salida
+        bufferedWriter.close()
+
+        // Se informa al usuario que el archivo de salida ha sido creado y que ahí se encuentran las palabras corregidas
+        println("El archivo $foutput ha sido creado con las palabras corregidas.")
     }
 
     /**
@@ -224,7 +231,7 @@ class AyudanteOrtografico() {
     private fun procesarTexto(texto: String): Array<String> {
         val palabras = texto.replace(".", " ").replace(",", " ").replace("?", " ").replace("!", " ").replace(";", " ").replace(":", " ").replace("(", " ").replace(")", " ").replace("[", " ").replace("]", " ").replace("{", " ").replace("}", " ").replace("¿", " ").replace("¡", " ").replace("\n", " ").replace("\t", " ").replace("\r", " ")
         val arregloPalabras = palabras.split(" ").toTypedArray()
-        return arregloPalabras.filter { it != "" && esPalabraValida(it) }.toTypedArray()
+        return arregloPalabras.filter { it != "" && it != " " && esPalabraValida(it) }.toTypedArray()
     }
 
     /**
