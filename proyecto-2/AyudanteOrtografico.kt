@@ -177,17 +177,33 @@ class AyudanteOrtografico() {
 
         // Se procesa el texto y se almacena en un arreglo
         val arregloPalabras = procesarTexto(inputString)
-        // Ordenamos lexicográficamente el arreglo
+        // Se ordena lexicográficamente el arreglo
         quicksortLexicografico(arregloPalabras)
+
+        // Se crea un diccionario temporal para almacenar las palabras que no se encuentran en el diccionario
+        val diccTemporal = AyudanteOrtografico()
 
         // Buscamos las palabras que se encuentran en el diccionario. Las que no se encuentran, se buscan las 4 palabras con menor distancia
         for (i in 0 until arregloPalabras.size) {
             val palabra = arregloPalabras[i].trim()
-            // Si la palabra se encuentra en el diccionario, se imprime en el archivo de salida
+            // Si la palabra se encuentra en el diccionario, se salta a la siguiente palabra
             if (buscarPalabra(palabra)) {
-                arregloPalabras[i] = palabra
+                arregloPalabras[i] = ""
                 continue
+            } else if (diccTemporal.buscarPalabra(palabra)) {
+                // Si la palabra ya se encuentra en el diccionario temporal, se salta a la siguiente palabra
+                arregloPalabras[i] = ""
+                continue
+            } else {
+                // En caso contrario, se imprime en el archivo de salida la palabra y las 4 palabras con menor distancia
+                val palabrasCercanas = buscarPalabrasConMenorDistancia(palabra)
+                arregloPalabras[i] = "$palabra: ${palabrasCercanas[0]}, ${palabrasCercanas[1]}, ${palabrasCercanas[2]}, ${palabrasCercanas[3]}"
+                // Se agrega la palabra al diccionario temporal
+                val primeraLetra = palabra[0]
+                val indice = diccTemporal.dicc.indexOfFirst { it.character == primeraLetra }
+                diccTemporal.dicc[indice].agregarPalabra(palabra)
             }
+
             // En caso contrario, se imprime en el archivo de salida la palabra y las 4 palabras con menor distancia
             val palabrasCercanas = buscarPalabrasConMenorDistancia(palabra)
             arregloPalabras[i] = "$palabra: ${palabrasCercanas[0]}, ${palabrasCercanas[1]}, ${palabrasCercanas[2]}, ${palabrasCercanas[3]}"
@@ -196,10 +212,8 @@ class AyudanteOrtografico() {
         // Se crea un objeto File con el nombre del archivo de salida
         val fileOut = File(foutput)
 
-        // Si el archivo no existe, se crea
-        if (!fileOut.exists()) {
-            fileOut.createNewFile()
-        }
+        // Si el archivo no existe, se crea. En caso contrario, se sobreescribe.
+        if (!fileOut.exists()) fileOut.createNewFile() else fileOut.writeText("")
 
         // Se crea un objeto BufferedWriter para escribir en el archivo.
         val bufferedWriter = fileOut.bufferedWriter()
@@ -207,16 +221,18 @@ class AyudanteOrtografico() {
         // Se escribe en el archivo de salida el arreglo de palabras corregidas
         bufferedWriter.use { out ->
             for (palabra in arregloPalabras) {
-                // Se escribe la palabra en el archivo de salida
-                out.write(palabra)
-                out.newLine()
+                // Se escriben las palabras que no estén en el diccionario con sus sugerencias
+                if (palabra != "") {
+                    out.write(palabra)
+                    out.newLine()
+                }
             }
         }
         // Se cierra el archivo de salida
         bufferedWriter.close()
 
         // Se informa al usuario que el archivo de salida ha sido creado y que ahí se encuentran las palabras corregidas
-        println("El archivo $foutput ha sido creado con las palabras corregidas.")
+        println("El archivo $foutput ha sido creado con las palabras corregidas.\n")
     }
 
     /**
