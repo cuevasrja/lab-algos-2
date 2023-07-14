@@ -177,8 +177,6 @@ class AyudanteOrtografico() {
 
         // Se procesa el texto y se almacena en un arreglo
         val arregloPalabras = procesarTexto(inputString)
-        // Se ordena lexicográficamente el arreglo
-        quicksortLexicografico(arregloPalabras)
 
         // Se crea un diccionario temporal para almacenar las palabras que no se encuentran en el diccionario
         val diccTemporal = AyudanteOrtografico()

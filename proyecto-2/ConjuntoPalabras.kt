@@ -216,7 +216,7 @@ class ConjuntoPalabras() {
         }
 
         // Se añade la última palabra al String.
-        str += palabras[palabras.size - 1] + "\n]\n"
+        str += palabras[palabras.size - 1] + "]\n"
 
         return str
     }
