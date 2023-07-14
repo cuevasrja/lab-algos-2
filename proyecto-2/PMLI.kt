@@ -125,7 +125,7 @@ class PMLI(character: Char) {
      */
     override fun toString(): String {
         // Muestra los elementos del arreglo de palabras separados por un espacio y en orden lexicográfico
-        var str = "${this.character}: "
+        var str = "\u001b[34m${this.character}\u001b[0m: \n"
         str += this.palabras.toString()
         return str
     }

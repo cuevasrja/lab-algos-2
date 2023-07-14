@@ -250,6 +250,19 @@ class AyudanteOrtografico() {
         return arregloPalabras.filter { it != "" && it != " " && esPalabraValida(it) }.toTypedArray()
     }
 
+    private fun crearArregloPalabras(): Array<String> {
+        var arregloPalabras = arrayOf<String>()
+        // Iterar sobre el diccionario. Cada elemento del diccionario es de tipo PMLI
+        // es decir, el conjunto de palabras que empiezan con una letra. Y cuyas palabras estan en una lista circular
+        for (i in 0 until dicc.size) {
+            // Se obtiene el arreglo de palabras de la letra i
+            val palabras = dicc[i].crearArregloPalabras()
+            // Se agrega el arreglo de palabras al arreglo de palabras
+            arregloPalabras += palabras
+        }
+        return arregloPalabras
+    }
+
     /**
      * buscarPalabrasConMenorDistancia(arregloPalabras: Array<String>)
      * Método que busca las 4 palabras con menor distancia en el diccionario.
@@ -257,12 +270,8 @@ class AyudanteOrtografico() {
      * @return palabrasConMenorDistancia: Array<String> -> Arreglo con las 4 palabras con menor distancia.
      */
     private fun buscarPalabrasConMenorDistancia(palabra: String): Array<String> {
-        // Se obtiene la primera letra de la palabra
-        val primeraLetra = palabra[0]
-        // Se obtiene el índice de la primera letra en el arreglo
-        val indice = dicc.indexOfFirst { it.character == primeraLetra }
-        // Se declara un arreglo con las palabras del diccionario que empiezan con la primera letra de la palabra
-        val palabras = dicc[indice].crearArregloPalabras()
+        // Se declara un arreglo con las palabras del diccionario
+        val palabras = this.crearArregloPalabras()
         // Se crea un arreglo con las 4 palabras con menor distancia
         val palabrasConMenorDistancia = Array(4) { "" }
         // Iteramos sobre las 4 palabras con menor distancia
@@ -272,7 +281,7 @@ class AyudanteOrtografico() {
             // Iteramos sobre las palabras del diccionario
             for (j in 0 until palabras.size) {
                 // Se calcula la distancia de Damerau-Levenshtein entre la palabra y la palabra del diccionario
-                val distancia = damerauLevenshteinDistance(palabra, palabras[j])
+                val distancia = osaDistance(palabra, palabras[j])
                 // Si la distancia es menor que la menor distancia y la palabra no se encuentra en el arreglo de palabras con menor distancia,
                 // se actualiza la menor distancia y se agrega la palabra al arreglo de palabras con menor distancia
                 if (distancia < menorDistancia && palabras[j] !in palabrasConMenorDistancia) {
@@ -285,77 +294,41 @@ class AyudanteOrtografico() {
     }
 
     /**
-     * dameruLevenshteinDistance(str1: String, str2: String)
-     * Método que calcula la distancia de Damerau-Levenshtein entre dos cadenas.
-     * @param str1: String -> Primera cadena.
-     * @param str2: String -> Segunda cadena.
-     * @return distance: Int -> Distancia de Damerau-Levenshtein entre las dos cadenas.
-     */
-    private fun damerauLevenshteinDistance(str1: String, str2: String): Int {
-        // Se obtiene la longitud de las cadenas
-        val len1 = str1.length
-        val len2 = str2.length
-
-        // Caso base: si una de las cadenas es vacía, la distancia es la longitud de la otra cadena
-        if (len1 == 0) return len2
-        if (len2 == 0) return len1
-
-        // Si los últimos caracteres de las cadenas son iguales, la distancia es la misma que sin ellos
-        if (str1[len1 - 1] == str2[len2 - 1]) {
-            return damerauLevenshteinDistance(str1.substring(0, len1 - 1), str2.substring(0, len2 - 1))
+    * osaDistance(a: String, b: String)
+    * Metodo para buscar la distancia entre dos palabras usando el algoritmo de Damerau-Levenshtein
+    * @param a: String -> Primera palabra
+    * @param b: String -> Segunda palabra
+    * @return Int -> Distancia entre las dos palabras
+    */
+    fun osaDistance(a: String, b: String): Int {
+        // Se crea una matriz de tamaño a.length + 1 por b.length + 1
+        val d = Array(a.length + 1) { IntArray(b.length + 1) }
+        // Se inicializa la primera fila y la primera columna
+        for (i in 0..a.length) {
+            d[i][0] = i
         }
-
-        // Calculamos la distancia de Levenshtein sin la transposición
-        var distance = levenshteinDistance(str1, str2)
-
-        // Calculamos la distancia de Damerau-Levenshtein con la transposición
-        if (len1 > 1 && len2 > 1 && str1[len1 - 1] == str2[len2 - 2] && str1[len1 - 2] == str2[len2 - 1]) {
-            distance = minOf(distance, damerauLevenshteinDistance(str1.substring(0, len1 - 2), str2.substring(0, len2 - 2)) + 1)
+        for (j in 0..b.length) {
+            d[0][j] = j
         }
-
-        return distance
-    }
-
-    /**
-     * levenshteinDistance(str1: String, str2: String)
-     * Método que calcula la distancia de Levenshtein entre dos cadenas.
-     * @param str1: String -> Primera cadena.
-     * @param str2: String -> Segunda cadena.
-     * @return distance: Int -> Distancia de Levenshtein entre las dos cadenas.
-     */
-    private fun levenshteinDistance(str1: String, str2: String): Int {
-        // Se obtiene la longitud de las cadenas
-        val len1 = str1.length
-        val len2 = str2.length
-
-        // Creamos una matriz para almacenar las distancias parciales
-        val distances = Array(len1 + 1) { IntArray(len2 + 1) }
-
-        // Inicializamos la primera fila y la primera columna de la matriz
-        for (i in 0..len1) {
-            distances[i][0] = i
-        }
-        for (j in 0..len2) {
-            distances[0][j] = j
-        }
-
-        // ! REVISAR
-        // Calculamos las distancias parciales
-        for (i in 1..len1) {
-            for (j in 1..len2) {
-                // El costo es 0 si los caracteres son iguales, 1 si son diferentes
-                val cost = if (str1[i - 1] == str2[j - 1]) 0 else 1
-                // La distancia parcial es el mínimo entre la distancia de la celda de arriba, la celda de la izquierda y la celda de arriba a la izquierda
-                distances[i][j] = minOf(
-                    distances[i - 1][j] + 1,
-                    distances[i][j - 1] + 1,
-                    distances[i - 1][j - 1] + cost,
+        // Se calcula la distancia de Damerau-Levenshtein
+        for (i in 1..a.length) {
+            for (j in 1..b.length) {
+                // Se calcula el costo
+                val cost = if (a[i - 1] == b[j - 1]) 0 else 1
+                // Se toma el mínimo entre la eliminación, la inserción, la sustitución y la transposición
+                d[i][j] = minOf(
+                    d[i - 1][j] + 1, // deletion
+                    d[i][j - 1] + 1, // insertion
+                    d[i - 1][j - 1] + cost // substitution
                 )
+                // Si se puede hacer la transposición, se toma el mínimo entre la transposición y el costo
+                if (i > 1 && j > 1 && a[i - 1] == b[j - 2] && a[i - 2] == b[j - 1]) {
+                    d[i][j] = minOf(d[i][j], d[i - 2][j - 2] + 1) // transposition
+                }
             }
         }
-
-        // La distancia final es la última celda de la matriz
-        return distances[len1][len2]
+        // Se devuelve la distancia de Damerau-Levenshtein, que se encuentra en la última posición de la matriz
+        return d[a.length][b.length]
     }
 
     /**

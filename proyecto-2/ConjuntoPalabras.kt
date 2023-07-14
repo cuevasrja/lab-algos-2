@@ -197,7 +197,7 @@ class ConjuntoPalabras() {
         if (this.getNumPalabras() == 0) return "[]\n"
 
         // Se crea un String con la representación del conjunto de palabras.
-        var str = "["
+        var str = "[\n"
 
         // Se crea un arreglo con las palabras que hay en el conjunto de palabras.
         val palabras = this.crearArregloPalabras()
@@ -216,7 +216,7 @@ class ConjuntoPalabras() {
         }
 
         // Se añade la última palabra al String.
-        str += palabras[palabras.size - 1] + "]\n"
+        str += palabras[palabras.size - 1] + "\n]\n"
 
         return str
     }
