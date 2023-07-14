@@ -197,16 +197,12 @@ class AyudanteOrtografico() {
             } else {
                 // En caso contrario, se imprime en el archivo de salida la palabra y las 4 palabras con menor distancia
                 val palabrasCercanas = buscarPalabrasConMenorDistancia(palabra)
-                arregloPalabras[i] = "$palabra: ${palabrasCercanas[0]}, ${palabrasCercanas[1]}, ${palabrasCercanas[2]}, ${palabrasCercanas[3]}"
+                arregloPalabras[i] = "$palabra,${palabrasCercanas[0]},${palabrasCercanas[1]},${palabrasCercanas[2]},${palabrasCercanas[3]}"
                 // Se agrega la palabra al diccionario temporal
                 val primeraLetra = palabra[0]
                 val indice = diccTemporal.dicc.indexOfFirst { it.character == primeraLetra }
                 diccTemporal.dicc[indice].agregarPalabra(palabra)
             }
-
-            // En caso contrario, se imprime en el archivo de salida la palabra y las 4 palabras con menor distancia
-            val palabrasCercanas = buscarPalabrasConMenorDistancia(palabra)
-            arregloPalabras[i] = "$palabra: ${palabrasCercanas[0]}, ${palabrasCercanas[1]}, ${palabrasCercanas[2]}, ${palabrasCercanas[3]}"
         }
 
         // Se crea un objeto File con el nombre del archivo de salida
@@ -294,12 +290,12 @@ class AyudanteOrtografico() {
     }
 
     /**
-    * osaDistance(a: String, b: String)
-    * Metodo para buscar la distancia entre dos palabras usando el algoritmo de Damerau-Levenshtein
-    * @param a: String -> Primera palabra
-    * @param b: String -> Segunda palabra
-    * @return Int -> Distancia entre las dos palabras
-    */
+     * osaDistance(a: String, b: String)
+     * Metodo para buscar la distancia entre dos palabras usando el algoritmo de Damerau-Levenshtein
+     * @param a: String -> Primera palabra
+     * @param b: String -> Segunda palabra
+     * @return Int -> Distancia entre las dos palabras
+     */
     fun osaDistance(a: String, b: String): Int {
         // Se crea una matriz de tamaño a.length + 1 por b.length + 1
         val d = Array(a.length + 1) { IntArray(b.length + 1) }
@@ -319,7 +315,7 @@ class AyudanteOrtografico() {
                 d[i][j] = minOf(
                     d[i - 1][j] + 1, // deletion
                     d[i][j - 1] + 1, // insertion
-                    d[i - 1][j - 1] + cost // substitution
+                    d[i - 1][j - 1] + cost, // substitution
                 )
                 // Si se puede hacer la transposición, se toma el mínimo entre la transposición y el costo
                 if (i > 1 && j > 1 && a[i - 1] == b[j - 2] && a[i - 2] == b[j - 1]) {
