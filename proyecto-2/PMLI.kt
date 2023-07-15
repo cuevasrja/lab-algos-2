@@ -148,3 +148,30 @@ val alfabet = AlfabetHashTable()
 fun esPalabraValida(palabra: String): Boolean {
     return palabra.all { alfabet.perteneceAlAlfabeto(it) }
 }
+
+/**
+ * compararPalabras(palabra1: String, palabra2: String): Int
+ * Función que compara dos palabras en el idioma español.
+ * @param palabra1: String -> Primera palabra que se desea comparar.
+ * @param palabra2: String -> Segunda palabra que se desea comparar.
+ * Precondición: true.
+ * Postcondición: devuelve -1 si la primera palabra es menor que la segunda, 1 si la primera palabra es mayor que la segunda, 0 si son iguales.
+ */
+fun compararPalabras(palabra1: String, palabra2: String): Int {
+    var i = 0
+    while (i < palabra1.length && i < palabra2.length) {
+        if (alfabet.obtenerValor(palabra1[i]) < alfabet.obtenerValor(palabra2[i])) {
+            return -1
+        } else if (alfabet.obtenerValor(palabra1[i]) > alfabet.obtenerValor(palabra2[i])) {
+            return 1
+        }
+        i++
+    }
+    if (palabra1.length < palabra2.length) {
+        return -1
+    }
+    if (palabra1.length > palabra2.length) {
+        return 1
+    }
+    return 0
+}

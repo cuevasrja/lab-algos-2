@@ -240,26 +240,28 @@ class AlfabetHashTable() {
     // Metodos de la clase AlfabetHashTable
 
     /**
-     * hash(dato: Char): Int
-     * Método que devuelve el índice en el que debería estar insertando el dato en la tabla de hash.
-     * @param dato: Char -> El dato que se va a insertar en la tabla de hash.
+     * hash(letra: Char): Int
+     * Método que devuelve el índice en el que debería estar una letra en la tabla de hash.
+     * @param letra: Char -> La letra de la que se quiere obtener el índice en la tabla de hash.
      * Precondición: true.
-     * Postcondición: Se devuelve el índice en el que se debería estar insertando el dato en la tabla de hash.
+     * Postcondición: Se devuelve el índice en el que se debe insertar una letra en la tabla de hash.
      */
-    private fun hash(dato: Char): Int {
-        return String.format("%c", dato).hashCode() % size
+    private fun hash(letra: Char): Int {
+        return String.format("%c", letra).hashCode() % size
     }
 
     /**
-     * insertar(dato: Char): Unit
-     * Método que inserta un dato en la tabla de hash.
-     * @param dato: Char -> El dato que se va a insertar en la tabla de hash.
+     * insertar(letra: Char, valor: Int)
+     * Método que inserta una letra en la tabla de hash.
+     * @param letra: Char -> La letra que se va a insertar en la tabla de hash.
+     * @param valor: Int -> El valor de la letra que se va a insertar en la tabla de hash.
      * Precondición: true.
      * Postcondición: Se inserta el dato en la tabla de hash.
      */
-    fun insertar(dato: Char) {
-        val indice = this.hash(dato)
-        alfabeto[indice].agregarAlFinal(String.format("%c", dato))
+
+    fun insertar(letra: Char, valor: Int) {
+        val indice = this.hash(letra)
+        alfabeto[indice].agregarAlFinal(String.format("%c", letra), valor)
     }
 
     /**
@@ -269,20 +271,42 @@ class AlfabetHashTable() {
      * Postcondición: Se inicializa la tabla de hash con el alfabeto español.
      */
     init {
-        for (i in 'a'..'z') insertar(i)
-        insertar('ñ')
+        // Se insertan las letras del alfabeto español en la tabla de hash.
+        var j = 1
+        for (i in 'a'..'n') {
+            this.insertar(i, j)
+            j++
+        }
+        insertar('ñ', j)
+        j++
+        for (i in 'o'..'z') {
+            this.insertar(i, j)
+            j++
+        }
     }
 
     /**
-     * perteneceAlAlfabeto(dato: Char): Boolean
-     * Método que devuelve si un dato pertenece o no al alfabeto.
-     * @param dato: Char -> El dato que se va a buscar en la tabla de hash.
+     * perteneceAlAlfabeto(letra: Char): Boolean
+     * Método que devuelve true si la letra pertenece al alfabeto español, false en otro caso.
+     * @param letra: Char -> La letra que se va a buscar en la tabla de hash.
      * Precondición: true.
-     * Postcondición: Se devuelve si el dato pertenece o no al alfabeto.
+     * Postcondición: Se devuelve true si la letra pertenece al alfabeto español, false en otro caso.
      */
-    fun perteneceAlAlfabeto(dato: Char): Boolean {
-        val indice = this.hash(dato)
-        return alfabeto[indice].existe(String.format("%c", dato))
+    fun perteneceAlAlfabeto(letra: Char): Boolean {
+        val indice = this.hash(letra)
+        return alfabeto[indice].existe(String.format("%c", letra))
+    }
+
+    /**
+     * obtenerValor(letra: Char): Int
+     * Método que devuelve el valor de una letra en la tabla de hash.
+     * @param letra: Char -> La letra de la que se quiere obtener el valor.
+     * Precondición: La letra pertenece al alfabeto español.
+     * Postcondición: Se devuelve el valor de la letra en la tabla de hash.
+     */
+    fun obtenerValor(letra: Char): Int {
+        val indice = this.hash(letra)
+        return alfabeto[indice].obtenerValor(String.format("%c", letra))!!
     }
 
     /**
@@ -303,10 +327,11 @@ class AlfabetHashTable() {
 /**
  * Clase Nodo, que representa un nodo de una lista circular doblemente enlazada.
  * @param dato: String? -> El dato que va a contener el nodo.
+ * @param valor: Int? -> El valor que va a contener el nodo. Por defecto es null.
  * @property next: Nodo? -> El nodo siguiente al nodo actual.
  * @property prev: Nodo? -> El nodo anterior al nodo actual.
  */
-class Nodo(var dato: String?) {
+class Nodo(var dato: String?, var valor: Int? = null) {
     // Atributos de la clase Nodo
 
     // next: Nodo? -> El nodo siguiente al nodo actual.
@@ -361,13 +386,27 @@ class Nodo(var dato: String?) {
     }
 
     /**
+     * obtenerValor(): Int?
+     * Método que devuelve el valor que contiene el nodo.
+     * Precondición: true.
+     * Postcondición: El valor que contiene el nodo es el valor dado.
+     */
+    fun obtenerValor(): Int? {
+        return this.valor
+    }
+
+    /**
      * toString(): String
      * Método que imprime una representación en String del nodo.
      * Precondición: true.
      * Postcondición: Se devuelve una representación en String del nodo.
      */
     override fun toString(): String {
-        return "${this.obtenerDato()}"
+        var str = ""
+        str += "${this.obtenerDato()}"
+        if (this.valor != null) str += " (${this.valor})"
+        str += "\n"
+        return str
     }
 }
 
@@ -424,12 +463,13 @@ class CircularList() {
      * agregarAlFrente(dato: String): Unit
      * Método que agrega un nodo con el dato dado al frente de la lista.
      * @param dato: String -> El dato que va a contener el nodo.
+     * @param valor: Int? -> El valor que va a contener el nodo. Por defecto es null.
      * Precondición: true.
      * Postcondición: Se agrega un nodo con el dato dado al frente de la lista.
      */
-    fun agregarAlFrente(dato: String) {
+    fun agregarAlFrente(dato: String, valor: Int? = null) {
         // Creamos el nuevo nodo
-        val nuevoNodo = Nodo(dato)
+        val nuevoNodo = Nodo(dato, valor)
 
         // Insertamos el nuevo nodo al frente de la lista
         nuevoNodo.cambiarNext(sentinel.next!!)
@@ -447,12 +487,13 @@ class CircularList() {
      * agregarAlFinal(dato: String): Unit
      * Método que agrega un nodo con el dato dado al final de la lista.
      * @param dato: String -> El dato que va a contener el nodo.
+     * @param valor: Int? -> El valor que va a contener el nodo. Por defecto es null.
      * Precondición: true.
      * Postcondición: Se agrega un nodo con el dato dado al final de la lista.
      */
-    fun agregarAlFinal(dato: String) {
+    fun agregarAlFinal(dato: String, valor: Int? = null) {
         // Creamos el nuevo nodo
-        val nuevoNodo = Nodo(dato)
+        val nuevoNodo = Nodo(dato, valor)
 
         // Insertamos el nuevo nodo al final de la lista
         nuevoNodo.cambiarNext(sentinel)
@@ -536,6 +577,27 @@ class CircularList() {
         return sentinel.next
     }
 
+    fun obtenerValor(dato: String): Int? {
+        // Si la lista esta vacia, retornamos null
+        if (this.estaVacia()) return null
+
+        // Obtenemos el primer nodo de la lista
+        var nodoActual = sentinel.next
+
+        // Recorremos la lista
+        while (nodoActual != sentinel) {
+            // Si el dato del nodo actual es el dato dado, retornamos el valor del nodo actual
+            if (nodoActual!!.obtenerDato() == dato) {
+                return nodoActual.obtenerValor()
+            }
+            // Si no, cambiamos el nodo actual al nodo siguiente al nodo actual
+            nodoActual = nodoActual.next
+        }
+
+        // Si se recorrio toda la lista y no se encontro el dato, retornamos null
+        return null
+    }
+
     /**
      * toString(): String
      * Método que devuelve una representación en String de la lista.
@@ -590,7 +652,7 @@ fun partitionLex(arregloPalabras: Array<String>, low: Int, high: Int): Int {
     var pivot = arregloPalabras[high]
     var i = low - 1
     for (j in low until high) {
-        if (arregloPalabras[j].compareTo(pivot) <= 0) {
+        if (compararPalabras(arregloPalabras[j], pivot) <= 0) {
             i++
             swap(arregloPalabras, i, j)
         }
