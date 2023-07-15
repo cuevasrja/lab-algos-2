@@ -6,8 +6,6 @@
  * del proyecto.
  */
 
-import kotlin.system.exitProcess
-
 /**
  * imprimirMensajeBienvenida(): Unit
  * Función que imprime un mensaje de bienvenida al usuario.
@@ -58,7 +56,7 @@ fun main() {
         when (opcion) {
             1 -> {
                 ayudante = AyudanteOrtografico()
-                println("¡Se ha creado un nuevo Ayudante Ortográfico!\n")
+                println("\u001b[32m¡Se ha creado un nuevo Ayudante Ortográfico!\u001b[0m\n")
             }
             2 -> {
                 println("El diccionario debe ser un archivo de texto con una palabra por línea.")
@@ -88,9 +86,8 @@ fun main() {
                 salir = true
             }
             else -> {
-                println("\u001b[31mOpción inválida. Escriba un número entre 1 y 6.\u001b[0m\n")
+                println("\u001b[31mOpción inválida.\u001b[0m Escriba un número entre 1 y 6.\n")
             }
         }
     }
-    exitProcess(0)
 }

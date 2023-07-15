@@ -36,9 +36,15 @@ class AyudanteOrtografico() {
         // Se crea un objeto File con el nombre del archivo
         val file = File(fname)
 
+        // Se verifica si el archivo es un directorio.
+        if (file.isDirectory) {
+            println("El archivo $fname es un directorio.\u001b[31m\nNo se pudo cargar el diccionario.\u001b[0m\n")
+            return
+        }
+
         // Si el archivo no existe, se informa al usuario y se detiene la ejecución del método.
         if (!file.exists()) {
-            println("El archivo $fname no existe.\n")
+            println("El archivo $fname no existe.\u001b[31m\nNo se pudo cargar el diccionario.\u001b[0m\n")
             return
         }
 
@@ -50,7 +56,7 @@ class AyudanteOrtografico() {
             lines.forEach {
                 // Se verifica que haya una sola palabra por línea.
                 if (it.split(" ").size > 1) {
-                    println("No se pudo cargar el diccionario.")
+                    println("\u001b[31mNo se pudo cargar el diccionario.\u001b[0m")
                     println("El archivo no tiene el formato correcto.")
                     println("Debe haber una sola palabra por línea.\n")
                     return
@@ -61,7 +67,7 @@ class AyudanteOrtografico() {
 
                 // Si la palabra no es válida, se lanza detiene la ejecución del método.
                 if (!esPalabraValida(palabra)) {
-                    println("No se pudo cargar el diccionario.")
+                    println("\u001b[31mNo se pudo cargar el diccionario.\u001b[0m")
                     println("El archivo no tiene el formato correcto.")
                     println("La palabra $palabra no es válida.\n")
                     return
@@ -89,7 +95,7 @@ class AyudanteOrtografico() {
             }
         }
 
-        println("¡Diccionario cargado con éxito!\n")
+        println("\u001b[32m¡Diccionario cargado con éxito!\u001b[0m\n")
     }
 
     /**
@@ -102,7 +108,7 @@ class AyudanteOrtografico() {
     fun borrarPalabra(palabra: String) {
         // Si la palabra no es válida, se informa al usuario y se detiene la ejecución del método.
         if (!esPalabraValida(palabra)) {
-            println("La palabra debe contener únicamente letras minúsculas del alfabeto español.\n")
+            println("\u001b[31mLa palabra no es válida.\u001b[0m\nDebe contener únicamente letras minúsculas del alfabeto español.\n")
             return
         }
 
@@ -115,11 +121,11 @@ class AyudanteOrtografico() {
         // Si la palabra se encuentra en la estructura, se elimina
         if (dicc[indice].buscarPalabra(palabra)) {
             dicc[indice].eliminarPalabra(palabra)
-            println("La palabra $palabra ha sido eliminada del diccionario.\n")
+            println("\u001b[32mLa palabra $palabra ha sido eliminada del diccionario.\u001b[0m\n")
         }
         // Si la palabra no se encuentra en la estructura, se informa al usuario
         else {
-            println("La palabra $palabra no se encuentra en el diccionario.\n")
+            println("\u001b[32mLa palabra $palabra no se encuentra en el diccionario.\u001b[32m\n")
         }
     }
 
@@ -134,7 +140,7 @@ class AyudanteOrtografico() {
     fun buscarPalabra(palabra: String): Boolean {
         // Si la palabra no es válida, se devuelve false
         if (!esPalabraValida(palabra)) {
-            println("La palabra debe contener únicamente letras minúsculas del alfabeto español.\n")
+            println("\u001b[31mLa palabra no es válida.\u001b[0m\nDebe contener únicamente letras minúsculas del alfabeto español.\n")
             return false
         }
 
@@ -163,9 +169,15 @@ class AyudanteOrtografico() {
         // Se crea un objeto File con el nombre del archivo de entrada
         val file = File(finput)
 
+        // Se verifica que el nombre del archivo no sea un directorio
+        if (file.isDirectory()) {
+            println("El archivo $finput es un directorio. \u001b[31mNo se pudo procesar.\u001b[0m\n")
+            return
+        }
+
         // Si el archivo no existe, se informa al usuario y se detiene la ejecución del método.
         if (!file.exists()) {
-            println("El archivo $finput no existe.")
+            println("El archivo $finput no existe. \u001b[0mNo se pudo procesar.\u001b[0m\n")
             return
         }
 
@@ -206,6 +218,12 @@ class AyudanteOrtografico() {
         // Se crea un objeto File con el nombre del archivo de salida
         val fileOut = File(foutput)
 
+        // Se verifica que el archivo de salida especificado no sea un directorio
+        if (fileOut.isDirectory()) {
+            println("El archivo $foutput es un directorio.\n\u001b[31mNo se pudieron imprimir las sugerencias.\u001b[0m\n")
+            return
+        }
+
         // Si el archivo no existe, se crea. En caso contrario, se sobreescribe.
         if (!fileOut.exists()) fileOut.createNewFile() else fileOut.writeText("")
 
@@ -226,7 +244,7 @@ class AyudanteOrtografico() {
         bufferedWriter.close()
 
         // Se informa al usuario que el archivo de salida ha sido creado y que ahí se encuentran las palabras corregidas
-        println("El archivo $foutput ha sido creado con las palabras corregidas.\n")
+        println("\u001b[32mEl archivo $foutput ha sido creado con las palabras corregidas.\u001b[0m\n")
     }
 
     /**
@@ -344,6 +362,12 @@ class AyudanteOrtografico() {
         return str
     }
 
+    /**
+     * imprimirDiccionario()
+     * Método que imprime el diccionario.
+     * Precondición: true.
+     * Postcondición: se imprime el diccionario.
+     */
     fun imprimirDiccionario() {
         for (i in 0 until MAX) {
             println(dicc[i].toString())
