@@ -197,7 +197,7 @@ class ConjuntoPalabras() {
         if (this.getNumPalabras() == 0) return "[]\n"
 
         // Se crea un String con la representación del conjunto de palabras.
-        var str = "[\n"
+        var str = "["
 
         // Se crea un arreglo con las palabras que hay en el conjunto de palabras.
         val palabras = this.crearArregloPalabras()
@@ -208,7 +208,7 @@ class ConjuntoPalabras() {
         // Se añaden las palabras al String.
         for (i in 0 until palabras.size - 1) {
             // Se quiere imprimir solo 5 palabras por línea.
-            if (i % 5 == 0 && i != 0) {
+            if ((i + 1) % 5 == 0 && i != 0) {
                 str += palabras[i] + ",\n"
             } else {
                 str += palabras[i] + ", "
