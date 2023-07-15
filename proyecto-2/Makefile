@@ -9,12 +9,10 @@ PROG=	PruebaOrtografia.jar
 
 SRC=	AyudanteOrtografico.kt ConjuntoPalabras.kt PMLI.kt PruebaOrtografia.kt
 
-TEMP=	*.class META-INF
-
 all:
 	$(KC) $(SRC) $(KFLAGS) -d $(PROG)
 
 .PHONY : clean
 
 clean :
-	rm -rf $(PROG) $(TEMP)
+	rm -rf $(PROG)

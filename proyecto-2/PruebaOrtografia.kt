@@ -74,7 +74,7 @@ fun main() {
                 println("\u001b[34mIngrese el nombre del archivo que contiene el texto:\u001b[0m")
                 val fname = readLine()!!
                 println("\u001b[34mIngrese el nombre del archivo donde desea guardar las sugerecias de corrección:\u001b[0m")
-                println("\u001b[31;3m(El archivo de salida se creará si no existe)\u001b[0m")
+                println("\u001b[33;3m(El archivo de salida se creará si no existe)\u001b[0m")
                 val fname2 = readLine()!!
                 ayudante.corregirTexto(fname, fname2)
             }
