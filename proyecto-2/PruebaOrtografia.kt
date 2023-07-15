@@ -37,7 +37,7 @@ fun imprimirOpciones() {
     println("\u001b[34m4.\u001b[0m Corregir texto.")
     println("\u001b[34m5.\u001b[0m Mostrar diccionario.")
     println("\u001b[34m6.\u001b[0m Salir de la aplicación.")
-    print("\u001b[33m¿Qué operación deseas realizar?:\u001b[0m ")
+    print("\u001b[33m¿Qué operación deseas realizar?:\u001b[36m ")
 }
 
 /**
@@ -54,6 +54,7 @@ fun main() {
     while (!salir) {
         imprimirOpciones()
         opcion = readLine()!!.toInt()
+        print("\u001b[0m")
         when (opcion) {
             1 -> {
                 ayudante = AyudanteOrtografico()
